@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "market-e62c9": {
+      "hosting": {
+        "market": [
+          "market-e62c9"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "market-e62c9"
+  }
+}
