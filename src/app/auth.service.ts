@@ -10,10 +10,10 @@ export class AuthService {
   // isLoggedIn = false;
   baseurl = 'http://localhost:3000';
   loginUser(user: any) {
-    return this.http.post(`${this.baseurl}/login`, user);
+    return this.http.post(`${this.baseurl}/api/users/login`, user);
   }
   registerUser(user: any) {
-    return this.http.post(`${this.baseurl}/register`, user);
+    return this.http.post(`${this.baseurl}/api/users/register`, user);
   }
   getPrdoucts(storeId: any) {
     return this.http.get(`${this.baseurl}/getProducts/${storeId}`);
@@ -25,7 +25,7 @@ export class AuthService {
     return this.http.post(`${this.baseurl}/addProduct`, product);
   }
   verifyUser(user: any) {
-    return this.http.post(`${this.baseurl}/verify`, user);
+    return this.http.post(`${this.baseurl}/api/users/verifyOTP`, user);
   }
   getUser(userId:any){
     return this.http.get(`${this.baseurl}/getUser/${userId}`);
@@ -44,7 +44,7 @@ export class AuthService {
   }
   // changeUserAvatar
   changeUserAvatar(data: any) {
-    return this.http.post(`${this.baseurl}/changeUserAvatar`, data);
+    return this.http.post(`${this.baseurl}/api/users/changeUserAvatar`, data);
   }
   reviewListedItemAction(data:any){     
       return this.http.post(`${this.baseurl}/reviewlisteditem`, data);

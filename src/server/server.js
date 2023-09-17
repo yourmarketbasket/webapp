@@ -29,22 +29,20 @@ const shortid = require('shortid');
 dotenv.config();
 const mongoose = require('./db');
 const port = 3000;
+// import route files
+const userRoutes = require('./routes/userRoutes');
 
 
 
 
-
-// twilio verify
-// const accountSid = process.env.TWILIO_ACCOUNT_SID;
-// const authToken = process.env.TWILIO_AUTH_TOKEN;
-// const verifySid = process.env.TWILIO_VERIFY_SID;
-// const client = require("twilio")(accountSid, authToken);
-// const ONE_HOUR_IN_MILLISECONDS = 60 * 60 * 1000;
 
 
 app.use(cors())
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({ extended: false }));
+
+// routes
+app.use('/api/users', userRoutes)
 
 
 
@@ -78,47 +76,6 @@ app.get('/getProducts/:id', async (req, res) => {
 
 
 
-// login route
-app.post('/login', async (req, res) => {
-  const data = req.body;
-  const phone = data.phone;
-  const password = data.password;
-
-  try {
-    // check if user exists
-    const user = await User.findOne({
-      phone,
-    });
-    if (user && (await bcrypt.compare(password, user.password))) {
-      const userId = user._id;
-      const token = jwt.sign(
-        {
-          userId: user._id,
-          fname: user.fname,
-          lname: user.lname,
-          phone: user.phone,
-          admin: user.admin,
-          active: user.active,
-          client: user.client,
-          vendor: user.vendor,
-          verified: user.verified,
-        },
-        process.env.JWT_SECRET,
-        {
-          expiresIn: '1d',
-        }
-      );
-    
-
-      res.send({ message: 'Login successful', success: true, token, userId: userId });
-    } else {
-      res.send({ message: 'Invalid details', success: false });
-    }
-  } catch (error) {
-    console.error(error);
-    res.status(500).send({ message: 'Server error', success: false });
-  }
-});
 
 function verifyToken(req, res, next) {
   const token = req.headers.authorization;
@@ -178,25 +135,7 @@ app.post('/reviewlisteditem', async(req, res)=>{
   }
 
 })
-// change user avatar
-app.post('/changeUserAvatar', async (req, res) => {
-  // find a user by the id
-  const user = await User.findOne({ _id: req.body.userid });
-  if (user) {
-    const filter = { _id: req.body.userid };
-    const update = { avatar: req.body.avatar };
-    // update the value for avatar in the user document
-    const updatedUser = await User.findOneAndUpdate(filter, update);
-    if (updatedUser) {
-      res.send({ message: 'Avatar changed successfully', success: true });
-    } else {
-      res.send({ message: 'Error changing avatar', success: false });
-    }
-  } else {
-    res.send({ message: 'User not found', success: false });
-  }
-});
-// get number of unapproved products
+
 app.get('/unapprovedproducts', async(req, res)=>{
   try{
     const unapproved = await Product.countDocuments({verified:false}).exec();
@@ -448,106 +387,7 @@ app.post('/getlazyLoadedProducts', async (req, res)=>{
     }
 
 })
-// registration route
-app.post('/register', async (req, res) => {
-    const data = req.body;
-    const fname = data.fname;
-    const lname = data.lname;
-    const phone = data.phone;
-    const dob = data.dob;
-    const zipcode = data.zipcode;
-    const gender = data.gender;
-    const password = data.password;
-    const city = data.city;
-    const address = data.address;
-  
-    // hash the password
-    bcrypt.hash(password, 10, (err, hash) => {
-      if (err) {
-        res.status(500).send({ message: 'Error hashing password' });
-      } else {
-        const user = new User({
-          fname: fname,
-          lname: lname,
-          phone: phone,
-          avatar: '',
-          email: '',
-          dob: dob,
-          zipcode: zipcode,
-          gender: gender,
-          password: hash, // use the hashed password
-          city: city,
-          address: address,
-          verified: false,
-          verificationAttempts: 0,
-        });
-  
-        // check if user already exists
-        User.findOne({ phone: phone, zipcode: zipcode })
-          .then((existingUser) => {
-            if (existingUser) {
-              res.send({ message: 'User already exists', success: false });
-            } else {
-              // save data to database
-              user.save()
-                .then(() => {
-                  // send otp
-                  const data = {
-                    "api_key" : process.env.TERMII_API_KEY,
-                    "message_type" : "ALPHANUMERIC",
-                    "to" : zipcode.slice(1)+phone.slice(1),
-                    "from" : process.env.TERMII_SENDER_ID,
-                    "channel" : "generic",
-                    "pin_attempts" : 10,
-                    "pin_time_to_live" :  5,
-                    "pin_length" : 6,
-                    "pin_placeholder" : "< 1234 >",
-                    "message_text" : "Your one time password for MARKET BASKET is < 1234 >",
-                    "pin_type" : "NUMERIC"
-                  }
-                  const options = {
-                    'method': 'POST',
-                    'url': 'https://api.ng.termii.com/api/sms/otp/send',
-                    'headers': {
-                      'Content-Type': ['application/json', 'application/json']
-                    },
-                    body: JSON.stringify(data)
-                  
-                  };
-                  request(options, async function (error, response) { 
-                    if (error){
-                      response = "Error: " + error;
-                    }else{
-                      const responseData = JSON.parse(response.body);
-                      if(responseData && responseData.smsStatus === 'Message Sent'){
-                        verifydatadata = {zip: zipcode, phone: phone, pinid: responseData.pinId }
-                        res
-                          .status(200)
-                          .send({ message: `Registration  successfull`, success: true, data: verifydatadata});
-                        
-                        if (user) {
-                          // If the user already exists, increment their verification attempts by 1
-                          await User.findOneAndUpdate({ phone }, { $inc: { verificationAttempts: 1 } });
-                        } else {
-                          // If the user doesn't exist yet, create a new user and set their verification attempts to 1
-                          await User.create({ phone, verificationAttempts: 0 });
-                        }
-            
-                      }
-                    } 
-                  });
-                })
-                .catch((err) => {
-                  res.send({ message: 'Mobile Number already in use', success: false });
-                });
-            }
-          })
-          .catch((err) => {
-            res.status(500).send({ message: 'Error checking for existing user' });
-          });
-      }
-    });
-  });
+
   // delete product
 app.delete('/deleteProduct/:id', async (req, res) => {
   try {
@@ -563,45 +403,45 @@ app.delete('/deleteProduct/:id', async (req, res) => {
   }
 });
 // verify otp
-app.post('/verify', async (req, res) => {
-// termii integration
-  const phone = req.body.phone;
-  var data = {
-    "api_key": process.env.TERMII_API_KEY,
-    "pin_id": req.body.codeid,
-    "pin": req.body.otp
-  };
-  var options = {
-    'method': 'POST',
-    'url': 'https://api.ng.termii.com/api/sms/otp/verify',
-    'headers': {
-    'Content-Type': ['application/json', 'application/json']
-    },
-    body: JSON.stringify(data)
+// app.post('/verify', async (req, res) => {
+// // termii integration
+//   const phone = req.body.phone;
+//   var data = {
+//     "api_key": process.env.TERMII_API_KEY,
+//     "pin_id": req.body.codeid,
+//     "pin": req.body.otp
+//   };
+//   var options = {
+//     'method': 'POST',
+//     'url': 'https://api.ng.termii.com/api/sms/otp/verify',
+//     'headers': {
+//     'Content-Type': ['application/json', 'application/json']
+//     },
+//     body: JSON.stringify(data)
 
-  };
-  request(options, async function (error, response) { 
-  if (error) throw new Error(error);
-    const responseData = JSON.parse(response.body);
-    if(responseData && responseData.verified){
-      res.status(200).send({ message: `Verification successful`, success: true});
-      // upldate verified status
-      User.findOneAndUpdate({ phone: phone }, { $set: { verified: true } })
-          .then(() => {
-          })
-          .catch((err) => {
-          });
-    }else if(responseData.verified === "Expired"){
-      res.send({message: 'OTP Expired', success: false})
-    }else{
-      res.send({ message: 'Invalid code', success: false });
-    }
-  });
-
-  
+//   };
+//   request(options, async function (error, response) { 
+//   if (error) throw new Error(error);
+//     const responseData = JSON.parse(response.body);
+//     if(responseData && responseData.verified){
+//       res.status(200).send({ message: `Verification successful`, success: true});
+//       // upldate verified status
+//       User.findOneAndUpdate({ phone: phone }, { $set: { verified: true } })
+//           .then(() => {
+//           })
+//           .catch((err) => {
+//           });
+//     }else if(responseData.verified === "Expired"){
+//       res.send({message: 'OTP Expired', success: false})
+//     }else{
+//       res.send({ message: 'Invalid code', success: false });
+//     }
+//   });
 
   
-});
+
+  
+// });
 // get store details
 app.get('/getStoreDetails/:id', async (req, res) => {
   const storeid = req.params.id;
@@ -675,36 +515,7 @@ app.get('/getProductDetails/:id', async(req, res)=>{
     }
 });
 
-app.post('/verifyOTP', async (req, res) => {
-  var data = {
-    "api_key": process.env.TERMII_API_KEY,
-    "pin_id": req.body.otpid,
-    "pin": req.body.otp
-  };
-  var options = {
-    'method': 'POST',
-    'url': 'https://api.ng.termii.com/api/sms/otp/verify',
-    'headers': {
-    'Content-Type': ['application/json', 'application/json']
-    },
-    body: JSON.stringify(data)
 
-  };
-  request(options, async function (error, response) { 
-  if (error) throw new Error(error);
-    const responseData = JSON.parse(response.body);
-    if(responseData && responseData.verified){
-      res.status(200).send({ message: `Verification successful`, success: true});
-    }else if(responseData.verified === "Expired"){
-      res.send({message: 'OTP Expired', success: false})
-    }else{
-      res.send({ message: 'Invalid code', success: false });
-    }
-  });
-
-  
-
-});
 
 // socket io
 io.on('connection', (socket) => {
