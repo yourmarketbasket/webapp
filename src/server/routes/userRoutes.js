@@ -48,6 +48,45 @@ router.post('/verifyOTP', async(req,res)=>{
     }
         
 });
+// get zipcode
+router.post('/getZipCode', async(req,res)=>{
+    try{
+        const zipcode = await AuthService.getZipCode(req.body.mobile)
+        res.json(zipcode);
+
+    }catch(e){
+        res.json({message:e, success:false})
+    }
+});
+// send reset password otp
+router.post('/sendResetPasswordOTP', async(req, res)=>{
+    try{
+        const resdata = await AuthService.sendResetPasswordOTP(req.body);
+        res.json(resdata)
+    }catch(e){
+        res.json({message:e, success:false})
+    }
+});
+// verify reset password otp
+router.post('/verifyResetPasswordOTP', async(req, res)=>{
+    try{
+        const verification = await AuthService.verifyResetOtpPassword(req.body);
+        res.send(verification)
+    }catch(e){
+        res.json({message:e, success:false});
+    }
+
+});
+// reset user password
+router.post('/resetUserPassword', async(req, res)=>{
+    try{
+        const reset = await AuthService.resetPassword(req.body);
+        res.json(reset)
+    }catch(e){
+        res.json({message:e, success:false})
+    }
+
+});
 
   
 

@@ -141,6 +141,43 @@ class AuthService {
 
    
   }
+  // verify reset password otp
+  static async verifyResetOtpPassword(verification){
+    try{
+      return new Promise((resolve,reject)=>{
+        // termii integration
+        var data = {
+          "api_key": process.env.TERMII_API_KEY,
+          "pin_id": verification.codeid,
+          "pin": verification.otp
+        };
+        var options = {
+          'method': 'POST',
+          'url': 'https://api.ng.termii.com/api/sms/otp/verify',
+          'headers': {
+          'Content-Type': ['application/json', 'application/json']
+          },
+          body: JSON.stringify(data)
+
+        };
+        request(options, async function (error, response) { 
+        if (error) throw new Error(error);
+          const responseData = JSON.parse(response.body);
+          if(responseData && responseData.verified){
+            resolve({ message: `Verification successful`, success: true});
+          }else if(responseData.verified === "Expired"){
+            resolve({message: 'OTP Expired', success: false})
+          }else{
+            resolve({ message: 'Invalid code', success: false });
+          }
+        });
+      })
+
+    }catch(e){
+      return e;
+    }
+
+  }
   // verify otp
   static async verifyOTP(verificationData){
     const phone = verificationData.phone
@@ -184,6 +221,81 @@ class AuthService {
       return e;
     }
 
+  }
+  // get zip code
+  static async getZipCode(mobile){
+    const user = await User.findOne({phone: mobile})
+    if(user){
+      return {message:user.zipcode, success:true} 
+    }else{
+      return {message:"Not found", success:false} 
+    }
+  }
+  // verify password
+  static async resetPassword(info){
+    try{
+        const phone = info.phone
+        const hashedPassword =  await bcrypt.hash(info.password, 10);
+        const user =  User.findOne({phone:phone});
+        if(user){
+          const filter = {phone:phone};
+          const update = {password:hashedPassword};
+          const updatePwd =  await user.findOneAndUpdate(filter, update);
+          if(updatePwd){
+            return {message: "Password updated!", success:true};
+          }else{
+            return {message: "Password reset failed!", success:false};
+          }
+
+        }else{
+          return {message:"User not found", success:false}
+        }
+     
+    }catch(e){
+
+    }
+    
+  }
+  // send resetPassword OTP
+  static async sendResetPasswordOTP(info){
+    return new Promise((resolve, reject)=>{
+      const data = {
+        "api_key" : process.env.TERMII_API_KEY,
+        "message_type" : "ALPHANUMERIC",
+        "to" : info.zip.slice(1)+info.phone.slice(1),
+        "from" : process.env.TERMII_SENDER_ID,
+        "channel" : "generic",
+        "pin_attempts" : 10,
+        "pin_time_to_live" :  5,
+        "pin_length" : 6,
+        "pin_placeholder" : "< 1234 >",
+        "message_text" : "Your one time password for MARKET BASKET is < 1234 >",
+        "pin_type" : "NUMERIC"
+      }
+      const options = {
+        'method': 'POST',
+        'url': 'https://api.ng.termii.com/api/sms/otp/send',
+        'headers': {
+          'Content-Type': ['application/json', 'application/json']
+        },
+        body: JSON.stringify(data)
+      
+      };
+      request(options, async function (error, response) { 
+        if (error){
+          response = "Error: " + error;
+        }else{
+          const responseData = JSON.parse(response.body);
+          if(responseData && responseData.smsStatus === 'Message Sent'){
+            const verifydatadata = {zip: info.zip, phone: info.phone, pinid: responseData.pinId }
+            resolve({ message: `OTP sent`, success: true, data: verifydatadata});            
+          }else{
+            resolve({ message: "Error occured", success:true, data:verifydatadata});
+          }
+        } 
+      });
+
+    })    
   }
 }
 
