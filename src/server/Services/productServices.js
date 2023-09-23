@@ -22,7 +22,7 @@ class ProductService {
                 existingCartItem._id,
                 { 
                     $set: {available: available},
-                    $inc: { quantity: data.quantity } 
+                    $inc: { quantity: data.quantity, totalCost: data.totalcost }
                 },
                 { new: true }
                 );
@@ -31,10 +31,12 @@ class ProductService {
                 available = available-data.quantity;
                 // If the product is not found, create a new cart item
                 updatedCartItem = await Cart.create({
-                productid: data.productid,
-                quantity: data.quantity,
-                buyerid: data.userid,
-                available: available
+                    productid: data.productid,
+                    quantity: data.quantity,
+                    buyerid: data.userid,
+                    available: available,
+                    totalCost: data.totalcost,
+                    price: data.price
                 });
                 success = true
             }else if(existingCartItem.available<data.quantity){
@@ -82,6 +84,20 @@ class ProductService {
                 success: true,
                 count: num
             };
+        }
+    }
+
+    static async getCartItems(userid){
+        const items = await Cart.find({buyerid:userid}).lean();
+        if(items){
+            return {items: items, success:true}
+        }
+    }
+
+    static async getProductDetails(id){
+        const product = await Product.find({_id:id});
+        if(product){
+            return {product:product, success:true}
         }
     }
 
