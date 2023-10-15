@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 export class AuthService {
 
   // isLoggedIn = false;
-  baseurl = 'https://cc56-196-250-208-122.ngrok-free.app';
+  baseurl = 'http://localhost:3000';
   loginUser(user: any) {
     return this.http.post(`${this.baseurl}/api/users/login`, user);
   }

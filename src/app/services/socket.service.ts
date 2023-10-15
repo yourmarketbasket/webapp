@@ -8,7 +8,7 @@ export class SocketService {
   
   socket: any;
   constructor() { 
-    this.socket = io('ws://cc56-196-250-208-122.ngrok-free.app');
+    this.socket = io('ws://localhost:3000');
   }
 
   listen(eventName: string): Observable<any> {
