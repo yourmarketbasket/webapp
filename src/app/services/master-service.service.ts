@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class MasterServiceService {
-  baseurl = "http://localhost:3000";
+  baseurl = "https://cc56-196-250-208-122.ngrok-free.app";
 
   constructor(
     private http: HttpClient,
