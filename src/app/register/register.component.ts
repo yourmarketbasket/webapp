@@ -136,7 +136,7 @@ onResize(event: Event) {
   countryCodes = countries;
   selectedCode = new FormControl();
 
-  isLinear = false;
+  isLinear = true;
   hidePassword = true;
   hideConfirmPassword = true;
 
