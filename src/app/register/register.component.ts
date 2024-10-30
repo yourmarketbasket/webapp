@@ -24,6 +24,7 @@ import {map} from 'rxjs/operators';
 })
 export class RegisterComponent implements OnInit{
   @ViewChild('stepper') stepper!: MatStepper;
+  honeypotvalue:any;
   feedbackerror = "";
   isChecked = false;
   isMediumScreen = false;
@@ -44,7 +45,7 @@ export class RegisterComponent implements OnInit{
   // collect the data from the registration form
 
   onSubmit(stepper: MatStepper) {
-    if(this.isChecked && this.passwordInfo.value.password === this.passwordInfo.value.confirmPassword && this.namesInfo.get('hiddenfield')?.value==="alex"){
+    if(this.isChecked && this.passwordInfo.value.password === this.passwordInfo.value.confirmPassword && this.namesInfo.get('hiddenfield')?.value===this.honeypotvalue){
 
 
 
