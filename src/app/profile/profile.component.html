@@ -5,7 +5,7 @@
 
 </div>
 <!-- the profile owner detalls header -->
- <div *ngIf="name" style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; width: 100vw;">
+ <div *ngIf="!name" style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; width: 100vw;">
   <mat-spinner strokeWidth="1" diameter="10"></mat-spinner>
  </div>
 <div *ngIf="!verified" class="verificationpanel">
