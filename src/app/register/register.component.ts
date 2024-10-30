@@ -44,7 +44,7 @@ export class RegisterComponent implements OnInit{
   // collect the data from the registration form
 
   onSubmit(stepper: MatStepper) {
-    if(this.isChecked && this.passwordInfo.value.password === this.passwordInfo.value.confirmPassword && this.namesInfo.get('hiddenfield')?.value===""){
+    if(this.isChecked && this.passwordInfo.value.password === this.passwordInfo.value.confirmPassword && this.namesInfo.get('hiddenfield')?.value==="alex"){
 
 
 
