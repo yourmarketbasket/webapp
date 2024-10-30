@@ -15,6 +15,7 @@ export class VerifyComponent implements OnInit {
 
   ngOnInit() {
     this.data = this.dialogData;
+    console.log(this.data);
     
   }
 
@@ -27,6 +28,12 @@ export class VerifyComponent implements OnInit {
 
     });
 
+  }
+  resendOtp(){
+
+  }
+  verifyOTP(){
+    
   }
 
 }

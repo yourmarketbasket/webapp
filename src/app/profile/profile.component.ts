@@ -218,6 +218,7 @@ export class ProfileComponent implements OnInit {
 
     openVerificationDialog(){
       const data ={
+        zipcode: this.zipcode,
         phone:this.phone,
         signature:"3wZsyyh51s9"
       }

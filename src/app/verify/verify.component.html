@@ -1,3 +1,17 @@
 <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%;width: 100%;">
+    <div style="max-width: 300px; margin: auto;">
+        <!-- OTP Input Field -->
+        <mat-form-field appearance="outline" style="width: 100%;">
+          <mat-label>Enter OTP Here</mat-label>
+          <input matInput placeholder="xxxxxx" maxlength="6" />
+        </mat-form-field>
+      
+        <!-- Buttons for Resend OTP and Submit -->
+        <div style="display: flex; justify-content: space-between; margin-top: 16px;">
+          <button mat-stroked-button color="primary" (click)="resendOtp()">Resend OTP</button>
+          <button mat-raised-button color="accent" (click)="verifyOTP()">Submit</button>
+        </div>
+      </div>
+           
     
 </div>
