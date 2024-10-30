@@ -61,6 +61,12 @@ export class AuthService {
   sendTwilioOTP(data: any) {
     return this.http.post(`${this.baseurl}/api/users/sendTwilioOTP`, data);
   }
+  verifyTwilioOTP(data: any) {
+    return this.http.post(`${this.baseurl}/api/users/verifyTwilioOTP`, data);
+  }
+  markUserAsVerified(data: any) {
+    return this.http.post(`${this.baseurl}/api/users/markUserAsVerified`, data);
+  }
   sendResetPasswordOTP(data: any) {
     return this.http.post(`${this.baseurl}/api/users/sendResetPasswordOTP`, data);
   }
