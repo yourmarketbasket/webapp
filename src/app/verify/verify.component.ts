@@ -37,10 +37,11 @@ export class VerifyComponent implements OnInit {
       if(res.success){
         this.authService.markUserAsVerified({phone:this.data.phone}).subscribe((res:any)=>{
           if(res.success){
-            this.router.navigate(['/profile']);
-          }else{
-            this.error = "Invalid Code";
+            window.location.reload();
+          } else {
+              this.error = "Invalid Code";
           }
+        
         })
       }
     })
