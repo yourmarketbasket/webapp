@@ -87,7 +87,7 @@ export class AuthService {
   }
   // changeUserAvatar
   changeUserAvatar(data: any) {
-    return this.http.post(`${this.baseurl}/api/users/changeUserAvatar`, data);
+    return this.http.post(`${this.baseurl}/api/users/changeUserAvatar`, data,  this.getAuthHeaders());
   }
   reviewListedItemAction(data:any){     
       return this.http.post(`${this.baseurl}/api/products/reviewlisteditem`, data, this.getAuthHeaders());
