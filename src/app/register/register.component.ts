@@ -147,13 +147,14 @@ onResize(event: Event) {
     }
   
 
-  mobileNumberValidator(control: AbstractControl): {[key: string]: boolean} | null {
-    const regex = /^[+]?[0-9]{10}$/;
-    if (control.value && !regex.test(control.value)) {
-      return { 'invalidMobileNumber': true };
-    }
-    return null;
+    mobileNumberValidator(control: AbstractControl): { [key: string]: boolean } | null {
+      const regex = /^[0-9]{10}$/; // Adjusted regex to exclude the country code
+      if (control.value && !regex.test(control.value)) {
+          return { 'invalidMobileNumber': true };
+      }
+      return null;
   }
+  
    
     
   
