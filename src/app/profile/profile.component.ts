@@ -222,7 +222,8 @@ export class ProfileComponent implements OnInit {
         phone:this.phone,
         signature:"3wZsyyh51s9"
       }
-      const phone = this.zipcode+this.phone.slice(1)
+      const phone = this.zipcode+this.phone.slice(1);
+      console.log(phone);
 
       // this.authService.sendTwilioOTP({mobi})
 
