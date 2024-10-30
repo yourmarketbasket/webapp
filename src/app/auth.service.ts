@@ -57,6 +57,10 @@ export class AuthService {
   sendOTP(data: any) {
     return this.http.post(`${this.baseurl}/sendOTP`, data);
   }
+
+  sendTwilioOTP(data: any) {
+    return this.http.post(`${this.baseurl}/api/users/sendTwilioOTP`, data);
+  }
   sendResetPasswordOTP(data: any) {
     return this.http.post(`${this.baseurl}/api/users/sendResetPasswordOTP`, data);
   }

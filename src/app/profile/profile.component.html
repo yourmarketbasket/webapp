@@ -7,8 +7,8 @@
 <!-- the profile owner detalls header -->
 <div *ngIf="!verified" class="verificationpanel">
   <h3 *ngIf="name" class="welcome"> Hi {{name}}, Welcome to your profile</h3>
-  <h4>Unfortunately your profile is not yet Verified. To Proceed, verify your mobile number.</h4>
-
+  <h5>Unfortunately your profile is not yet Verified. To proceed, please verify your mobile number.</h5>
+  <button (click)="openVerificationDialog()" mat-button mat-stroked-button>verify</button>
 </div>
 <div class="profile" *ngIf="verified">    
     <div class="profileinfoandmap" style="display: flex; flex-direction: column; width: 40%; flex:40%; margin: 10px;">
