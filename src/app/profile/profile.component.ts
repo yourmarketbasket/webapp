@@ -218,14 +218,17 @@ export class ProfileComponent implements OnInit {
 
     openVerificationDialog(){
       const data ={
-        zipcode: this.zipcode,
-        phone:this.phone,
+        phone: this.zipcode+this.phone.slice(1),
         signature:"3wZsyyh51s9"
       }
-      const phone = this.zipcode+this.phone.slice(1);
+      // const phone = this.zipcode+this.phone.slice(1);
       // console.log(phone);
 
-      this.authService.sendTwilioOTP({mobilenumber: phone, signature: "3wZsyyh51s9"}).subscribe
+      // this.authService.sendTwilioOTP({mobilenumber: phone, signature: "3wZsyyh51s9"}).subscribe((res:any)=>{
+      //   if(res.success){
+          
+      //   }
+      // })
 
       this.dialog.open(VerifyComponent, {
         data: data, 
