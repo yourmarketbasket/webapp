@@ -232,8 +232,6 @@ export class ProfileComponent implements OnInit {
 
       this.dialog.open(VerifyComponent, {
         data: data, 
-        width: "30%",
-        height: "30%"
       })
     }
 
