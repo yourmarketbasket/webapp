@@ -23,7 +23,7 @@ export class SocketService {
 
     // Listen for ping event from server
     this.socket.on('ping', () => {
-      console.log('Received ping from server');
+      // console.log('Received ping from server');
       this.socket.emit('pong');  // Respond with pong
     });
 
