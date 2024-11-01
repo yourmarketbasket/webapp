@@ -23,7 +23,7 @@ export class SocketService {
 
     // Listen for ping event from server
     this.socket.on('ping', () => {
-      // console.log('Received ping from server');
+      console.log('Received ping from server');
       this.socket.emit('pong');  // Respond with pong
     });
 
@@ -32,7 +32,7 @@ export class SocketService {
   }
 
    // Send custom ping events to keep the connection alive
-   private sendHeartbeat() {
+  private sendHeartbeat() {
     setInterval(() => {
       if (this.socket && this.socket.connected) {
         this.socket.emit('ping', { beat: 1 });
@@ -49,7 +49,7 @@ export class SocketService {
   }
 
   emit(eventName: string, data: any) {
-    // console.log(`Emitting event: ${eventName}`);
+    console.log(`Emitting event: ${eventName}`);
     this.socket.emit(eventName, data);
     this.emittedEvents.add(eventName); // Add the event to the set when emitted
   }
