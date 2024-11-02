@@ -377,22 +377,26 @@ span[nz-icon]{
 @media (max-width: 600px) {
   .allproductslisting {
     display: flex;
-    flex-direction: column; /* Stack items vertically */
-    align-items: center; /* Center items if desired */
+    flex-direction: row; /* Align items in a row */
+    flex-wrap: wrap; /* Allow items to wrap onto the next line */
+    justify-content: space-between; /* Distribute items to avoid extra space */
   }
 
   .allproductlistingitem {
-    flex: none; /* Prevent items from shrinking too much */
-    width: 90%; /* Set width to fit within screen */
-    max-width: none; /* Remove max-width so it doesn't constrain item width */
-    margin: 10px 0; /* Add vertical spacing between items */
+    flex: 0 0 49%; /* Set each item to take roughly half of the container width */
+    max-width: 49%; /* Ensure items don’t exceed 49% of container width */
+    margin: 0.5%; /* Add a small margin for spacing */
+    box-sizing: border-box; /* Include padding/border in width */
   }
 
   .allproductslisting img {
-    width: 90%; /* Adjust image size for small screens */
+    width: 100%; /* Make image take full width of the item */
     height: auto;
   }
+
+  /* Hide elements */
   .carousel-div, .categories, .brands, .subcategories, .features, .categoriesmenu {
     display: none;
   }
 }
+
