@@ -10,8 +10,8 @@ export class AuthService {
   sessionOut:any;
 
   // isLoggedIn = false;
-  baseurl = 'https://marketapi.fly.dev'; //for production
-  // baseurl = 'http://localhost:3000';
+  // baseurl = 'https://marketapi.fly.dev'; //for production
+  baseurl = 'http://localhost:3000';
 
 
   private  getToken(){

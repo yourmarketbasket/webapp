@@ -104,7 +104,7 @@
   perspective: 100px; /* Adjust the perspective */
 }
 .containersandimage{
-  width: 30%;
+  width: 20%;
   height: 100%;
 }
 
@@ -276,18 +276,24 @@ span[nz-icon]{
   top: -80px;
   left: -60px;
 }
-
 /* For small screens (phones, <600px) */
 @media (max-width: 600px) {
   .details {
     width: 80%;
     margin: 5%;
+    height: auto; /* Set height to auto for smaller screens */
   }
 
   .carousel-row, .categories, .carousel-div, .categoriesmenu, .containersandimage {
     flex-direction: column;
     width: 100%;
     height: auto;
+  }
+
+  .carousel-image {
+    width: 30%; /* Set smaller size for small screens */
+    height: auto; /* Maintain aspect ratio */
+    margin: 0 auto; /* Center the image */
   }
 
   .allproductslisting {
@@ -298,26 +304,38 @@ span[nz-icon]{
     max-width: 100%;
   }
 
-  .carousel-row img, .containersandimage img, .allproductslisting img {
-    width: 100%;
+  .allproductslisting img {
+    width: 100%; /* Make image take full width of the item */
     height: auto;
   }
 
   .categorieslistingitem {
     max-width: 100%;
   }
+
+  .carousel-div, .categories, .brands, .subcategories, .features, .categoriesmenu {
+    display: none; /* Hide elements on small screens */
+  }
 }
 
 /* For medium screens (tablets, 600px-900px) */
 @media (min-width: 600px) and (max-width: 900px) {
   .details {
-    width: 60%;
-    margin: 5%;
+    margin-left: 2% !important; /* Set left margin for non-mobile devices */
+    width: 15%; /* Set width for non-mobile devices */
+    height: 65%; /* Set height for non-mobile devices */
   }
 
   .carousel-row {
     flex-direction: row;
     justify-content: center;
+    width: 100%; /* Ensure carousel takes full width */
+  }
+
+  .carousel-image {
+    width: 20% !important; /* Apply 20% width for carousel images */
+    height: auto; /* Maintain aspect ratio */
+    margin: 0 auto; /* Center the image */
   }
 
   .carousel-row img, .containersandimage img, .allproductslisting img {
@@ -337,12 +355,20 @@ span[nz-icon]{
 /* For large screens (desktops, 900px-1200px) */
 @media (min-width: 900px) and (max-width: 1200px) {
   .details {
-    width: 30%;
-    margin-right: 5%;
+    margin-left: 2% !important; /* Maintain left margin */
+    width: 15%; /* Maintain width */
+    height: 65%; /* Maintain height */
   }
 
-  .carousel-row img, .containersandimage img {
-    width: 60%;
+  .carousel-row {
+    flex-direction: row; /* Keep items in a row */
+    justify-content: space-around; /* Space carousel items evenly */
+  }
+
+  .carousel-image {
+    width: 20% !important; /* Apply 20% width for carousel images */
+    height: auto; /* Maintain aspect ratio */
+    margin: 0 auto; /* Center the image */
   }
 
   .allproductlistingitem {
@@ -361,7 +387,15 @@ span[nz-icon]{
 /* For extra-large screens (1200px+) */
 @media (min-width: 1200px) {
   .details {
-    width: 20%;
+    margin-left: 2% !important; /* Maintain left margin */
+    width: 15%; /* Maintain width */
+    height: 65%; /* Maintain height */
+  }
+
+  .carousel-image {
+    width: 20% !important; /* Apply 20% width for carousel images */
+    height: auto; /* Maintain aspect ratio */
+    margin: 0 auto; /* Center the image */
   }
 
   .carousel-row img, .containersandimage img {
@@ -371,9 +405,13 @@ span[nz-icon]{
   .categorieslistingitem {
     max-width: 150px;
   }
+
+  .carousel-row {
+    justify-content: space-between; /* Ensure even spacing */
+  }
 }
 
-/* For small screens (phones, <600px) */
+/* Additional styling for all products listing on small screens */
 @media (max-width: 600px) {
   .allproductslisting {
     display: flex;
@@ -394,16 +432,10 @@ span[nz-icon]{
     height: auto;
   }
 
-  .categoriessection{
+  .categoriessection {
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
   }
-
-  /* Hide elements */
-  .carousel-div, .categories, .brands, .subcategories, .features, .categoriesmenu {
-    display: none;
-  }
 }
-
