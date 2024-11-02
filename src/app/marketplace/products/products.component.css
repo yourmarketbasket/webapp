@@ -375,6 +375,23 @@ span[nz-icon]{
 
 /* For small screens (phones, <600px) */
 @media (max-width: 600px) {
+  .allproductslisting {
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+    align-items: center; /* Center items if desired */
+  }
+
+  .allproductlistingitem {
+    flex: none; /* Prevent items from shrinking too much */
+    width: 90%; /* Set width to fit within screen */
+    max-width: none; /* Remove max-width so it doesn't constrain item width */
+    margin: 10px 0; /* Add vertical spacing between items */
+  }
+
+  .allproductslisting img {
+    width: 100px; /* Adjust image size for small screens */
+    height: auto;
+  }
   .carousel-div, .categories, .brands, .subcategories, .features, .categoriesmenu {
     display: none;
   }
