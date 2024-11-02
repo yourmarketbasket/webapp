@@ -389,7 +389,7 @@ span[nz-icon]{
   }
 
   .allproductslisting img {
-    width: 100px; /* Adjust image size for small screens */
+    width: 90%; /* Adjust image size for small screens */
     height: auto;
   }
   .carousel-div, .categories, .brands, .subcategories, .features, .categoriesmenu {
