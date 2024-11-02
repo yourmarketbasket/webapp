@@ -394,6 +394,13 @@ span[nz-icon]{
     height: auto;
   }
 
+  .categoriessection{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
   /* Hide elements */
   .carousel-div, .categories, .brands, .subcategories, .features, .categoriesmenu {
     display: none;
