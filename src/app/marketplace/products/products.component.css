@@ -276,3 +276,106 @@ span[nz-icon]{
   top: -80px;
   left: -60px;
 }
+
+/* For small screens (phones, <600px) */
+@media (max-width: 600px) {
+  .details {
+    width: 80%;
+    margin: 5%;
+  }
+
+  .carousel-row, .categories, .carousel-div, .categoriesmenu, .containersandimage {
+    flex-direction: column;
+    width: 100%;
+    height: auto;
+  }
+
+  .allproductslisting {
+    flex-direction: column;
+  }
+
+  .allproductlistingitem {
+    max-width: 100%;
+  }
+
+  .carousel-row img, .containersandimage img, .allproductslisting img {
+    width: 100%;
+    height: auto;
+  }
+
+  .categorieslistingitem {
+    max-width: 100%;
+  }
+}
+
+/* For medium screens (tablets, 600px-900px) */
+@media (min-width: 600px) and (max-width: 900px) {
+  .details {
+    width: 60%;
+    margin: 5%;
+  }
+
+  .carousel-row {
+    flex-direction: row;
+    justify-content: center;
+  }
+
+  .carousel-row img, .containersandimage img, .allproductslisting img {
+    width: 80%;
+    height: auto;
+  }
+
+  .categorieslistingitem {
+    max-width: 100px;
+  }
+
+  .categoriesmenu {
+    width: 25%;
+  }
+}
+
+/* For large screens (desktops, 900px-1200px) */
+@media (min-width: 900px) and (max-width: 1200px) {
+  .details {
+    width: 30%;
+    margin-right: 5%;
+  }
+
+  .carousel-row img, .containersandimage img {
+    width: 60%;
+  }
+
+  .allproductlistingitem {
+    max-width: 180px;
+  }
+
+  .categorieslistingitem {
+    max-width: 130px;
+  }
+
+  .categoriesmenu {
+    width: 20%;
+  }
+}
+
+/* For extra-large screens (1200px+) */
+@media (min-width: 1200px) {
+  .details {
+    width: 20%;
+  }
+
+  .carousel-row img, .containersandimage img {
+    width: 28%;
+  }
+
+  .categorieslistingitem {
+    max-width: 150px;
+  }
+}
+
+/* For small screens (phones, <600px) */
+@media (max-width: 600px) {
+  .carousel-div, .categories, .brands, .subcategories, .features, .categoriesmenu {
+    display: none;
+  }
+}

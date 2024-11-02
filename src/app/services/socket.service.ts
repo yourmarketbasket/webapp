@@ -11,6 +11,9 @@ export class SocketService {
   private emittedEvents: Set<string> = new Set<string>();
 
   constructor() {
+    // this.socket = io('ws://localhost:3000', {
+    //   transports: ["websocket"],
+    // });
     this.socket = io('wss://marketapi.fly.dev', {
       transports: ["websocket"],
     }); // Update the URL to match your server
