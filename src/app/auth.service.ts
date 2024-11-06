@@ -45,7 +45,7 @@ export class AuthService {
     return this.http.delete(`${this.baseurl}/deleteProduct/${productId}`);
   }
   addProduct(product: any) {
-    return this.http.post(`${this.baseurl}/api/products/addProduct`, product);
+    return this.http.post(`${this.baseurl}/api/products/addProduct`, product, this.getAuthHeaders());
   }
   verifyUser(user: any) {
     return this.http.post(`${this.baseurl}/api/users/verifyOTP`, user);

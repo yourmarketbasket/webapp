@@ -217,9 +217,11 @@
         <h3>Step 7: Product Image(s)</h3>
         <div class="imagestep">
           <div class="selectedimagescontainer">
-            <div *ngFor="let image of selectedImages" class="selectedimagediv">
+            <div *ngFor="let image of selectedImages; let i = index" class="selectedimagediv" (mouseenter)="hoverIndex = i" (mouseleave)="hoverIndex = -1">
               <img [src]="image" alt="image" class="productpic">
+              <button mat-icon-button *ngIf="hoverIndex === i" class="close-btn" (click)="removeImage(i)"><mat-icon>close</mat-icon></button>
             </div>
+            
           </div> 
           <input multiple [formControl]="imageControl" (change)="onImageSelected($event)" type="file" name="image" #productphoto hidden>
           <button (click)="productphoto.click()" mat-stroked-button color="primary">

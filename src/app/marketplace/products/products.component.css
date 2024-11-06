@@ -410,6 +410,11 @@ span[nz-icon]{
     justify-content: space-between; /* Ensure even spacing */
   }
 }
+@media(max-width: 1300px){
+  .carousel-div{
+    display: none;
+  }
+}
 
 /* Additional styling for all products listing on small screens */
 @media (max-width: 600px) {

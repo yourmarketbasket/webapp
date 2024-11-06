@@ -24,9 +24,9 @@
             <p>Brand: {{ item.key }}</p>
             <span *ngIf="item.value[0].discount">
               Was
-              <h3 style="color: rgb(27, 8, 102)">
+              <strong style="color: rgb(27, 8, 102)">
                 <s>{{ item.value[0].sp | currency : "KES " }}/-</s>
-              </h3>
+              </strong>
             </span>
 
             <span>

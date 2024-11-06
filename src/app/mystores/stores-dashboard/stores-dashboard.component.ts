@@ -92,6 +92,7 @@ export class StoresDashboardComponent implements OnInit {
   setActiveStoreID(event: any) {
     const store = this.stores[event.index];
     const storeDataSource = this.dataSources[event.index];
+    localStorage.setItem("storeId", store._id);
     if(storeDataSource){
       this.products = storeDataSource;
       this.dataSource = new MatTableDataSource(this.products);

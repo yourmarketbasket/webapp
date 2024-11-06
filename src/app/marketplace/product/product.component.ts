@@ -62,12 +62,25 @@ export class ProductComponent implements OnInit{
          this.location = this.product.storeLocation;
          this.currency = this.product.storeCurrency;
 
-
-
+      
       }
       localStorage.getItem('userId') ? this.getAvailableProductQuantity(localStorage.getItem('userId'),this.product._id): null;
 
+      this.socketService.listen('cartoperationsevent').subscribe((data:any) => {
+        if(data.userid==localStorage.getItem('userId') && data.productid==this.productid){
+          this.ms.getAvailableQuantityForUser({userid:localStorage.getItem('userId'), productid:this.productid}).subscribe((res:any)=>{
+            if(res.success){
+              this.quantity = res.quantity
+            }
+  
+          })        
+        }
+        // Your logic for product added to cart event
+      });
+
     });
+
+    
     
     
     

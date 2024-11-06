@@ -9,7 +9,6 @@ import { Router } from '@angular/router';
 export class MasterServiceService {
   baseurl = "https://marketapi.fly.dev";
   // baseurl = "http://localhost:3000";
-  // socket = io('wss://marketapi.fly.dev');
 
   // provider logic
   productData!:any;

@@ -108,6 +108,7 @@ import { ProcessOrderComponent } from './mystores/process-order/process-order.co
 import { SelectStoreDialogComponent } from './marketplace/orders/select-store-dialog/select-store-dialog.component';
 import { PhonePipe } from './phone.pipe';
 import { VerifyComponent } from './verify/verify.component';
+import {CloudinaryModule} from '@cloudinary/ng';
 
 registerLocaleData(en);
 
@@ -168,6 +169,7 @@ registerLocaleData(en);
 
   ],
   imports: [
+    CloudinaryModule,
     MatSlideToggleModule,
     MatSliderModule,
     NzIconModule,
