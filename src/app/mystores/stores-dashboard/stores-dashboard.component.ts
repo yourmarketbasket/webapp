@@ -18,13 +18,16 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { Product } from 'src/app/Interfaces/interfaces-master-file';
 import { EditProductModalComponent } from '../view-products/edit-product-modal/edit-product-modal.component';
 import moment from 'moment';
+import { FormControl } from '@angular/forms';
+import * as XLSX from 'xlsx';
+import { jsPDF } from 'jspdf';
 
 @Component({
   selector: 'app-stores-dashboard',
   templateUrl: './stores-dashboard.component.html',
   styleUrls: ['./stores-dashboard.component.css'],
 })
-export class StoresDashboardComponent implements OnInit {
+export class StoresDashboardComponent implements OnInit, AfterViewInit{
   @ViewChild('componentoutlet', { read: ViewContainerRef }) componentOutlet!: ViewContainerRef;
   dataSource = new MatTableDataSource<any>([]);
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -42,6 +45,7 @@ export class StoresDashboardComponent implements OnInit {
   storeid!: any;
   cepgp!: any;
   storeProfitability: any = {};
+  activeStore:any;
   activeStoreID!: any;
   storename!: any;
   location!: any;
@@ -52,6 +56,7 @@ export class StoresDashboardComponent implements OnInit {
   showEditProduct!: boolean;
   title = "Stores Dashboard";
   displayedStoreProductsColumns: string[] = ['select', 'name', 'brand', 'model', 'category', 'subcategory', 'bp', 'sp', 'quantity', 'approved', 'Actions'];
+  selected = new FormControl(0);
 
   constructor(
     private ms: MasterServiceService,
@@ -64,22 +69,46 @@ export class StoresDashboardComponent implements OnInit {
     private dialog: MatDialog,
     private skb: MatSnackBar
   ) {
-    this.dataSource.paginator = this.paginator;
   }
 
-  async ngOnInit() {
-    this.userId = localStorage.getItem('userId');    
-    // Get the stores affiliated to the user
+  ngOnInit() {
+    this.userId = localStorage.getItem('userId');  
+    this.activeStore = localStorage.getItem('activeStorename');
+    
+    // Fetch stores associated with the user
     this.authService.getStores(this.userId).subscribe((response: any) => {
       if (response.success) {
         this.stores = response.data;
-        this.loadStoreProducts(this.stores);
+
+        // Ensure the map is loaded with the active store's location
+        this.loadActiveStoreMap();
       }
     });
 
+    this.ms.getPrdoucts(localStorage.getItem('storeId')).subscribe((response: any) => {
+      if (response.success) {
+        this.dataSource = response.data;
+        this.dataSource.paginator = this.paginator;
+      }
+    });
   }
 
-  loadStoreProducts(stores:any){
+  ngAfterViewInit(): void {
+    this.ms.getPrdoucts(localStorage.getItem('storeId')).subscribe((response: any) => {
+      if (response.data) {
+        this.dataSource = new MatTableDataSource(response.data);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      }
+    });
+
+    
+        
+  }
+  
+ 
+
+  async loadStoreProducts(stores:any){
     stores.forEach((store:any) => {
       this.ms.getPrdoucts(store._id).subscribe((response:any)=>{
         this.dataSources.push(response.data)
@@ -89,42 +118,190 @@ export class StoresDashboardComponent implements OnInit {
 
   }
 
-  setActiveStoreID(event: any) {
-    const store = this.stores[event.index];
-    const storeDataSource = this.dataSources[event.index];
-    localStorage.setItem("storeId", store._id);
-    if(storeDataSource){
-      this.products = storeDataSource;
-      this.dataSource = new MatTableDataSource(this.products);
-      this.dataSource.paginator = this.paginator;
-      this.length = this.dataSource.data.length;
-      if (store) {
-        // Set the active store ID and other store-related properties
-        this.activeStoreID = store._id;
-        this.storename = store.storename;
-        this.location = store.location;
-    
-        // Call the method to repopulate data based on the active store ID
-        // this.dataRepopulate(this.activeStoreID);
-    
-        // Set the window title
-        window.document.title = this.title;
-        
-        // Generate the map URL using the location's latitude and longitude
-        const mapurl = `https://www.google.com/maps/embed/v1/place?key=AIzaSyDdvqTHmz_HwPar6XeBj8AiMxwzmFdqC1w&q=(${this.location.latitude},${this.location.longitude})&center=${this.location.latitude},${this.location.longitude}&zoom=18&maptype=roadmap`;
-        
-        // Safely update the map URL using domSanitizer
-        this.mapurl = this.domSanitizer.bypassSecurityTrustResourceUrl(mapurl);
-        this._setDataSource(event.index);
-  
-        // Set the data source and paginator dynamically
-      }
-
+  exportToPDF(tableId: string | undefined, header?: string): void {
+    if (!tableId) {
+      console.error('Table ID is required');
+      return; // Return early if tableId is undefined or empty
     }
-       
-    
-    
+  
+    // Get the table element by the provided table ID
+    const table = document.getElementById(tableId);
+  
+    if (!table) {
+      console.error(`Table with id "${tableId}" not found`);
+      return; // Return early if the table is not found
+    }
+  
+    // Clone the table to keep the original HTML intact
+    const tableClone = table.cloneNode(true) as HTMLTableElement;
+  
+    // Get all the rows of the table
+    const rows = tableClone.querySelectorAll('tr');
+  
+    // Find the number of columns (cells) in the first row
+    const firstRow = rows[0];
+    const cellsCount = firstRow ? firstRow.cells.length : 0;
+  
+    // Check if there are at least 2 columns to remove
+    if (cellsCount > 2) {
+      // Loop through each row and remove the last two columns
+      rows.forEach(row => {
+        const cells = row.querySelectorAll('td, th'); // Include header cells as well
+        if (cells.length > 2) {
+          // Remove last two columns (th or td)
+          row.deleteCell(cells.length - 1); // Remove last column
+          row.deleteCell(cells.length - 2); // Remove second last column
+        }
+      });
+    }
+  
+    // Create a new jsPDF instance with landscape orientation
+    const doc = new jsPDF('p', 'mm', 'a4'); // 'l' for landscape, 'a4' size
+  
+    const headerHeight = 20;  // Adjust header height
+    const secondLineMargin = 10;  // Margin for the second header line
+    const tableTop = headerHeight; // Space between header and table
+  
+    // If a header is provided, add it to the PDF
+    if (header) {
+      doc.setFontSize(18);
+      doc.text(header, 15, headerHeight);  // Placing first header line
+    }
+  
+    // Second hardcoded line: "Nisoko Technologies"
+    doc.setFontSize(13);  // Smaller font for the second line
+    doc.text('Powered by Nisoko Technologies: Contact: 254701-650-736 | 254797-773-450', 15, headerHeight + secondLineMargin);  // Placing the second header line
+  
+    // Use the `html` method from jsPDF to capture the cloned table and convert it to PDF
+    doc.html(tableClone, {
+      callback: (doc) => {
+        // Save the generated PDF to the client
+        doc.save(`${header}.pdf`);
+      },
+      margin: [tableTop, 3, 10, 3],  // Increase top margin to account for header and proper alignment
+      x: 10,
+      y: tableTop,  // Place the table immediately below the header
+      width: 180,  // Width of the table in the PDF
+      windowWidth: 800,  // Window width for scaling the content
+    });
   }
+  
+  
+  
+  
+  
+  
+  
+  
+
+  exportToExcel(tableId: string | undefined): void {
+    if (!tableId) {
+      console.error('Table ID is required');
+      return; // Return early if tableId is undefined or empty
+    }
+
+    // Get the table element by the provided table ID
+    const table = document.getElementById(tableId);
+
+    if (!table) {
+      console.error(`Table with id "${tableId}" not found`);
+      return; // Return early if the table is not found
+    }
+
+    // Convert the table to worksheet
+    const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(table);
+
+    // Ensure that the worksheet has a valid ref before proceeding
+    if (!ws['!ref']) {
+      console.error('No valid range reference found in the worksheet');
+      return; // Exit early if the range reference is not available
+    }
+
+    // Decode the range from the worksheet reference
+    const range = XLSX.utils.decode_range(ws['!ref']);
+    
+    // Remove the last two columns by adjusting the range
+    range.e.c -= 2; // Decrease the last column index by 2
+    
+    // Set the range in the worksheet (this adjusts the number of columns)
+    ws['!ref'] = XLSX.utils.encode_range(range);
+
+    // Create a new workbook and append the worksheet
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+
+    // Set the cell style for wrapping text
+    // Loop through all rows and columns in the worksheet
+    for (let row = range.s.r; row <= range.e.r; row++) {
+      for (let col = range.s.c; col <= range.e.c; col++) {
+        const cellAddress = { r: row, c: col };  // Row and column indexes
+        const cellRef = XLSX.utils.encode_cell(cellAddress); // Convert to cell reference (like 'A1', 'B2', etc.)
+        
+        const cell = ws[cellRef]; // Get the actual cell object
+        
+        if (cell && !cell.s) {
+          cell.s = {}; // Initialize cell style if it doesn't exist
+        }
+
+        if (cell) {
+          cell.s['wrapText'] = true; // Set wrap text style
+        }
+      }
+    }
+
+    // Trigger the download of the Excel file with a dynamic name
+    XLSX.writeFile(wb, `${tableId}.xlsx`);
+  }
+
+   // Load the map URL dynamically when a store is selected
+   private updateStoreMap(latitude: number, longitude: number): void {
+    const mapUrl = `https://www.google.com/maps/embed/v1/place?key=AIzaSyDdvqTHmz_HwPar6XeBj8AiMxwzmFdqC1w&q=(${latitude},${longitude})&center=${latitude},${longitude}&zoom=18&maptype=roadmap`;
+    this.mapurl = this.domSanitizer.bypassSecurityTrustResourceUrl(mapUrl);
+  }
+
+  // Function to ensure the map is correctly set for the active store when the page reloads
+  private loadActiveStoreMap() {
+    const activeStoreId = localStorage.getItem('storeId');
+    if (activeStoreId) {
+      const activeStore:any = this.stores.find(store => store._id === activeStoreId);
+      if (activeStore && activeStore.location) {
+        this.updateStoreMap(activeStore.location.latitude, activeStore.location.longitude);
+      }
+    }
+  }
+  
+
+  setActiveStoreID(event: any) {
+    if (event.value) {
+      // Set the active store in localStorage
+      localStorage.setItem("storeId", event.value._id);
+      localStorage.setItem("activeStorename", event.value.storename);
+
+      // Update component variables
+      this.activeStore = event.value.storename;
+      this.storename = event.value.storename;
+
+      // Clear current data to show empty state while loading new data
+      this.dataSource.data = [];
+
+      // Fetch new data for the selected store
+      this.ms.getPrdoucts(event.value._id).subscribe((response: any) => {
+        if (response.data) {
+          // Populate dataSource with new data
+          this.dataSource.data = response.data;
+
+          // Update paginator and sorter
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+        }
+      });
+
+      // Update map URL for the new store's location
+      this.updateStoreMap(event.value.location.latitude, event.value.location.longitude);
+    }
+  }
+  
+  
 
   _setDataSource(indexNumber: any) {
     const dataSource = this[`dataSource${indexNumber}`];
@@ -208,12 +385,12 @@ export class StoresDashboardComponent implements OnInit {
 
   toggleAllRows() {
     if (this.isAllSelected()) {
-      this.selection.clear();
-      return;
+      this.selection.clear(); // Clear all selected rows
+    } else {
+      this.selection.select(...this.dataSource.data); // Select all rows
     }
-
-    this.selection.select(...this.dataSource.data);
   }
+  
 
   checkboxLabel(product?: Product): string {
     if (!product) {
@@ -221,12 +398,14 @@ export class StoresDashboardComponent implements OnInit {
     }
     return `${this.selection.isSelected(product) ? 'deselect' : 'select'} Product ${product.name}`;
   }
+  
 
   isAllSelected() {
     const numSelected = this.selection.selected.length;
-    const numRows = this.length;
+    const numRows = this.dataSource?.data?.length || 0; // Use dataSource.data.length here
     return numSelected === numRows;
   }
+  
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -248,7 +427,6 @@ export class StoresDashboardComponent implements OnInit {
     for (const store of this.stores) {
       this.cepgp = await computePercentageOfExpectedGrossProfit(this.storeid, this.ms, this.authService);
       Object.assign(this.storeProfitability, { [store.storename]: this.cepgp });
-      console.log('This is the Store Profitability: ', this.storeProfitability);
     }
   }
 }

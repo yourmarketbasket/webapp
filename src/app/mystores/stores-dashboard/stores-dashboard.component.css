@@ -35,7 +35,6 @@ table, td, th{
     border: 1px solid rgb(175, 175, 175);   
     height: max-content;
     width: max-content; 
-    border-radius: 5px;
 }
 
 .storeproductslisting{
@@ -47,7 +46,25 @@ table, td, th{
     width: auto;
     /* overflow-x: auto */
 }
-.aboutstore,.storelocation, .products, .orders, .products, .charts, .productsextra{
+/* Apply color to even rows */
+table tr:nth-child(even), table th{
+    background-color: #cbf0ed; /* light grey background */
+  }
+  
+.storedata{
+    display: flex;
+    flex-direction: row;
+}
+.selectiontab{
+    width: inherit;
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    align-items: center;
+    height: auto;
+    margin-top: 2% !important;
+}
+.aboutstore,.storelocation, .products, .orders, .products, .charts, .productsextra, .selectiontab{
     margin: 10px;
     background-color: white;
     flex:1;

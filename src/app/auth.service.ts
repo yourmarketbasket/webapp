@@ -96,12 +96,23 @@ export class AuthService {
     
   }
   logout() {
-    localStorage.removeItem('token');
-    localStorage.removeItem('userId')
-    localStorage.removeItem("selectedStore");
-    localStorage.removeItem("timeStamp");
+    
+    this.clearLocalStorageExcept("productsinfo")
 
     this.router.navigate(['/login']);
+  }
+
+  clearLocalStorageExcept(excludedKey:any) {
+    // Store the value of the excluded key
+    const excludedValue = localStorage.getItem(excludedKey);
+  
+    // Clear all items in localStorage
+    localStorage.clear();
+  
+    // Restore the excluded item back to localStorage
+    if (excludedValue !== null) {
+      localStorage.setItem(excludedKey, excludedValue);
+    }
   }
   get isLoggedIn() {
     return !!localStorage.getItem('token');
