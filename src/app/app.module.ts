@@ -109,13 +109,15 @@ import { SelectStoreDialogComponent } from './marketplace/orders/select-store-di
 import { PhonePipe } from './phone.pipe';
 import { VerifyComponent } from './verify/verify.component';
 import {CloudinaryModule} from '@cloudinary/ng';
+import { RatingPipe } from './rating.pipe';
 
 registerLocaleData(en);
 
 
 
 @NgModule({
-  declarations: [    
+  declarations: [
+    RatingPipe,    
     LoginComponent,
     AppComponent,
     ConfirmationComponent,
@@ -164,7 +166,8 @@ registerLocaleData(en);
     ProcessOrderComponent,
     SelectStoreDialogComponent,
     PhonePipe,
-    VerifyComponent
+    VerifyComponent,
+    RatingPipe
     
 
   ],

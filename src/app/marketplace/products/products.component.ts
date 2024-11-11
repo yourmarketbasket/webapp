@@ -18,6 +18,7 @@ import { take } from 'rxjs';
 export class ProductsComponent implements OnInit{
    
     products:any[] = [];
+    rating:number = 2.5;
     err!:any;
     page:number = 1;
     limit:number = 20;
@@ -74,6 +75,9 @@ export class ProductsComponent implements OnInit{
         return discountedprice.toLocaleString('en-US')
       }
 
+    }
+    range(count: number) {
+      return Array.from({length: count}, (x, i) => i + 1);
     }
     scrollToSearchResults(results: any) {
       if (results.length !== 0 && this.searchResults?.nativeElement) {

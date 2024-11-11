@@ -235,6 +235,7 @@
             <small
               ><strong>{{ product.name.toUpperCase() }}</strong></small
             >
+            
             <small
               *ngIf="product.views[0]"
               style="color: rgb(174, 174, 174); font-size: 10"
@@ -245,6 +246,7 @@
                 product.views[0].users.length
               }})</small
             >
+            
             <div
               style="
                 display: flex;
@@ -263,9 +265,22 @@
                   convertNumberToShortScale(product.sp, product.discount)
                 }}</small
               >
-            </div>
+            </div>       
+            
+
             <div *ngIf="product.discount" class="discountdot">
               <small>-{{ product.discount }}%</small>
+            </div>
+            <div class="stars" >
+              <mat-icon *ngFor="let i of range(rating)" style="transform: scale(0.6); color: white;">
+                star
+              </mat-icon>
+              <mat-icon *ngIf="rating % 1 > 0"style="transform: scale(0.6); color: white">
+                star_half
+              </mat-icon>
+              <mat-icon *ngFor="let i of range(5 - rating)"style="transform: scale(0.6); color: white">
+                star_border
+              </mat-icon>
             </div>
           </div>
         </div>
@@ -320,12 +335,7 @@
             }})</small
           >
           <div
-            style="
-              display: flex;
-              flex-direction: row;
-              justify-content: center;
-              flex: 1 1 auto;
-            "
+            
           >
             <small
               ><s *ngIf="product.discount"
@@ -333,8 +343,8 @@
               ></small
             >
             
-            <small
-              >Now {{product.storeCurrency ? product.storeCurrency+".": "KES."}} {{
+            <small 
+               > Now {{product.storeCurrency ? product.storeCurrency+".": "KES."}} {{
                 convertNumberToShortScale(product.sp, product.discount)
               }}</small
             >
@@ -342,6 +352,21 @@
           <div *ngIf="product.discount" class="discountdot">
             <small>-{{ product.discount }}%</small>
           </div>
+          <div class="stars" style="
+            margin-top: 0;
+            justify-content: flex-start; 
+            
+            ">
+              <mat-icon *ngFor="let i of range(rating)" style="transform: scale(0.6); color: white;">
+                star
+              </mat-icon>
+              <mat-icon *ngIf="rating % 1 > 0"style="transform: scale(0.6); color: white">
+                star_half
+              </mat-icon>
+              <mat-icon *ngFor="let i of range(5 - rating)"style="transform: scale(0.6); color: white">
+                star_border
+              </mat-icon>
+            </div>
         </div>
       </div>
       <div class="allproductspagination">

@@ -44,6 +44,7 @@ export class SharedDataService {
     this.productsInfo$.subscribe(data=>{
       if(!data){
         this.ms.getBrandCategories().subscribe((res:any)=>{
+          console.log(res);
           if(res.success){
             const data = {
               brands: res.brands,
