@@ -1,4 +1,4 @@
-import { Component,OnInit, HostListener, ViewChild, ElementRef } from '@angular/core';
+import { Component,OnInit, HostListener, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { MasterServiceService } from 'src/app/services/master-service.service';
 import { truncateString } from 'src/app/services/computations';
 import { Router } from '@angular/router';
@@ -15,7 +15,7 @@ import { take } from 'rxjs';
   templateUrl: './products.component.html',
   styleUrls: ['./products.component.css']
 })
-export class ProductsComponent implements OnInit{
+export class ProductsComponent implements OnInit,OnDestroy{
    
     products:any[] = [];
     rating:number = 2.5;
@@ -41,12 +41,16 @@ export class ProductsComponent implements OnInit{
     filterAmountMaxValue:number=0;
     allproductsloading!:boolean;
     searchproductsloading!:boolean;
+    currentImageIndex = 0;
+    imageLoopInterval: any;
 
   
 
 
     @ViewChild(NzCarouselComponent, { static: false })
     myCarousel!: NzCarouselComponent;
+    imageLoopData: { [key: string]: { currentImageIndex: number; imageLoopInterval: any } } = {};
+
     @ViewChild('searchResults') searchResults!: ElementRef;
     @ViewChild('marketplace') marketplace!: ElementRef;
 
@@ -60,6 +64,33 @@ export class ProductsComponent implements OnInit{
     }
     previous() {
       this.myCarousel.pre();
+    }
+
+    ngOnDestroy() {
+      // Clear intervals when the component is destroyed
+      for (const productId in this.imageLoopData) {
+        if (this.imageLoopData[productId]?.imageLoopInterval) {
+          clearInterval(this.imageLoopData[productId].imageLoopInterval);
+        }
+      }
+    }
+
+    startImageLoop(productId: string, avatars: string[]) {
+      // Initialize the loop data for each product if not already initialized
+      if (!this.imageLoopData[productId]) {
+        this.imageLoopData[productId] = { currentImageIndex: 0, imageLoopInterval: null };
+      }
+  
+      const productLoop = () => {
+        // Auto-switch the image every 3 seconds (3000 ms)
+        this.imageLoopData[productId].imageLoopInterval = setInterval(() => {
+          const currentIndex = this.imageLoopData[productId]?.currentImageIndex || 0;
+          const nextIndex = (currentIndex + 1) % avatars.length; // Loop back to 0 after last image
+          this.imageLoopData[productId].currentImageIndex = nextIndex;
+        }, 3000); // Change image every 3 seconds
+      };
+  
+      productLoop(); // Start the image loop
     }
         
    
@@ -241,6 +272,10 @@ export class ProductsComponent implements OnInit{
           this.sharedData.getProductsInfo();
         }
       })  
+
+      this.searchedProduct.forEach((product) => {
+        this.startImageLoop(product.id, product.avatar);
+      });
       
 
 

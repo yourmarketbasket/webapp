@@ -221,68 +221,42 @@
         </div>
         <div class="allproductslisting" *ngIf="!searchproductsloading">
           <div
-            (click)="viewProduct(product)"
-            class="allproductlistingitem"
-            *ngFor="
-              let product of searchedProduct.slice(
-                (currentPage - 1) * productItemsPerPage,
-                currentPage * productItemsPerPage
-              )
-            "
-          >
-            <small>{{ product.brand.toUpperCase() }}</small>
-            <img [src]="product.avatar[0]" alt="" />
-            <small
-              ><strong>{{ product.name.toUpperCase() }}</strong></small
+              (click)="viewProduct(product)"
+              class="allproductlistingitem"
+              *ngFor="let product of searchedProduct.slice((currentPage - 1) * productItemsPerPage, currentPage * productItemsPerPage)"
+              (ngOnInit)="startImageLoop(product.id, product.avatar)"
             >
-            
-            <small
-              *ngIf="product.views[0]"
-              style="color: rgb(174, 174, 174); font-size: 10"
-              ><mat-icon style="vertical-align: middle; transform: scale(0.7)"
-                >visibility</mat-icon
-              >
-              {{ convertNumberToShortScale(product.views[0].totalViews) }}({{
-                product.views[0].users.length
-              }})</small
-            >
-            
-            <div
-              style="
-                display: flex;
-                flex-direction: row;
-                justify-content: center;
-                flex: 1 1 auto;
-              "
-            >
-              <small
-                ><s *ngIf="product.discount"
-                  >Was {{ convertNumberToShortScale(product.sp) }}</s
-                ></small
-              >
-              <small
-                >Now KES.{{
-                  convertNumberToShortScale(product.sp, product.discount)
-                }}</small
-              >
-            </div>       
-            
+              <small>{{ product.brand.toUpperCase() }}</small>
+              
+              <!-- Looping through the product images -->
+              <img 
+                [src]="product.avatar[imageLoopData[product._id]?.currentImageIndex || 0]" 
+                alt="Product Image" 
+              />
+              
+              <small><strong>{{ product.name.toUpperCase() }}</strong></small>
 
-            <div *ngIf="product.discount" class="discountdot">
-              <small>-{{ product.discount }}%</small>
+              <small *ngIf="product.views[0]" style="color: rgb(174, 174, 174); font-size: 10">
+                <mat-icon style="vertical-align: middle; transform: scale(0.7)">visibility</mat-icon>
+                {{ convertNumberToShortScale(product.views[0].totalViews) }}({{ product.views[0].users.length }})
+              </small>
+
+              <div style="display: flex; flex-direction: row; justify-content: center; flex: 1 1 auto;">
+                <small><s *ngIf="product.discount">Was {{ convertNumberToShortScale(product.sp) }}</s></small>
+                <small>Now KES.{{ convertNumberToShortScale(product.sp, product.discount) }}</small>
+              </div>
+
+              <div *ngIf="product.discount" class="discountdot">
+                <small>-{{ product.discount }}%</small>
+              </div>
+              
+              <div class="stars">
+                <mat-icon *ngFor="let i of range(rating)" style="transform: scale(0.6); color: white;">star</mat-icon>
+                <mat-icon *ngIf="rating % 1 > 0" style="transform: scale(0.6); color: white">star_half</mat-icon>
+                <mat-icon *ngFor="let i of range(5 - rating)" style="transform: scale(0.6); color: white">star_border</mat-icon>
+              </div>
             </div>
-            <div class="stars" >
-              <mat-icon *ngFor="let i of range(rating)" style="transform: scale(0.6); color: white;">
-                star
-              </mat-icon>
-              <mat-icon *ngIf="rating % 1 > 0"style="transform: scale(0.6); color: white">
-                star_half
-              </mat-icon>
-              <mat-icon *ngFor="let i of range(5 - rating)"style="transform: scale(0.6); color: white">
-                star_border
-              </mat-icon>
-            </div>
-          </div>
+
         </div>
         <div class="allproductspagination" *ngIf="numberOfResults !==0">
           <button
@@ -319,54 +293,35 @@
             )
           "
         >
-          <small>{{ product.brand.toUpperCase() }}</small>
-          <img [src]="product.avatar[0]" alt="" />
-          <small
-            ><strong>{{ product.name.toUpperCase() }}</strong></small
-          >
-          <small
-            *ngIf="product.views[0]"
-            style="color: rgb(174, 174, 174); font-size: 10"
-            ><mat-icon style="vertical-align: middle; transform: scale(0.7)"
-              >visibility</mat-icon
-            >
-            {{ convertNumberToShortScale(product.views[0].totalViews) }}({{
-              product.views[0].users.length
-            }})</small
-          >
-          <div
-            
-          >
-            <small
-              ><s *ngIf="product.discount"
-                >Was {{ convertNumberToShortScale(product.sp) }}</s
-              ></small
-            >
-            
-            <small 
-               > Now {{product.storeCurrency ? product.storeCurrency+".": "KES."}} {{
-                convertNumberToShortScale(product.sp, product.discount)
-              }}</small
-            >
-          </div>
-          <div *ngIf="product.discount" class="discountdot">
-            <small>-{{ product.discount }}%</small>
-          </div>
-          <div class="stars" style="
-            margin-top: 0;
-            justify-content: flex-start; 
-            
-            ">
-              <mat-icon *ngFor="let i of range(rating)" style="transform: scale(0.6); color: white;">
-                star
-              </mat-icon>
-              <mat-icon *ngIf="rating % 1 > 0"style="transform: scale(0.6); color: white">
-                star_half
-              </mat-icon>
-              <mat-icon *ngFor="let i of range(5 - rating)"style="transform: scale(0.6); color: white">
-                star_border
-              </mat-icon>
-            </div>
+        <small>{{ product.brand.toUpperCase() }}</small>
+              
+        <!-- Looping through the product images -->
+        <img 
+          [src]="product.avatar[imageLoopData[product._id]?.currentImageIndex || 0]" 
+          alt="Product Image" 
+        />
+        
+        <small><strong>{{ product.name.toUpperCase() }}</strong></small>
+
+        <small *ngIf="product.views[0]" style="color: rgb(174, 174, 174); font-size: 10">
+          <mat-icon style="vertical-align: middle; transform: scale(0.7)">visibility</mat-icon>
+          {{ convertNumberToShortScale(product.views[0].totalViews) }}({{ product.views[0].users.length }})
+        </small>
+
+        <div style="display: flex; flex-direction: row; justify-content: center; flex: 1 1 auto;">
+          <small><s *ngIf="product.discount">Was {{ convertNumberToShortScale(product.sp) }}</s></small>
+          <small>Now KES.{{ convertNumberToShortScale(product.sp, product.discount) }}</small>
+        </div>
+
+        <div *ngIf="product.discount" class="discountdot">
+          <small>-{{ product.discount }}%</small>
+        </div>
+        
+        <div class="stars">
+          <mat-icon *ngFor="let i of range(rating)" style="transform: scale(0.6); color: white;">star</mat-icon>
+          <mat-icon *ngIf="rating % 1 > 0" style="transform: scale(0.6); color: white">star_half</mat-icon>
+          <mat-icon *ngFor="let i of range(5 - rating)" style="transform: scale(0.6); color: white">star_border</mat-icon>
+        </div>
         </div>
       </div>
       <div class="allproductspagination">
