@@ -8,6 +8,7 @@ import { MasterServiceService } from 'src/app/services/master-service.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ProcessOrderComponent } from 'src/app/mystores/process-order/process-order.component';
 import { SelectStoreDialogComponent } from './select-store-dialog/select-store-dialog.component';
+import { AuthService } from 'src/app/auth.service';
 
 
 
@@ -28,51 +29,69 @@ export class OrdersComponent implements OnInit, AfterViewInit {
   OrdersDataSource = new MatTableDataSource<Order>([]); // Initialize with an empty data source
   orders: Order[] = [];
   userid: any;
+  stores:any;
+  store:any;
+  storename:any;
 
-  constructor(private ms: MasterServiceService, private dialog: MatDialog) {}
+  constructor(private ms: MasterServiceService, private dialog: MatDialog, private authService: AuthService) {}
 
   ngOnInit(): void {
+
+    this.authService.getStores(localStorage.getItem('userId')).subscribe((response: any) => {
+      if (response.success) {
+        this.stores = response.data;
+      }
+    });
+
+
     this.selectedStore = localStorage.getItem('selectedStore');
+    this.storename = localStorage.getItem('viewOrdersStoreName');
+
     if (!this.selectedStore) {
-      this.selectStore();
+      this.selectStore(this.selectedStore);
+    }else{
+
+      this.getStoreOrders(this.selectedStore);
     }
-    this.getStoreOrders(this.selectedStore);
   }
 
   ngAfterViewInit(): void {
-    // Ensure paginator and sort are set after view is initialized
-    if (this.OrdersDataSource) {
-      this.OrdersDataSource.paginator = this.paginator;
-      this.OrdersDataSource.sort = this.sort;
-    }
-  }
-
-  selectStore() {
-    localStorage.removeItem("selectedStore");
-    const dialogRef = this.dialog.open(SelectStoreDialogComponent, {
-      width: 'auto',
-      data: { userid: this.userid },
-      disableClose: true // Prevent closing on outside click
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.getStoreOrders(result._id);
-      } else {
-        console.log("Dialog closed without selecting a store.");
-      }
-    });
-  }
-
-  getStoreOrders(storeid: any) {
-    this.ms.getStoreOrders(storeid).subscribe((res: any) => {
-      this.orders = res.orders;
-      this.OrdersDataSource.data = this.orders; // Set the new data
-      // Assign paginator and sort after data is set
-      if (this.paginator && this.sort) {
+    this.ms.getStoreOrders(localStorage.getItem('selectedStore')).subscribe((response: any) => {
+      if (response.data) {
+        this.OrdersDataSource = new MatTableDataSource(response.data);
         this.OrdersDataSource.paginator = this.paginator;
         this.OrdersDataSource.sort = this.sort;
       }
+    });   
+        
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.OrdersDataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.OrdersDataSource.paginator) {
+      this.OrdersDataSource.paginator.firstPage();
+    }
+  }
+
+  selectStore(storeid:any) {
+    this.storename = this.store.storename;
+    localStorage.removeItem("viewOrdersStoreName");
+    localStorage.setItem('viewOrdersStoreName',this.store.storename)
+    localStorage.removeItem("selectedStore");
+    localStorage.setItem("selectedStore",storeid);
+    this.getStoreOrders(storeid);
+  }
+
+  getStoreOrders(storeid: any) {
+    this.orders = [];
+    this.ms.getStoreOrders(storeid).subscribe((res: any) => {
+      this.orders = res.orders;
+      this.OrdersDataSource.data = this.orders; 
+      this.OrdersDataSource.paginator = this.paginator;
+      this.OrdersDataSource.sort = this.sort;
+      
     });
   }
 
