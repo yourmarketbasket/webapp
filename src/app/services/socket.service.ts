@@ -5,7 +5,6 @@ import io from 'socket.io-client';
 @Injectable({
   providedIn: 'root'
 })
-// hello
 export class SocketService {
   private socket: any;
   private eventSubject: Subject<any> = new Subject<any>();
