@@ -122,6 +122,8 @@ export class HeaderComponent implements OnInit {
   iconStateNotificationsNone = 'down';
   iconStateShoppingCart = 'down';
   avatarState = 'small';
+  notificationsData:any;
+  numberOfNotifications:any;
 
 
 
@@ -159,6 +161,13 @@ export class HeaderComponent implements OnInit {
 
          // get number of items in cart
       this.getNumOfCartItems();
+      // get notifications
+      this.ms.getUserNotifications(localStorage.getItem('userId')).subscribe((res:any)=>{
+        if(res.success){
+          this.numberOfNotifications = res.data.length;
+          this.notificationsData = res.data
+        }
+      })
        
         
   }

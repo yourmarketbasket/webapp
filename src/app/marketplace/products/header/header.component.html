@@ -66,12 +66,12 @@
           [@iconAnimationNotificationsNone]="iconStateNotificationsNone"
           matBadgeColor="accent"
           matBadgeSize="small"
-          [matBadge]="notifications"
+          [matBadge]="numberOfNotifications"
           matBadgePosition="below after"
           >notifications_none</mat-icon
         >
       </button>
-      <button
+      <button *ngIf="numOfItemsInCart"
         mat-icon-button
         (mouseenter)="toggleIconAnimationShoppingCart()"
         (mouseleave)="toggleIconAnimationShoppingCart()"
