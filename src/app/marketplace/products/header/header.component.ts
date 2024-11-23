@@ -124,6 +124,10 @@ export class HeaderComponent implements OnInit {
   avatarState = 'small';
   notificationsData:any;
   numberOfNotifications:any;
+  infoNotification:any;
+  errorNotification:any;
+  successNotification:any;
+  warningNotification:any;
 
 
 
@@ -164,7 +168,12 @@ export class HeaderComponent implements OnInit {
       // get notifications
       this.ms.getUserNotifications(localStorage.getItem('userId')).subscribe((res:any)=>{
         if(res.success){
-          this.numberOfNotifications = res.data.length;
+          this.errorNotification = res.data.error.count;
+          this.warningNotification = res.data.warning.count;
+          this.successNotification = res.data.success.count;
+          this.infoNotification = res.data.info.count;
+
+          this.numberOfNotifications = res.data.total;
           this.notificationsData = res.data
         }
       })

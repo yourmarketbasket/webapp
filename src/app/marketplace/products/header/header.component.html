@@ -57,6 +57,7 @@
         >
       </button>
       <button
+        [matMenuTriggerFor]="menu"
         mat-icon-button
         (mouseenter)="toggleIconAnimationNotificationsNone()"
         (mouseleave)="toggleIconAnimationNotificationsNone()"
@@ -71,6 +72,40 @@
           >notifications_none</mat-icon
         >
       </button>
+      <mat-menu  #menu="matMenu" yPosition="below" xPosition="after">
+        <button *ngIf="infoNotification>0" mat-menu-item>
+          <mat-icon matBadgeColor="accent"
+          matBadgeSize="small"
+          [matBadge]="infoNotification"
+          matBadgePosition="above after">notifications_active</mat-icon>
+          <small>Info</small>
+        </button>
+        <button *ngIf="successNotification>0" mat-menu-item>
+          <mat-icon matBadgeColor="accent"
+          matBadgeSize="small"
+          [matBadge]="successNotification"
+          matBadgePosition="above after" style="color: #69F0AE">notifications_active</mat-icon>
+          <button  mat-stroked-button ><small>mark all as read</small></button>
+          <button mat-icon-button  matTooltip="View All"> <mat-icon>arrow_right_alt</mat-icon></button>
+        </button>
+        <button *ngIf="warningNotification>0" mat-menu-item>
+          <mat-icon matBadgeColor="accent"
+          matBadgeSize="small"
+          [matBadge]="warningNotification"
+          matBadgePosition="above after">notifications_active</mat-icon>
+          <small>Warning</small>
+        </button>
+        <button *ngIf="errorNotification>0" mat-menu-item>
+          <mat-icon matBadgeColor="accent"
+          matBadgeSize="small"
+          [matBadge]="errorNotification"
+          matBadgePosition="above after" style="color:#bd124b">error</mat-icon>
+          <button  mat-stroked-button> <small>mark all as read</small></button>
+          <button mat-icon-button matTooltip="View All"> <mat-icon>arrow_right_alt</mat-icon></button>
+        </button>
+        
+        
+      </mat-menu>
       <button *ngIf="numOfItemsInCart"
         mat-icon-button
         (mouseenter)="toggleIconAnimationShoppingCart()"

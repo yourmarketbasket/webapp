@@ -7,12 +7,44 @@
     background-color: rgb(255, 255, 255);
     padding: 0.5% 2%;
 }
+
+[mat-menu-item]{
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    width: 100% !important;
+    flex:1;
+}
+
+
 .title{
     font-family: 'bauhaus 93';
     font-size: 60px;
     color: black;
 
 }
+
+.success{
+    padding: 2px;
+    border-radius: 5px;
+    background-color: #69F0AE;
+    color: #1a8853;
+    border: 1px solid #1a8853;
+}
+
+.error{
+    padding: 2px;
+    border-radius: 5px;
+    background-color: #f069bc;
+    color: #531266;
+    border: 1px solid #531266;
+}
+::ng-deep .mat-menu-panel {
+    width: 300px; /* Set a larger width */
+    height: auto; /* Let height adjust as needed */
+    max-height: none; /* Remove height constraints */
+  }
+  
 .searchfield{
     width: 60%;
     height: 40px;
