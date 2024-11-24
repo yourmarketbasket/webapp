@@ -9,6 +9,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ProcessOrderComponent } from 'src/app/mystores/process-order/process-order.component';
 import { SelectStoreDialogComponent } from './select-store-dialog/select-store-dialog.component';
 import { AuthService } from 'src/app/auth.service';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 
 
@@ -32,8 +33,12 @@ export class OrdersComponent implements OnInit, AfterViewInit {
   stores:any;
   store:any;
   storename:any;
+  orderToProcess:any;
+  mapUrl:any;
+  origin:any;
+  destination:any;
 
-  constructor(private ms: MasterServiceService, private dialog: MatDialog, private authService: AuthService) {}
+  constructor(private ms: MasterServiceService, private dialog: MatDialog, private authService: AuthService, private domSanitizer: DomSanitizer) {}
 
   ngOnInit(): void {
 
@@ -96,15 +101,33 @@ export class OrdersComponent implements OnInit, AfterViewInit {
   }
 
   processOrder(data: any) {
-    if(data){
-      const dialogRef = this.dialog.open(ProcessOrderComponent, {
-        data: data,
-        width: 'auto',
-        height: 'auto'
-      });
-    }else{
-      console.log("no data from parent")
+    this.orderToProcess = this.ensureArrays(data, ['products','payment']);
+    const origin = `${this.orderToProcess.origin.latitude},${this.orderToProcess.origin.longitude}`; // Replace with your origin coordinates
+    const destination = `${this.orderToProcess.destination.latitude},${this.orderToProcess.destination.longitude}`; 
+    const mapurl = `https://www.google.com/maps/embed/v1/directions?key=AIzaSyDdvqTHmz_HwPar6XeBj8AiMxwzmFdqC1w&origin=${origin}&destination=${destination}&mode=driving`;
+    this.mapUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(mapurl);
+    
+  }
+
+  ensureArrays(obj: any, keysToConvert: string[]): any {
+    // Iterate over all keys in the object
+    for (let key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        // If the key is one of the properties that should be an array
+        if (keysToConvert.includes(key)) {
+          // Convert the value to an array if it's not already an array
+          if (!Array.isArray(obj[key])) {
+            obj[key] = obj[key] ? [obj[key]] : []; // Wrap in an array or set to an empty array if undefined/null
+          }
+        }
+  
+        // If the value is an object, recursively apply the function
+        if (typeof obj[key] === 'object' && obj[key] !== null) {
+          this.ensureArrays(obj[key], keysToConvert);
+        }
+      }
     }
+    return obj;
   }
 
   isAllSelected() {

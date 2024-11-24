@@ -111,6 +111,7 @@ import { PhonePipe } from './phone.pipe';
 import { VerifyComponent } from './verify/verify.component';
 import {CloudinaryModule} from '@cloudinary/ng';
 import { RatingPipe } from './rating.pipe';
+import { CapitalizePipe } from './capitalize.pipe';
 
 registerLocaleData(en);
 
@@ -168,7 +169,8 @@ registerLocaleData(en);
     SelectStoreDialogComponent,
     PhonePipe,
     VerifyComponent,
-    RatingPipe
+    RatingPipe,
+    CapitalizePipe
     
 
   ],

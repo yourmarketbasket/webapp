@@ -25,11 +25,12 @@ export class ProcessOrderComponent implements OnInit{
    // Initialize with an empty data source
   orders: any;
   products:any;
+  orderToProcess:any;
   
   constructor(@Inject(MAT_DIALOG_DATA) public data: any, private domSanitizer: DomSanitizer){}
   
   async ngOnInit() {
-    console.log(this.data)
+    console.log(this.data.buyername)
     this.orderData = this.ensureArrays(this.data, ['products','payment'])
 
     const origin = `${this.data.origin.latitude},${this.data.origin.longitude}`; // Replace with your origin coordinates

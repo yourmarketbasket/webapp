@@ -84,7 +84,7 @@
                     <ng-container matColumnDef="Actions">
                         <th mat-header-cell *matHeaderCellDef> </th>
                         <td mat-cell *matCellDef="let order; let i=index">
-                            <button *ngIf='order.paymentStatus == "Completed"' (click)="processOrder(orders[i])" style="background-color: green;" mat-mini-fab color="accent" >                            
+                            <button *ngIf='order.paymentStatus == "Completed"' (click)="processOrder(order)" style="background-color: green;" mat-mini-fab color="accent" >                            
                                 <mat-icon>settings</mat-icon>
                             </button>   
                             <button *ngIf='order.paymentStatus == "Pending"' disabled="true" mat-mini-fab><mat-icon>more_horiz</mat-icon></button>                     
@@ -99,5 +99,73 @@
                 <mat-paginator  [pageSizeOptions]="[5,10]"></mat-paginator>
             </mat-card-content>
          </mat-card>
+         <div class="order-processing-div" *ngIf="orderToProcess">
+            <div class="frame-body">                
+                <div class="products">        
+                    <div class="product-listings">
+                        <div class="buyerheader" style="display: flex; flex-direction: column; border: 1px solid rgb(15, 145, 206); padding: 10px; border-radius: 5px;">
+                            <div style="display: flex; flex-direction: row; justify-content: space-between;">
+                                <span>CLIENT: </span>
+                                <span style="font-weight: 800; font-size: 20px; color: rgb(10, 238, 162);">{{orderToProcess.buyername | capitalize}}</span>
+                            </div>
+                            <div style="display: flex; flex-direction: row; justify-content: space-between;">
+                                <span>PHONE: </span>
+                                <span style="font-weight: 800; font-size: 20px; color: rgb(10, 238, 162);">({{orderToProcess.buyer[0].zipcode}}){{orderToProcess.buyer[0].phone | phone}}</span>
+                            </div>
+                        </div>
+                        <hr>
+
+                        <div class="delivery-map">
+                            <iframe
+                            class="mat-elevation-z8"         
+                            width="100%"
+                            height="80%"
+                            frameborder="0"
+                            style="border:0; border-radius: 10px;"
+                            [src]="mapUrl"
+                            allowfullscreen>
+                            </iframe>
+                    
+                        </div>
+            
+                        <table>
+                            <thead>
+                                <th>#</th>
+                                <th>Product</th>
+                                <th>Model</th>
+                                <th>Qtty</th>
+                                <th>Price</th>
+                                <th>Total</th>
+                                <th>Action</th>
+                                <th></th>
+                            </thead>
+                            <tr *ngFor="let product of orderToProcess.products; let i=index">
+                                <td>{{i+1}}</td>
+                                <td>{{product.productname | capitalize}}</td>
+                                <td>{{product.productmodel}}</td>
+                                <td>{{product.quantity}}</td>
+                                <td>{{product.price}}</td>
+                                <td>{{product.totalCost | currency: ' '}}</td>
+                                <td><mat-form-field appearance="outline">
+                                    <mat-label>Select Action</mat-label>
+                                    <mat-select>
+                                      <mat-option value="">Select Action</mat-option>
+                                      <mat-option value="pack">Pack</mat-option>
+                                      <mat-option value="confirm">Confirm</mat-option>
+                                      <mat-option value="dispatch">Dispatch</mat-option>
+                                      <mat-option value="delivered">Delivered</mat-option>
+            
+                                    </mat-select>
+                                  </mat-form-field></td>
+                                <td>
+                                    <button mat-mini-fab style="background-color: rgb(255, 4, 201); color: white; vertical-align: middle;"><mat-icon>check</mat-icon></button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+    
 </div>
