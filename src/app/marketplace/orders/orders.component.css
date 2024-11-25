@@ -96,6 +96,14 @@
     border-radius: 5px;
 }
 
+.status-pending {
+    background-color: #fff8e1; /* Light yellow-orange */
+    color: #f57c00; /* Dark amber */
+    border: 1px solid #ffb74d; /* Medium amber */
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
 
 .main-body{
     display: flex;

@@ -74,7 +74,10 @@
                     </ng-container>
                     <ng-container matColumnDef="Pay Status">
                         <th mat-header-cell *matHeaderCellDef> Payment Status </th>
-                        <td mat-cell *matCellDef="let order, let i=index"> {{order.paymentStatus}} </td>
+                        <td mat-cell *matCellDef="let order, let i=index"> 
+                            <small class="status-completed" *ngIf="order.paymentStatus==='Completed'">{{order.paymentStatus}}</small> 
+                            <small class="status-pending" *ngIf="order.paymentStatus==='Pending'">{{order.paymentStatus}}</small> 
+                        </td>
                     </ng-container>
                     <ng-container matColumnDef="OrderStatus">
                         <th mat-header-cell *matHeaderCellDef> Order Status </th>
@@ -86,7 +89,6 @@
                             <small class="status-partialCompleted" *ngIf="order.overallStatus==='partialCompleted'">ongoing</small>
                             <small class="status-delivered" *ngIf="order.overallStatus==='delivered'">{{order.overallStatus}}</small>
                             <small class="status-completed" *ngIf="order.overallStatus==='completed'">{{order.overallStatus}}</small>
-
                         </td>
                     </ng-container>
                     
