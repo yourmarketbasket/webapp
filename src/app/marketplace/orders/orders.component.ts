@@ -37,6 +37,7 @@ export class OrdersComponent implements OnInit, AfterViewInit {
   mapUrl:any;
   origin:any;
   destination:any;
+  orderAction:any;
 
   constructor(private ms: MasterServiceService, private dialog: MatDialog, private authService: AuthService, private domSanitizer: DomSanitizer) {}
 
@@ -71,6 +72,10 @@ export class OrdersComponent implements OnInit, AfterViewInit {
         
   }
 
+  updateOrderAction(value:any){
+    this.orderAction = value;
+  }
+
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.OrdersDataSource.filter = filterValue.trim().toLowerCase();
@@ -101,7 +106,9 @@ export class OrdersComponent implements OnInit, AfterViewInit {
   }
 
   processOrder(data: any) {
+  
     this.orderToProcess = this.ensureArrays(data, ['products','payment']);
+    // console.log(this.orderToProcess)
     const origin = `${this.orderToProcess.origin.latitude},${this.orderToProcess.origin.longitude}`; // Replace with your origin coordinates
     const destination = `${this.orderToProcess.destination.latitude},${this.orderToProcess.destination.longitude}`; 
     const mapurl = `https://www.google.com/maps/embed/v1/directions?key=AIzaSyDdvqTHmz_HwPar6XeBj8AiMxwzmFdqC1w&origin=${origin}&destination=${destination}&mode=driving`;

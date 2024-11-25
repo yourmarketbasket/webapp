@@ -48,10 +48,10 @@
     </mat-form-field>
     <div style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-between; align-items: center;">
       <small style="color: rgb(105, 212, 105);" *ngIf="dataSource">
-        <i>A total of {{ dataSource?.data?.length }} products found</i>
+        <i>A total of {{ dataSource.data.length }} products found</i>
       </small>    
       
-      <button color="primary" (click)="exportToPDF('productsList', activeStore+' Products List' ?? storename +' Products List')" mat-stroked-button><span nz-icon nzType="file-pdf" nzTheme="outline" style="color: rgb(236, 71, 99);"></span> VIEW LIST</button>
+      <button color="primary" (click)="exportToPDF('productsList', activeStore+' Products List' || storename +' Products List')" mat-stroked-button><span nz-icon nzType="file-pdf" nzTheme="outline" style="color: rgb(236, 71, 99);"></span> VIEW LIST</button>
     </div>
     <table id="productsList" mat-table [dataSource]="dataSource" matSort>
       <!-- Checkbox Column -->
