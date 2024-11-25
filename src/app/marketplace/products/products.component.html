@@ -297,7 +297,7 @@
               
         <!-- Looping through the product images -->
         <img 
-          [src]="product.avatar[imageLoopData[product._id].currentImageIndex || 0]" 
+          [src]="product.avatar[imageLoopData[product._id]?.currentImageIndex || 0]" 
           alt="Product Image" 
         />
         
