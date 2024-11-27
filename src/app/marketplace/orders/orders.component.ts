@@ -71,10 +71,18 @@ export class OrdersComponent implements OnInit, AfterViewInit {
     });   
         
   }
+  confirmOrderAction(action:any, id:any){
+    if(this.orderAction){
+      this.ms.markOrderStatus({status:action, orderId:this.orderToProcess._id, productid:id}).subscribe((res:any)=>{
+        if(res.success){
+          this.getStoreOrders(localStorage.getItem('selectedStore'));
+        }
+      })
+    }
 
-  updateOrderAction(value:any){
-    this.orderAction = value;
   }
+
+  
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;

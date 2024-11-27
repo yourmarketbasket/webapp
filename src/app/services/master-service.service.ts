@@ -185,6 +185,9 @@ export class MasterServiceService {
   getUserOrders(userid:any){
     return this.http.get(`${this.baseurl}/api/products/getUserOrders/${userid}`, this.getAuthHeaders());
   }
+  markOrderStatus(data:any){
+    return this.http.post(`${this.baseurl}/api/orderRoutes/markOrderStatus`, data, this.getAuthHeaders());
+  }
   getStoresAndProductsByOwnerId(ownerid:any){
     return this.http.get(`${this.baseurl}/api/products/getStoresAndProductsByOwnerId/${ownerid}`, this.getAuthHeaders());
   }
