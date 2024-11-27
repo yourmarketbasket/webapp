@@ -75,6 +75,7 @@ export class OrdersComponent implements OnInit, AfterViewInit {
     if(this.orderAction){
       this.ms.markOrderStatus({status:action, orderId:this.orderToProcess._id, productid:id}).subscribe((res:any)=>{
         if(res.success){
+          this.orderToProcess = null;
           this.getStoreOrders(localStorage.getItem('selectedStore'));
         }
       })
