@@ -139,6 +139,9 @@ export class MasterServiceService {
   getUserNotifications(userid:any){
     return this.http.get(`${this.baseurl}/api/users/getUserNotifications/${userid}`, this.getAuthHeaders());
   }
+  sendCommonNotifications(data:any){
+    return this.http.post(`${this.baseurl}/api/notifications/sendCommonNotification`, data, this.getAuthHeaders());
+  }
   rejectedproducts(storeid:any){
     return this.http.get(`${this.baseurl}/getRejectedProducts/${storeid}`, this.getAuthHeaders());
   }

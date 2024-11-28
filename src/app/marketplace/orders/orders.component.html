@@ -84,7 +84,7 @@
                     <ng-container matColumnDef="OrderStatus">
                         <th mat-header-cell *matHeaderCellDef> Order Status </th>
                         <td mat-cell *matCellDef="let order">
-                            <small class="status-processing" *ngIf="order.overallStatus==='processing'">{{order.overallStatus.toUpperCase()}}</small>
+                            <small class="status-processing" *ngIf="order.overallStatus==='processing'">{{order.overallStatus.toUpperCase()}} </small>
                             <small class="status-confirm" *ngIf="order.overallStatus==='confirmed'">{{order.overallStatus.toUpperCase()}}</small>
                             <small class="status-packed" *ngIf="order.overallStatus==='packed'">{{order.overallStatus.toUpperCase()}}</small>
                             <small class="status-dispatched" *ngIf="order.overallStatus==='dispatched'">{{order.overallStatus.toUpperCase()}}</small>
@@ -99,9 +99,12 @@
                     <ng-container matColumnDef="Actions">
                         <th mat-header-cell *matHeaderCellDef> </th>
                         <td mat-cell *matCellDef="let order; let i=index">
-                            <button *ngIf='order.paymentStatus == "Completed"' (click)="processOrder(order)" mat-mini-fab style="background-color: rgb(13, 190, 102);"  >                            
-                                <span nz-icon nzType="form" nzTheme="outline"></span>
+                            <button matTooltip="Notify Client" *ngIf='order.paymentStatus == "Failed"' (click)="sendNotification(order)" mat-mini-fab style="background-color: rgb(190, 13, 72);"  >                            
+                                <span nz-icon nzType="send" nzTheme="outline"></span>
                             </button>   
+                            <button matTooltip="View Order" *ngIf='order.paymentStatus == "Completed"' (click)="processOrder(order)" mat-mini-fab style="background-color: rgb(13, 190, 102);"  >                            
+                                <span nz-icon nzType="form" nzTheme="outline"> </span>
+                            </button> 
                             <span *ngIf='order.paymentStatus == "Pending"' nz-icon nzType="issues-close" nzTheme="outline"></span>
                                                
                         </td>

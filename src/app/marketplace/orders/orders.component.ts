@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, ViewEncapsulation  } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -10,13 +10,15 @@ import { ProcessOrderComponent } from 'src/app/mystores/process-order/process-or
 import { SelectStoreDialogComponent } from './select-store-dialog/select-store-dialog.component';
 import { AuthService } from 'src/app/auth.service';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 
 @Component({
   selector: 'app-orders',
   templateUrl: './orders.component.html',
-  styleUrls: ['./orders.component.css']
+  styleUrls: ['./orders.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 
 export class OrdersComponent implements OnInit, AfterViewInit {
@@ -39,7 +41,7 @@ export class OrdersComponent implements OnInit, AfterViewInit {
   destination:any;
   orderAction:any;
 
-  constructor(private ms: MasterServiceService, private dialog: MatDialog, private authService: AuthService, private domSanitizer: DomSanitizer) {}
+  constructor(private snackBar: MatSnackBar, private ms: MasterServiceService, private dialog: MatDialog, private authService: AuthService, private domSanitizer: DomSanitizer) {}
 
   ngOnInit(): void {
 
@@ -70,6 +72,27 @@ export class OrdersComponent implements OnInit, AfterViewInit {
       }
     });   
         
+  }
+  sendNotification(order:any){
+    const data = {userId: order.buyerid, message: `Transaction ID: [${order.transactionID}]. Could not process order due to a Failed Payment. `, type: "error"}
+    this.ms.sendCommonNotifications(data).subscribe((res:any)=>{
+      if(res.success){
+        this.snackBar.open(res.message, 'Close', {
+          duration: 2000, // Duration in milliseconds
+          horizontalPosition: 'right', // Positions the snackbar to the right
+          verticalPosition: 'top',
+          panelClass: ['snackbar-success'] // Positions the snackbar at the top
+        });
+      }else{
+        this.snackBar.open(res.message, 'Close', {
+          duration: 2000, // Duration in milliseconds
+          horizontalPosition: 'right', // Positions the snackbar to the right
+          verticalPosition: 'top',
+          panelClass: ['snackbar-error']  // Positions the snackbar at the top
+        });
+
+      }
+    })
   }
   confirmOrderAction(action:any, id:any){
     if(this.orderAction){
