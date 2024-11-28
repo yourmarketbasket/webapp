@@ -26,7 +26,12 @@ body {
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
-
+tr:nth-child(even){
+    color: rgb(241, 56, 149);
+}
+ tr:nth-child(odd){
+    color: rgb(111, 56, 241);
+}
   /* Error Message Style */
   :root{
     .snackbar-error {
