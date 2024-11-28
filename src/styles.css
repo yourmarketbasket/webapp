@@ -26,12 +26,23 @@ body {
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
-tr:nth-child(even){
+tr:nth-child(even),mat-row:nth-child(even)  {
     color: rgb(241, 56, 149);
+    font-size: small;
 }
- tr:nth-child(odd){
+ tr:nth-child(odd), mat-row:nth-child(odd){
     color: rgb(111, 56, 241);
+    font-size: small;
 }
+mat-header-cell{
+    color: rgb(111, 56, 241);
+    font-size: small;
+}
+mat-table{
+    width: fit-content;
+}
+
+
   /* Error Message Style */
   :root{
     .snackbar-error {

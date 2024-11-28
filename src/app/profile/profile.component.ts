@@ -36,14 +36,14 @@ export interface StoresData {
 })
 
 
-export class ProfileComponent implements OnInit {
+export class ProfileComponent implements OnInit, AfterViewInit {
   @ViewChild('sidenav') sidenav!: MatSidenav;
   rating = 3.2;
   isLoading = true;
   stores:any;
   userId: any;
-  displayedColumns: string[] = ['#', 'items', 'total', 'deliveryFee', 'paymentStatus', 'actions'];
-  displayedStoresColumns: string[] = ['#', 'name', 'items', 'totalvalue', 'actions'];
+  displayedColumns: string[] = ['transactionId', 'payment', 'orderStatus', 'total', 'actions'];
+  displayedStoresColumns: string[] = ['name', 'items', 'totalvalue', 'actions'];
   phone = "";
   avatar = "";
   name = "";
@@ -66,7 +66,7 @@ export class ProfileComponent implements OnInit {
   mapurl:any;
   orders:any;
   dataSource = new MatTableDataSource<OrdersData>();  // Initialize in the class
-  storesDataSource: any;
+  storesDataSource= new MatTableDataSource<StoresData>();
   
   constructor(private socketService: SocketService, private ms: MasterServiceService, private router: Router, private domSanitizer:DomSanitizer, private authService: AuthService, private dialog: MatDialog) { 
   
@@ -148,7 +148,10 @@ export class ProfileComponent implements OnInit {
 
   
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild('ordersPaginator') ordersPaginator!: MatPaginator;
+@ViewChild('storesPaginator') storesPaginator!: MatPaginator;
+
+
    
 
   async ngOnInit() { 
@@ -194,26 +197,48 @@ export class ProfileComponent implements OnInit {
     // get user orders
     this.ms.getUserOrders(this.userId).subscribe((res: any) => {
       if (res.success && res.data.length > 0) {
-        this.orders = res.data;
+        this.orders = res.data;  
         this.dataSource = new MatTableDataSource<OrdersData>(this.orders);
-        this.dataSource.paginator = this.paginator;  // Set paginator after dataSource is populated
-      }
-    }); 
+        this.dataSource.paginator = this.ordersPaginator;
 
-    this.ms.getStoresAndProductsByOwnerId(this.userId).subscribe((res:any)=>{
-      if(res.success && res.data){
+      }
+    });
+
+    this.ms.getStoresAndProductsByOwnerId(this.userId).subscribe((res: any) => {
+      if (res.success && res.data) {
         this.stores = res.data;
         this.storesDataSource = new MatTableDataSource<StoresData>(this.stores);
-        this.storesDataSource.paginator = this.paginator;
+        this.storesDataSource.paginator = this.storesPaginator;
       }
-    })
+    });
 
     
   
    }
 
+   ngAfterViewInit() {
+      this.ms.getUserOrders(this.userId).subscribe((res: any) => {
+        if (res.success && res.data.length > 0) {
+          this.orders = res.data;  
+          this.dataSource = new MatTableDataSource<OrdersData>(this.orders);
+          this.dataSource.paginator = this.ordersPaginator;
+
+        }
+      });
+      this.ms.getStoresAndProductsByOwnerId(this.userId).subscribe((res: any) => {
+        if (res.success && res.data) {
+          this.stores = res.data;
+          this.storesDataSource = new MatTableDataSource<StoresData>(this.stores);
+          this.storesDataSource.paginator = this.storesPaginator;
+        }
+      });
+    }
+  
+
+  
+
    getAdjustedIndex(index: number): number {
-      return index + (this.paginator.pageIndex * this.paginator.pageSize) + 1;
+      return index + (this.ordersPaginator.pageIndex * this.ordersPaginator.pageSize) + 1;
     }
 
     openVerificationDialog(){
