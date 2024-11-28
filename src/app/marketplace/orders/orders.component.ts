@@ -83,6 +83,15 @@ export class OrdersComponent implements OnInit, AfterViewInit {
 
   }
 
+  refreshOrderStatus(transactionId:any){
+    this.ms.refreshTransactionStatus(transactionId).subscribe((res:any)=>{
+      if(res.success){
+          this.getStoreOrders(localStorage.getItem('selectedStore'));
+      }
+    })
+
+  }
+
   
 
   applyFilter(event: Event) {

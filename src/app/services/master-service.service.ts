@@ -169,6 +169,10 @@ export class MasterServiceService {
   confirmTransactionStatus(trackingid:any){
     return this.http.get(`${this.baseurl}/api/payments/pesapalTransactionStatus/${trackingid}`, this.getAuthHeaders());
   }
+
+  refreshTransactionStatus(transactionId:any){
+    return this.http.get(`${this.baseurl}/api/payments/refreshPesapalTransactionStatus/${transactionId}`, this.getAuthHeaders());
+  }
   
   fetchProductDetails(productid:any){
     return this.http.get(`${this.baseurl}/api/products/productDetails/${productid}`, this.getAuthHeaders());
