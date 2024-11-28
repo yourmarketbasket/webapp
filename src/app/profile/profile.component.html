@@ -71,54 +71,7 @@
                 </div>
             </div>        
         </div> 
-        <div style="display: flex; flex-direction: row; justify-content: flex-start; padding-left: 2%; font-size: large; font-weight: 400;">
-            <span>My Stores</span>
-        </div>
-        <div class="storesmanagement">
-          <div>
-            <mat-table [dataSource]="storesDataSource">
-              <!-- Name Column -->
-              <ng-container matColumnDef="name">
-                <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
-                <mat-cell *matCellDef="let data"> {{data.storeName}} </mat-cell>
-              </ng-container>
-            
-              <!-- Items Column -->
-              <ng-container matColumnDef="items">
-                <mat-header-cell *matHeaderCellDef> Items </mat-header-cell>
-                <mat-cell *matCellDef="let data"> {{data.numberOfProducts}} </mat-cell>
-              </ng-container>
-            
-              <!-- Stock Value Column -->
-              <ng-container matColumnDef="totalvalue">
-                <mat-header-cell *matHeaderCellDef> Stock Value </mat-header-cell>
-                <mat-cell *matCellDef="let data"> {{data.totalValue | currency: ' '}} </mat-cell>
-              </ng-container>
-            
-              <!-- Actions Column -->
-              <ng-container matColumnDef="actions">
-                <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
-                <mat-cell *matCellDef="let data">
-                  <button mat-mini-fab color="primary" aria-label="View">
-                    <mat-icon>visibility</mat-icon>
-                  </button>
-                </mat-cell>
-              </ng-container>
-            
-              <!-- Header Row -->
-              <mat-header-row *matHeaderRowDef="displayedStoresColumns"></mat-header-row>
-            
-              <!-- Data Row -->
-              <mat-row *matRowDef="let row; columns: displayedStoresColumns;"></mat-row>
-            </mat-table>
-            
-            <mat-paginator #storesPaginator
-                          [pageSizeOptions]="[3, 5]"
-                          showFirstLastButtons>
-            </mat-paginator>
-            
-            </div>
-      </div>
+        
         <div class="userlocationmap">
             <iframe                
                 *ngIf="mapurl && location"
@@ -131,63 +84,86 @@
         
     </div>
     
-    <div class="ordersandstores" style="display: flex; flex-direction: column; width: 60%; flex:60%; margin: 10px; height: 90vh; overflow-y: auto; padding-bottom:1%">
+    <div class="ordersandstores" style="display: flex; margin: 10px;">
         <div class="ordersmanagement" *ngIf="!orders" style="display: flex; flex-direction: row; justify-content: center; align-items: center; height: 20vh; width: 100%;">
             <span><mat-icon color="accent" style="vertical-align: middle;">warning</mat-icon>No Orders Yet!</span>
         </div>
-        <div style="display: flex; flex-direction: row; justify-content: flex-start; padding-left: 2%; font-size: large; font-weight: 400;">
-            <span>My Orders</span>
+        <div style="margin: 10px;">
+          <div class="header">
+            <span nz-icon nzType="shopping" nzTheme="outline"></span>My Orders
+          </div>
+          <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+            <!-- Transaction ID Column -->
+            <ng-container matColumnDef="transactionId">
+              <mat-header-cell *matHeaderCellDef> Transaction ID </mat-header-cell>
+              <mat-cell *matCellDef="let data"> {{data.transactionID}} </mat-cell>
+            </ng-container>
+          
+            <!-- Payment Column -->
+            <ng-container matColumnDef="payment">
+              <mat-header-cell *matHeaderCellDef> Payment </mat-header-cell>
+              <mat-cell *matCellDef="let data"> {{data.paymentStatus}} </mat-cell>
+            </ng-container>
+          
+            <!-- Order Status Column -->
+            <ng-container matColumnDef="orderStatus">
+              <mat-header-cell *matHeaderCellDef> Order Status </mat-header-cell>
+              <mat-cell *matCellDef="let data"> {{data.overallStatus}} </mat-cell>
+            </ng-container>
+          
+            <!-- Total Column -->
+            <ng-container matColumnDef="total">
+              <mat-header-cell *matHeaderCellDef> Total </mat-header-cell>
+              <mat-cell *matCellDef="let data"> {{data.amount | currency: ' '}} </mat-cell>
+            </ng-container>
+          
+            <!-- Header Row -->
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          
+            <!-- Data Row -->
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+          </mat-table>
+          
+          
+          <mat-paginator #ordersPaginator
+                        [pageSizeOptions]="[5, 10]"
+                        showFirstLastButtons>
+          </mat-paginator>
         </div>
-        <div class="ordersmanagement">
-            <div>
-              <mat-table [dataSource]="dataSource">
-                <!-- Transaction ID Column -->
-                <ng-container matColumnDef="transactionId">
-                  <mat-header-cell *matHeaderCellDef> Transaction ID </mat-header-cell>
-                  <mat-cell *matCellDef="let data"> {{data.transactionID}} </mat-cell>
-                </ng-container>
-              
-                <!-- Payment Column -->
-                <ng-container matColumnDef="payment">
-                  <mat-header-cell *matHeaderCellDef> Payment </mat-header-cell>
-                  <mat-cell *matCellDef="let data"> {{data.paymentStatus}} </mat-cell>
-                </ng-container>
-              
-                <!-- Order Status Column -->
-                <ng-container matColumnDef="orderStatus">
-                  <mat-header-cell *matHeaderCellDef> Order Status </mat-header-cell>
-                  <mat-cell *matCellDef="let data"> {{data.overallStatus}} </mat-cell>
-                </ng-container>
-              
-                <!-- Total Column -->
-                <ng-container matColumnDef="total">
-                  <mat-header-cell *matHeaderCellDef> Total </mat-header-cell>
-                  <mat-cell *matCellDef="let data"> {{data.amount | currency: ' '}} </mat-cell>
-                </ng-container>
-              
-                <!-- Actions Column -->
-                <ng-container matColumnDef="actions">
-                  <mat-header-cell *matHeaderCellDef></mat-header-cell>
-                  <mat-cell *matCellDef="let data">
-                    <button mat-mini-fab color="primary" aria-label="View">
-                      <mat-icon>visibility</mat-icon>
-                    </button>
-                  </mat-cell>
-                </ng-container>
-              
-                <!-- Header Row -->
-                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-              
-                <!-- Data Row -->
-                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-              </mat-table>
-              
-              
-              <mat-paginator #ordersPaginator
-                            [pageSizeOptions]="[10, 20]"
-                            showFirstLastButtons>
-              </mat-paginator>
-              </div>
+        <div style="margin: 10px;">
+          <div class="header">
+            <span nz-icon nzType="shop" nzTheme="outline"></span>My Stores
+          </div>
+          <mat-table [dataSource]="storesDataSource" class="mat-elevation-z8">
+            <!-- Name Column -->
+            <ng-container matColumnDef="name">
+              <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+              <mat-cell *matCellDef="let data"> {{data.storeName}} </mat-cell>
+            </ng-container>
+          
+            <!-- Items Column -->
+            <ng-container matColumnDef="items">
+              <mat-header-cell *matHeaderCellDef> Items </mat-header-cell>
+              <mat-cell *matCellDef="let data"> {{data.numberOfProducts}} </mat-cell>
+            </ng-container>
+          
+            <!-- Stock Value Column -->
+            <ng-container matColumnDef="totalvalue">
+              <mat-header-cell *matHeaderCellDef> Stock Value </mat-header-cell>
+              <mat-cell *matCellDef="let data"> {{data.totalValue | currency: ' '}} </mat-cell>
+            </ng-container>
+          
+            <!-- Header Row -->
+            <mat-header-row *matHeaderRowDef="displayedStoresColumns"></mat-header-row>
+          
+            <!-- Data Row -->
+            <mat-row *matRowDef="let row; columns: displayedStoresColumns;"></mat-row>
+          </mat-table>
+          
+          <mat-paginator #storesPaginator
+                        [pageSizeOptions]="[5, 10]"
+                        showFirstLastButtons>
+          </mat-paginator>          
         </div>
         
         

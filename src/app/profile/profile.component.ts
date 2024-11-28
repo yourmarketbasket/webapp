@@ -42,8 +42,8 @@ export class ProfileComponent implements OnInit, AfterViewInit {
   isLoading = true;
   stores:any;
   userId: any;
-  displayedColumns: string[] = ['transactionId', 'payment', 'orderStatus', 'total', 'actions'];
-  displayedStoresColumns: string[] = ['name', 'items', 'totalvalue', 'actions'];
+  displayedColumns: string[] = ['transactionId', 'payment', 'orderStatus', 'total'];
+  displayedStoresColumns: string[] = ['name', 'items', 'totalvalue'];
   phone = "";
   avatar = "";
   name = "";

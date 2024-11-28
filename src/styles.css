@@ -39,7 +39,7 @@ mat-header-cell{
     font-size: small;
 }
 mat-table{
-    width: fit-content;
+    width: max-content;
 }
 
 
