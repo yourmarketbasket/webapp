@@ -91,6 +91,8 @@
                             <small class="status-partialCompleted" *ngIf="order.overallStatus==='partialCompleted'">ONGOING</small>
                             <small class="status-delivered" *ngIf="order.overallStatus==='delivered'">{{order.overallStatus.toUpperCase()}}</small>
                             <small class="status-completed" *ngIf="order.overallStatus==='completed'">{{order.overallStatus.toUpperCase()}}</small>
+                            <small class="status-failed" *ngIf="order.overallStatus==='failed'">{{order.overallStatus.toUpperCase()}}</small>
+
                         </td>
                     </ng-container>
                     
