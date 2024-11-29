@@ -1,4 +1,4 @@
-import { Component, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, ViewChild, AfterViewInit, ElementRef } from '@angular/core';
 import { MatSidenav, MatSidenavModule  } from '@angular/material/sidenav';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import { OnInit } from '@angular/core';
@@ -6,6 +6,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { CreatestoreComponent } from '../mystores/createstore/createstore.component';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
+import { ChangeDetectorRef } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { Store } from '../mystores/stores-dashboard/stores-interface';
 import { SocketService } from '../services/socket.service';
@@ -13,6 +14,12 @@ import { MasterServiceService } from '../services/master-service.service';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatTableDataSource} from '@angular/material/table';
 import { VerifyComponent } from '../verify/verify.component';
+import { responsive } from '@cloudinary/ng';
+import { Chart, Legend } from 'chart.js/auto';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
+import { CurrencyPipe } from '@angular/common';
+
+Chart.register(ChartDataLabels);
 
 export interface OrdersData {
   items: string;
@@ -37,6 +44,48 @@ export interface StoresData {
 
 
 export class ProfileComponent implements OnInit, AfterViewInit {
+  // chart options
+  @ViewChild('piechart', { static: true }) piechart!: ElementRef<HTMLCanvasElement>;
+  @ViewChild('chartCanvas', { static: true }) chartCanvas!: ElementRef<HTMLCanvasElement>;
+  @ViewChild('barChart', { static: true }) barChart!: ElementRef<HTMLCanvasElement>;
+  @ViewChild('storeBarChart', { static: true }) storeBarChart!: ElementRef<HTMLCanvasElement>;
+  @ViewChild('storePieChart', { static: true }) storePieChart!: ElementRef<HTMLCanvasElement>;
+
+
+
+
+
+  chart!: any;
+  data = {
+    labels: [
+      'Red',
+      'Blue',
+      'Yellow'
+    ],
+    datasets: [{
+      label: 'My First Dataset',
+      data: [300, 50, 100],
+      backgroundColor: [
+        'rgb(255, 99, 132)',
+        'rgb(54, 162, 235)',
+        'rgb(255, 205, 86)'
+      ],
+      hoverOffset: 4
+    }]
+  }
+  config:any = {
+    type: 'doughnut',
+    data: this.data,
+  };
+
+  
+ 
+  
+
+  
+  
+  
+  // other variables
   @ViewChild('sidenav') sidenav!: MatSidenav;
   rating = 3.2;
   isLoading = true;
@@ -67,8 +116,17 @@ export class ProfileComponent implements OnInit, AfterViewInit {
   orders:any;
   dataSource = new MatTableDataSource<OrdersData>();  // Initialize in the class
   storesDataSource= new MatTableDataSource<StoresData>();
+  chartData:any = {
+      paymentStatus: {},
+      overallStatus: {},
+      storesNoProducts: {},
+      storesValue: {},
+
+
+  };
+  chartInstances: Map<any, Chart> = new Map();
   
-  constructor(private socketService: SocketService, private ms: MasterServiceService, private router: Router, private domSanitizer:DomSanitizer, private authService: AuthService, private dialog: MatDialog) { 
+  constructor(private socketService: SocketService, private ms: MasterServiceService, private router: Router, private domSanitizer:DomSanitizer, private authService: AuthService, private dialog: MatDialog, private cdr: ChangeDetectorRef, private currency: CurrencyPipe) { 
   
   }
   openDialog(){
@@ -185,7 +243,6 @@ export class ProfileComponent implements OnInit, AfterViewInit {
       const mapurl = `https://www.google.com/maps/embed/v1/place?key=AIzaSyDdvqTHmz_HwPar6XeBj8AiMxwzmFdqC1w&q=(${this.location.latitude},${this.location.longitude})&center=${this.location.latitude},${this.location.longitude}&zoom=18&maptype=roadmap`;
       this.mapurl = this.domSanitizer.bypassSecurityTrustResourceUrl(mapurl);
 
-      // console.log(this.verified);
 
     }
 
@@ -200,6 +257,7 @@ export class ProfileComponent implements OnInit, AfterViewInit {
         this.orders = res.data;  
         this.dataSource = new MatTableDataSource<OrdersData>(this.orders);
         this.dataSource.paginator = this.ordersPaginator;
+        this.generateChartData()
 
       }
     });
@@ -209,20 +267,27 @@ export class ProfileComponent implements OnInit, AfterViewInit {
         this.stores = res.data;
         this.storesDataSource = new MatTableDataSource<StoresData>(this.stores);
         this.storesDataSource.paginator = this.storesPaginator;
+        this.generateChartData()
       }
     });
+
+
+
+    
 
     
   
    }
 
    ngAfterViewInit() {
+    
+      // Existing subscription code
       this.ms.getUserOrders(this.userId).subscribe((res: any) => {
         if (res.success && res.data.length > 0) {
           this.orders = res.data;  
           this.dataSource = new MatTableDataSource<OrdersData>(this.orders);
           this.dataSource.paginator = this.ordersPaginator;
-
+          this.generateChartData()
         }
       });
       this.ms.getStoresAndProductsByOwnerId(this.userId).subscribe((res: any) => {
@@ -230,16 +295,122 @@ export class ProfileComponent implements OnInit, AfterViewInit {
           this.stores = res.data;
           this.storesDataSource = new MatTableDataSource<StoresData>(this.stores);
           this.storesDataSource.paginator = this.storesPaginator;
+          this.generateChartData()
         }
+
       });
-    }
+    
+
+    
+
+
+
+  }
+  
   
 
+  generateColors(count: number) {
+    // Define a refined palette with indigo, pink, lavender, green, gray, and deep blue shades
+    const colors = [
+      '#F48FB1', '#F06292', '#F8BBD0', // Pink shades
+      '#5C6BC0', '#7986CB', '#E8EAF6', // Indigo shades
+      '#B39DDB', '#D1C4E9', '#EDE7F6', // Lavender shades
+      '#388E3C', '#66BB6A', '#81C784', // Medium green shades
+      '#039BE5', '#0288D1', '#1E88E5', // Deep blue shades
+      '#004D40', '#00796B', '#388E3C', // Deep green shades
+      '#90A4AE', '#607D8B', '#455A64', // Grayish blue shades
+    ];
+  
+    // Create a function to generate a random color from the array
+    const getRandomColor = () => colors[Math.floor(Math.random() * colors.length)];
+  
+    // Generate an array of random colors up to the given count
+    return Array.from({ length: count }, () => getRandomColor());
+  }
+  
+  
   
 
    getAdjustedIndex(index: number): number {
       return index + (this.ordersPaginator.pageIndex * this.ordersPaginator.pageSize) + 1;
     }
+
+
+    generateChartData() {
+      if (this.orders) {
+          this.orders.forEach((order: any) => {
+              const paymentStatus = order.paymentStatus;
+              this.chartData.paymentStatus[paymentStatus] = 
+                  (this.chartData.paymentStatus[paymentStatus] || 0) + 1;
+  
+              const overallStatus = order.overallStatus;
+              this.chartData.overallStatus[overallStatus] = 
+                  (this.chartData.overallStatus[overallStatus] || 0) + 1;
+          });
+
+          this.storesDataSource.data.forEach((store: any) => {
+            const name = store.storeName;  // Get store name
+            const items = store.numberOfProducts;  // Get the number of products in the store
+            const value = store.totalValue;  // Get the total value for the store
+          
+            // Update storesNoProducts with the number of products for each store
+            this.chartData.storesNoProducts[name] = items;
+          
+            // Update storesValue with the total value for each store
+            this.chartData.storesValue[name] = value;
+          });
+
+          
+  
+          // Create chart for payment status
+          this.createChart(this.piechart.nativeElement, 'doughnut', {
+              labels: Object.keys(this.chartData.paymentStatus),
+              datasets: [
+                  {
+                      label: 'Payment Status',
+                      data: Object.values(this.chartData.paymentStatus),
+                      backgroundColor: this.generateColors(Object.keys(this.chartData.paymentStatus).length),
+                  },
+              ],
+          }, "Payment Status");
+  
+          // Optionally create another chart for overall status
+          this.createChart(this.chartCanvas.nativeElement, 'doughnut', {
+              labels: Object.keys(this.chartData.overallStatus),
+              datasets: [
+                  {
+                      label: 'Order Status',
+                      data: Object.values(this.chartData.overallStatus),
+                      backgroundColor: this.generateColors(Object.keys(this.chartData.overallStatus).length),
+                  },
+              ],
+          }, "Order Status");
+
+          this.createChart(this.storeBarChart.nativeElement, 'bar', {
+              labels: Object.keys(this.chartData.storesValue),
+              datasets: [
+                  {
+                      label: 'Stock Value',
+                      data: Object.values(this.chartData.storesValue),
+                      backgroundColor: this.generateColors(Object.keys(this.chartData.storesValue).length),
+                  },
+              ],
+          }, "Stock");
+          this.createChart(this.storePieChart.nativeElement, 'doughnut', {
+            labels: Object.keys(this.chartData.storesNoProducts),
+            datasets: [
+                {
+                    label: 'Number of Products',
+                    data: Object.values(this.chartData.storesNoProducts),
+                    backgroundColor: this.generateColors(Object.keys(this.chartData.storesNoProducts).length),
+                },
+            ],
+        }, "# Products");
+      }
+    }
+  
+
+    
 
     openVerificationDialog(){
       const data ={
@@ -259,6 +430,93 @@ export class ProfileComponent implements OnInit, AfterViewInit {
 
       
     }
+
+    createChart(
+      chartElement: any,
+      chartType: any,
+      chartData: any,
+      chartLabel: any = ""
+    ) {
+      // Check if there's an existing chart for the canvas and destroy it
+      if (this.chartInstances.has(chartElement)) {
+        this.chartInstances.get(chartElement)?.destroy();
+        this.chartInstances.delete(chartElement);
+      }
+    
+      // Determine axis configuration based on chart type
+      const axisConfig =
+        chartType === "bar" || chartType === "line"
+          ? {
+              y: {
+                display: true,  // Show the Y-axis
+                beginAtZero: true,
+              },
+              x: {
+                display: true,  // Show the X-axis
+              },
+            }
+          : undefined;
+    
+      const newChart = new Chart(chartElement, {
+        type: chartType,
+        data: chartData,
+        options: {
+          responsive: true,
+          plugins: {
+            ChartDataLabels,
+            datalabels: {
+              display: true,
+              formatter: (value: any) => `${value}`,
+              color: chartType === 'bar' || chartType === 'line' ? 'black' : 'white',
+              rotation: chartType === 'bar' || chartType === 'line' ? 270 : 0, 
+            },
+            tooltip: {
+              enabled: true,
+            },
+            legend: {
+              display: false,
+            },
+          },
+          scales: axisConfig,  // Apply the axes configuration if chart type is bar or line
+        },
+        plugins:
+          chartType === "doughnut"
+            ? [
+                {
+                  id: "centerLabelPlugin",
+                  beforeDraw(chart) {
+                    const { width, height, ctx } = chart;
+                    ctx.save();
+    
+                    const fontSize = (height / 250).toFixed(2);
+                    ctx.font = `${fontSize}em sans-serif`;
+                    ctx.textBaseline = "middle";
+                    ctx.fillStyle = "black";
+    
+                    const text = chartLabel;
+                    const textX = Math.round(
+                      (width - ctx.measureText(text).width) / 2
+                    );
+                    const textY = height / 2;
+    
+                    ctx.fillText(text, textX, textY);
+                    ctx.restore();
+                  },
+                },
+              ]
+            : [],  // No plugin for other chart types
+      });
+    
+      this.chartInstances.set(chartElement, newChart);
+    
+      return newChart;
+    }
+    
+    
+    
+
+    
+    
 
     
    
