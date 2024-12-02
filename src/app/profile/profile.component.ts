@@ -313,12 +313,7 @@ export class ProfileComponent implements OnInit, AfterViewInit {
     // Define a refined palette with indigo, pink, lavender, green, gray, and deep blue shades
     const colors = [
       '#F48FB1', '#F06292', '#F8BBD0', // Pink shades
-      '#5C6BC0', '#7986CB', '#E8EAF6', // Indigo shades
       '#B39DDB', '#D1C4E9', '#EDE7F6', // Lavender shades
-      '#388E3C', '#66BB6A', '#81C784', // Medium green shades
-      '#039BE5', '#0288D1', '#1E88E5', // Deep blue shades
-      '#004D40', '#00796B', '#388E3C', // Deep green shades
-      '#90A4AE', '#607D8B', '#455A64', // Grayish blue shades
     ];
   
     // Create a function to generate a random color from the array
@@ -369,7 +364,7 @@ export class ProfileComponent implements OnInit, AfterViewInit {
                   {
                       label: 'Payment Status',
                       data: Object.values(this.chartData.paymentStatus),
-                      backgroundColor: this.generateColors(Object.keys(this.chartData.paymentStatus).length),
+                      backgroundColor:["#69F0AE",'#C2185B'],
                   },
               ],
           }, "Payment Status");
