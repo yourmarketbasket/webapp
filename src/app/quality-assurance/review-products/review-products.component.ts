@@ -6,7 +6,7 @@ import {MatTableDataSource, MatTableModule} from '@angular/material/table'
 import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { Subject } from 'rxjs';
-import * as moment from 'moment';
+import  moment from 'moment';
 import { OwlOptions } from 'ngx-owl-carousel-o';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from 'src/app/auth.service';

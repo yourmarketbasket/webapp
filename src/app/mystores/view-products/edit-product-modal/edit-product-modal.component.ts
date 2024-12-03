@@ -2,7 +2,7 @@ import { Component, Inject, OnInit, ElementRef, ViewChild, HostListener } from '
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatChip, MatChipInputEvent } from '@angular/material/chips';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import {HttpClient} from '@angular/common/http'
+import { HttpClient } from '@angular/common/http'
 import {Storage, ref, uploadBytesResumable, getDownloadURL} from "@angular/fire/storage"
 import { MasterServiceService } from 'src/app/services/master-service.service';
 
