@@ -19,6 +19,7 @@ export interface Product{
     rejectionReason:string;
   
   }
+//   just a comment
 
 export interface Avatar {
     url: string;
