@@ -8,9 +8,10 @@ import { PaymentDialogComponent } from './payment-dialog/payment-dialog.componen
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-checkout',
-  templateUrl: './checkout.component.html',
-  styleUrls: ['./checkout.component.css']
+    selector: 'app-checkout',
+    templateUrl: './checkout.component.html',
+    styleUrls: ['./checkout.component.css'],
+    standalone: false
 })
 export class CheckoutComponent implements OnInit {
   userId!:any;

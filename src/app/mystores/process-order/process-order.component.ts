@@ -9,9 +9,10 @@ import { Order } from 'src/app/Interfaces/interfaces-master-file';
 
 
 @Component({
-  selector: 'app-process-order',
-  templateUrl: './process-order.component.html',
-  styleUrls: ['./process-order.component.css']
+    selector: 'app-process-order',
+    templateUrl: './process-order.component.html',
+    styleUrls: ['./process-order.component.css'],
+    standalone: false
 })
 export class ProcessOrderComponent implements OnInit{
   @ViewChild(MatPaginator) paginator!: MatPaginator;

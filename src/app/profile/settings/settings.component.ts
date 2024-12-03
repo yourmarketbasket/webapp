@@ -5,9 +5,10 @@ import { currencyArray } from 'src/app/services/currency';
 import { MasterServiceService } from 'src/app/services/master-service.service';
 
 @Component({
-  selector: 'app-settings',
-  templateUrl: './settings.component.html',
-  styleUrls: ['./settings.component.css']
+    selector: 'app-settings',
+    templateUrl: './settings.component.html',
+    styleUrls: ['./settings.component.css'],
+    standalone: false
 })
 export class SettingsComponent implements OnInit {
   userid!:any;

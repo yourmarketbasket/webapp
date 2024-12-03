@@ -5,9 +5,10 @@ import { SharedDataService } from 'src/app/services/shared-data.service';
 import { SocketService } from 'src/app/services/socket.service';
 
 @Component({
-  selector: 'app-categories',
-  templateUrl: './categories.component.html',
-  styleUrls: ['./categories.component.css']
+    selector: 'app-categories',
+    templateUrl: './categories.component.html',
+    styleUrls: ['./categories.component.css'],
+    standalone: false
 })
 export class CategoriesComponent implements OnInit {
   category!:string;

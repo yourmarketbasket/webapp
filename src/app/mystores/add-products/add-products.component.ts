@@ -9,9 +9,10 @@ import { MatChipInputEvent } from '@angular/material/chips';
 import { UploadService } from 'src/app/services/upload.service';
 
 @Component({
-  selector: 'app-add-products',
-  templateUrl: './add-products.component.html',
-  styleUrls: ['./add-products.component.css']
+    selector: 'app-add-products',
+    templateUrl: './add-products.component.html',
+    styleUrls: ['./add-products.component.css'],
+    standalone: false
 })
 export class AddProductsComponent implements OnInit {
   @ViewChild('stepper') stepper!: MatStepper;

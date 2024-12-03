@@ -4,9 +4,10 @@ import { SocketService } from 'src/app/services/socket.service';
 import { AuthService } from 'src/app/auth.service';
 
 @Component({
-  selector: 'app-qa-sidebar',
-  templateUrl: './qa-sidebar.component.html',
-  styleUrls: ['./qa-sidebar.component.css']
+    selector: 'app-qa-sidebar',
+    templateUrl: './qa-sidebar.component.html',
+    styleUrls: ['./qa-sidebar.component.css'],
+    standalone: false
 })
 export class QaSidebarComponent implements OnInit {
     avatar = "";

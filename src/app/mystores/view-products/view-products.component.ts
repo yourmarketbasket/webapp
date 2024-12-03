@@ -13,9 +13,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { EditProductModalComponent } from './edit-product-modal/edit-product-modal.component';
 
 @Component({
-  selector: 'app-view-products',
-  templateUrl: './view-products.component.html',
-  styleUrls: ['./view-products.component.css']
+    selector: 'app-view-products',
+    templateUrl: './view-products.component.html',
+    styleUrls: ['./view-products.component.css'],
+    standalone: false
 })
 export class ViewProductsComponent implements OnInit{
   // viewchild

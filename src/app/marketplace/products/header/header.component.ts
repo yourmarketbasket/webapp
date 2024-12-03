@@ -9,105 +9,102 @@ import { debounceTime } from 'rxjs';
 
 
 @Component({
-  selector: 'app-products-header',
-  templateUrl: './header.component.html',
-  styleUrls: ['./header.component.css'],
-  animations: [
-    trigger('iconAnimationExitToApp', [
-      state('up', style({
-        transform: 'translateY(-10px)' // Adjust the distance as needed for initial position
-      })),
-      state('down', style({
-        transform: 'translateY(0)'
-      })),
-      transition('up <=> down', [
-        animate('500ms ease-in-out', keyframes([
-          style({ transform: 'translateY(-10px)', offset: 0 }), // Initial position
-          style({ transform: 'translateY(0)', offset: 0.25 }), // Bounce up
-          style({ transform: 'translateY(-5px)', offset: 0.5 }), // Bounce down less
-          style({ transform: 'translateY(0)', offset: 0.75 }), // Bounce up again
-          style({ transform: 'translateY(-2px)', offset: 0.85 }), // Bounce down less
-          style({ transform: 'translateY(0)', offset: 1 }) // Final position
-        ]))
-      ]),
-      transition('* => down', [
-        animate('500ms ease-in-out', keyframes([
-          style({ transform: 'translateY(0)', offset: 0 }), // Initial position
-          style({ transform: 'translateY(-5px)', offset: 0.25 }), // Bounce up
-          style({ transform: 'translateY(-10px)', offset: 0.5 }), // Bounce down less
-          style({ transform: 'translateY(-5px)', offset: 0.75 }), // Bounce up again
-          style({ transform: 'translateY(0)', offset: 1 }) // Final position
-        ]))
-      ]) // Adjust duration and easing as needed
-    ]),
-    trigger('iconAnimationNotificationsNone', [
-      state('up', style({
-        transform: 'translateY(-10px)' // Adjust the distance as needed for initial position
-      })),
-      state('down', style({
-        transform: 'translateY(0)'
-      })),
-      transition('up <=> down', [
-        animate('500ms ease-in-out', keyframes([
-          style({ transform: 'translateY(-10px)', offset: 0 }), // Initial position
-          style({ transform: 'translateY(0)', offset: 0.25 }), // Bounce up
-          style({ transform: 'translateY(-5px)', offset: 0.5 }), // Bounce down less
-          style({ transform: 'translateY(0)', offset: 0.75 }), // Bounce up again
-          style({ transform: 'translateY(-2px)', offset: 0.85 }), // Bounce down less
-          style({ transform: 'translateY(0)', offset: 1 }) // Final position
-        ]))
-      ]),
-      transition('* => down', [
-        animate('500ms ease-in-out', keyframes([
-          style({ transform: 'translateY(0)', offset: 0 }), // Initial position
-          style({ transform: 'translateY(-5px)', offset: 0.25 }), // Bounce up
-          style({ transform: 'translateY(-10px)', offset: 0.5 }), // Bounce down less
-          style({ transform: 'translateY(-5px)', offset: 0.75 }), // Bounce up again
-          style({ transform: 'translateY(0)', offset: 1 }) // Final position
-        ]))
-      ]) // Adjust duration and easing as needed
-    ]),
-    trigger('iconAnimationShoppingCart', [
-      state('up', style({
-        transform: 'translateY(-10px)' // Adjust the distance as needed for initial position
-      })),
-      state('down', style({
-        transform: 'translateY(0)'
-      })),
-      transition('up <=> down', [
-        animate('500ms ease-in-out', keyframes([
-          style({ transform: 'translateY(-10px)', offset: 0 }), // Initial position
-          style({ transform: 'translateY(0)', offset: 0.25 }), // Bounce up
-          style({ transform: 'translateY(-5px)', offset: 0.5 }), // Bounce down less
-          style({ transform: 'translateY(0)', offset: 0.75 }), // Bounce up again
-          style({ transform: 'translateY(-2px)', offset: 0.85 }), // Bounce down less
-          style({ transform: 'translateY(0)', offset: 1 }) // Final position
-        ]))
-      ]),
-      transition('* => down', [
-        animate('500ms ease-in-out', keyframes([
-          style({ transform: 'translateY(0)', offset: 0 }), // Initial position
-          style({ transform: 'translateY(-5px)', offset: 0.25 }), // Bounce up
-          style({ transform: 'translateY(-10px)', offset: 0.5 }), // Bounce down less
-          style({ transform: 'translateY(-5px)', offset: 0.75 }), // Bounce up again
-          style({ transform: 'translateY(0)', offset: 1 }) // Final position
-        ]))
-      ])
-    ])
-    
-    ,    
-    trigger('avatarAnimation', [
-      state('large', style({
-        transform: 'scale(1.2)' // Increase size by 10%
-      })),
-      state('small', style({
-        transform: 'scale(1)' // Original size
-      })),
-      transition('small <=> large', animate('200ms ease-in-out')) // Adjust duration and easing as needed
-    ]),
-    
-
-  ]
+    selector: 'app-products-header',
+    templateUrl: './header.component.html',
+    styleUrls: ['./header.component.css'],
+    animations: [
+        trigger('iconAnimationExitToApp', [
+            state('up', style({
+                transform: 'translateY(-10px)' // Adjust the distance as needed for initial position
+            })),
+            state('down', style({
+                transform: 'translateY(0)'
+            })),
+            transition('up <=> down', [
+                animate('500ms ease-in-out', keyframes([
+                    style({ transform: 'translateY(-10px)', offset: 0 }), // Initial position
+                    style({ transform: 'translateY(0)', offset: 0.25 }), // Bounce up
+                    style({ transform: 'translateY(-5px)', offset: 0.5 }), // Bounce down less
+                    style({ transform: 'translateY(0)', offset: 0.75 }), // Bounce up again
+                    style({ transform: 'translateY(-2px)', offset: 0.85 }), // Bounce down less
+                    style({ transform: 'translateY(0)', offset: 1 }) // Final position
+                ]))
+            ]),
+            transition('* => down', [
+                animate('500ms ease-in-out', keyframes([
+                    style({ transform: 'translateY(0)', offset: 0 }), // Initial position
+                    style({ transform: 'translateY(-5px)', offset: 0.25 }), // Bounce up
+                    style({ transform: 'translateY(-10px)', offset: 0.5 }), // Bounce down less
+                    style({ transform: 'translateY(-5px)', offset: 0.75 }), // Bounce up again
+                    style({ transform: 'translateY(0)', offset: 1 }) // Final position
+                ]))
+            ]) // Adjust duration and easing as needed
+        ]),
+        trigger('iconAnimationNotificationsNone', [
+            state('up', style({
+                transform: 'translateY(-10px)' // Adjust the distance as needed for initial position
+            })),
+            state('down', style({
+                transform: 'translateY(0)'
+            })),
+            transition('up <=> down', [
+                animate('500ms ease-in-out', keyframes([
+                    style({ transform: 'translateY(-10px)', offset: 0 }), // Initial position
+                    style({ transform: 'translateY(0)', offset: 0.25 }), // Bounce up
+                    style({ transform: 'translateY(-5px)', offset: 0.5 }), // Bounce down less
+                    style({ transform: 'translateY(0)', offset: 0.75 }), // Bounce up again
+                    style({ transform: 'translateY(-2px)', offset: 0.85 }), // Bounce down less
+                    style({ transform: 'translateY(0)', offset: 1 }) // Final position
+                ]))
+            ]),
+            transition('* => down', [
+                animate('500ms ease-in-out', keyframes([
+                    style({ transform: 'translateY(0)', offset: 0 }), // Initial position
+                    style({ transform: 'translateY(-5px)', offset: 0.25 }), // Bounce up
+                    style({ transform: 'translateY(-10px)', offset: 0.5 }), // Bounce down less
+                    style({ transform: 'translateY(-5px)', offset: 0.75 }), // Bounce up again
+                    style({ transform: 'translateY(0)', offset: 1 }) // Final position
+                ]))
+            ]) // Adjust duration and easing as needed
+        ]),
+        trigger('iconAnimationShoppingCart', [
+            state('up', style({
+                transform: 'translateY(-10px)' // Adjust the distance as needed for initial position
+            })),
+            state('down', style({
+                transform: 'translateY(0)'
+            })),
+            transition('up <=> down', [
+                animate('500ms ease-in-out', keyframes([
+                    style({ transform: 'translateY(-10px)', offset: 0 }), // Initial position
+                    style({ transform: 'translateY(0)', offset: 0.25 }), // Bounce up
+                    style({ transform: 'translateY(-5px)', offset: 0.5 }), // Bounce down less
+                    style({ transform: 'translateY(0)', offset: 0.75 }), // Bounce up again
+                    style({ transform: 'translateY(-2px)', offset: 0.85 }), // Bounce down less
+                    style({ transform: 'translateY(0)', offset: 1 }) // Final position
+                ]))
+            ]),
+            transition('* => down', [
+                animate('500ms ease-in-out', keyframes([
+                    style({ transform: 'translateY(0)', offset: 0 }), // Initial position
+                    style({ transform: 'translateY(-5px)', offset: 0.25 }), // Bounce up
+                    style({ transform: 'translateY(-10px)', offset: 0.5 }), // Bounce down less
+                    style({ transform: 'translateY(-5px)', offset: 0.75 }), // Bounce up again
+                    style({ transform: 'translateY(0)', offset: 1 }) // Final position
+                ]))
+            ])
+        ]),
+        trigger('avatarAnimation', [
+            state('large', style({
+                transform: 'scale(1.2)' // Increase size by 10%
+            })),
+            state('small', style({
+                transform: 'scale(1)' // Original size
+            })),
+            transition('small <=> large', animate('200ms ease-in-out')) // Adjust duration and easing as needed
+        ]),
+    ],
+    standalone: false
 })
 export class HeaderComponent implements OnInit {
   

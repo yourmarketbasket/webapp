@@ -4,9 +4,10 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-verify',
-  templateUrl: './verify.component.html',
-  styleUrls: ['./verify.component.css']
+    selector: 'app-verify',
+    templateUrl: './verify.component.html',
+    styleUrls: ['./verify.component.css'],
+    standalone: false
 })
 export class VerifyComponent implements OnInit {
 

@@ -9,9 +9,10 @@ import { computeExpectedGrossProfit, computeNumberOfApprovedItems, computeNumber
 import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
 
 @Component({
-  selector: 'app-manage-stores',
-  templateUrl: './manage-stores.component.html',
-  styleUrls: ['./manage-stores.component.css']
+    selector: 'app-manage-stores',
+    templateUrl: './manage-stores.component.html',
+    styleUrls: ['./manage-stores.component.css'],
+    standalone: false
 })
 export class ManageStoresComponent implements OnInit {
   title = 'Manage Stores';

@@ -4,9 +4,10 @@ import { AuthService } from '../auth.service';
 import { Router, Route} from '@angular/router';
 
 @Component({
-  selector: 'app-reset-password',
-  templateUrl: './reset-password.component.html',
-  styleUrls: ['./reset-password.component.css']
+    selector: 'app-reset-password',
+    templateUrl: './reset-password.component.html',
+    styleUrls: ['./reset-password.component.css'],
+    standalone: false
 })
 export class ResetPasswordComponent {
   constructor(private auth: AuthService, private router: Router){}

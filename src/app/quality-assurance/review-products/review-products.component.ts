@@ -35,10 +35,10 @@ interface Product{
 
 
 @Component({
-  selector: 'app-review-products',
-  templateUrl: './review-products.component.html',
-  styleUrls: ['./review-products.component.css']
-  
+    selector: 'app-review-products',
+    templateUrl: './review-products.component.html',
+    styleUrls: ['./review-products.component.css'],
+    standalone: false
 })
 
 

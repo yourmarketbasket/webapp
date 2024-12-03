@@ -23,9 +23,10 @@ import * as XLSX from 'xlsx';
 import { jsPDF } from 'jspdf';
 
 @Component({
-  selector: 'app-stores-dashboard',
-  templateUrl: './stores-dashboard.component.html',
-  styleUrls: ['./stores-dashboard.component.css'],
+    selector: 'app-stores-dashboard',
+    templateUrl: './stores-dashboard.component.html',
+    styleUrls: ['./stores-dashboard.component.css'],
+    standalone: false
 })
 export class StoresDashboardComponent implements OnInit, AfterViewInit{
   @ViewChild('componentoutlet', { read: ViewContainerRef }) componentOutlet!: ViewContainerRef;

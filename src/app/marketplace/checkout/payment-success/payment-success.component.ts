@@ -3,9 +3,10 @@ import { ActivatedRoute } from '@angular/router';
 import { MasterServiceService } from 'src/app/services/master-service.service';
 
 @Component({
-  selector: 'app-payment-success',
-  templateUrl: './payment-success.component.html',
-  styleUrls: ['./payment-success.component.css']
+    selector: 'app-payment-success',
+    templateUrl: './payment-success.component.html',
+    styleUrls: ['./payment-success.component.css'],
+    standalone: false
 })
 export class PaymentSuccessComponent implements OnInit{
   trackingid!:any;

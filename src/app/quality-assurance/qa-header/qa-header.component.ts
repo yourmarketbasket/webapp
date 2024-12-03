@@ -3,9 +3,10 @@ import {SocketService} from '../../services/socket.service';
 import {AuthService} from '../../auth.service';
 import { MasterServiceService } from 'src/app/services/master-service.service';
 @Component({
-  selector: 'app-qa-header',
-  templateUrl: './qa-header.component.html',
-  styleUrls: ['./qa-header.component.css']
+    selector: 'app-qa-header',
+    templateUrl: './qa-header.component.html',
+    styleUrls: ['./qa-header.component.css'],
+    standalone: false
 })
 export class QaHeaderComponent implements OnInit{
   connectedUser = '';

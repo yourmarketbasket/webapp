@@ -15,10 +15,11 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 @Component({
-  selector: 'app-orders',
-  templateUrl: './orders.component.html',
-  styleUrls: ['./orders.component.css'],
-  encapsulation: ViewEncapsulation.None
+    selector: 'app-orders',
+    templateUrl: './orders.component.html',
+    styleUrls: ['./orders.component.css'],
+    encapsulation: ViewEncapsulation.None,
+    standalone: false
 })
 
 export class OrdersComponent implements OnInit, AfterViewInit {

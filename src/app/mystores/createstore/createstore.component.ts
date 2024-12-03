@@ -9,9 +9,10 @@ import {SocketService} from '../../services/socket.service';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-createstore',
-  templateUrl: './createstore.component.html',
-  styleUrls: ['./createstore.component.css']
+    selector: 'app-createstore',
+    templateUrl: './createstore.component.html',
+    styleUrls: ['./createstore.component.css'],
+    standalone: false
 })
 
 export class CreatestoreComponent implements OnInit{

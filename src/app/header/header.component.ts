@@ -3,9 +3,10 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { SocketService } from 'src/app/services/socket.service';
 import { AuthService } from 'src/app/auth.service';
 @Component({
-  selector: 'app-header',
-  templateUrl: './header.component.html',
-  styleUrls: ['./header.component.css']
+    selector: 'app-header',
+    templateUrl: './header.component.html',
+    styleUrls: ['./header.component.css'],
+    standalone: false
 })
 export class HeaderComponent implements OnInit {
     @Output() toggleSideBar = new EventEmitter<any>();

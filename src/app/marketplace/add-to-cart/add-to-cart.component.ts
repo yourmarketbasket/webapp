@@ -3,9 +3,10 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-add-to-cart',
-  templateUrl: './add-to-cart.component.html',
-  styleUrls: ['./add-to-cart.component.css']
+    selector: 'app-add-to-cart',
+    templateUrl: './add-to-cart.component.html',
+    styleUrls: ['./add-to-cart.component.css'],
+    standalone: false
 })
 export class AddToCartComponent {
   constructor(

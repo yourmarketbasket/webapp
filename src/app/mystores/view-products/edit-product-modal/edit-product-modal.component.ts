@@ -8,9 +8,10 @@ import { MasterServiceService } from 'src/app/services/master-service.service';
 
 
 @Component({
-  selector: 'app-edit-product-modal',
-  templateUrl: './edit-product-modal.component.html',
-  styleUrls: ['./edit-product-modal.component.css']
+    selector: 'app-edit-product-modal',
+    templateUrl: './edit-product-modal.component.html',
+    styleUrls: ['./edit-product-modal.component.css'],
+    standalone: false
 })
 export class EditProductModalComponent implements OnInit{
   // properties

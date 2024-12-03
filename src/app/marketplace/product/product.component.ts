@@ -10,9 +10,10 @@ import { SocketService } from 'src/app/services/socket.service';
 import { SharedDataService } from 'src/app/services/shared-data.service';
 
 @Component({
-  selector: 'app-product',
-  templateUrl: './product.component.html',
-  styleUrls: ['./product.component.css']
+    selector: 'app-product',
+    templateUrl: './product.component.html',
+    styleUrls: ['./product.component.css'],
+    standalone: false
 })
 export class ProductComponent implements OnInit{
 

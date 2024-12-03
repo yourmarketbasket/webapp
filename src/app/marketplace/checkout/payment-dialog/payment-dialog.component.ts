@@ -4,9 +4,10 @@ import { Router } from '@angular/router';
 import { MasterServiceService } from 'src/app/services/master-service.service';
 
 @Component({
-  selector: 'app-payment-dialog',
-  templateUrl: './payment-dialog.component.html',
-  styleUrls: ['./payment-dialog.component.css']
+    selector: 'app-payment-dialog',
+    templateUrl: './payment-dialog.component.html',
+    styleUrls: ['./payment-dialog.component.css'],
+    standalone: false
 })
 export class PaymentDialogComponent implements OnInit{
   iframurl!:any;

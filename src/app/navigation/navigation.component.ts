@@ -8,30 +8,31 @@ import { trigger, transition, style, animate, state } from '@angular/animations'
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 @Component({
-  selector: 'app-navigation',
-  templateUrl: './navigation.component.html',
-  styleUrls: ['./navigation.component.css'],
-  animations: [
-    trigger('hamburgerAnimation', [
-      state('closed', style({
-        transform: 'rotate(0deg)'
-      })),
-      state('open', style({
-        transform: 'rotate(-180deg)'
-      })),
-      transition('closed <=> open', [
-        animate('0.3s ease-out', style({
-          transform: 'rotate(-180deg)'
-        })),
-        animate('0.3s ease-out', style({
-          transform: 'rotate(-360deg)'
-        })),
-        animate('0.3s ease-out', style({
-          transform: 'rotate(-180deg)'
-        })),
-      ])
-    ])
-  ]
+    selector: 'app-navigation',
+    templateUrl: './navigation.component.html',
+    styleUrls: ['./navigation.component.css'],
+    animations: [
+        trigger('hamburgerAnimation', [
+            state('closed', style({
+                transform: 'rotate(0deg)'
+            })),
+            state('open', style({
+                transform: 'rotate(-180deg)'
+            })),
+            transition('closed <=> open', [
+                animate('0.3s ease-out', style({
+                    transform: 'rotate(-180deg)'
+                })),
+                animate('0.3s ease-out', style({
+                    transform: 'rotate(-360deg)'
+                })),
+                animate('0.3s ease-out', style({
+                    transform: 'rotate(-180deg)'
+                })),
+            ])
+        ])
+    ],
+    standalone: false
 })
 export class NavigationComponent {
   @ViewChild('sidenav', {static: true}) sidenav!: MatSidenav;

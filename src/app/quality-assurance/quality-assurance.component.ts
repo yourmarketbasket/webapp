@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-quality-assurance',
-  templateUrl: './quality-assurance.component.html',
-  styleUrls: ['./quality-assurance.component.css']
+    selector: 'app-quality-assurance',
+    templateUrl: './quality-assurance.component.html',
+    styleUrls: ['./quality-assurance.component.css'],
+    standalone: false
 })
 export class QualityAssuranceComponent implements OnInit {
   title = "Review Store";

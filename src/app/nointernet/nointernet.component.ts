@@ -3,9 +3,10 @@ import { MatDialogRef } from '@angular/material/dialog';
 
 
 @Component({
-  selector: 'app-nointernet',
-  templateUrl: './nointernet.component.html',
-  styleUrls: ['./nointernet.component.css']
+    selector: 'app-nointernet',
+    templateUrl: './nointernet.component.html',
+    styleUrls: ['./nointernet.component.css'],
+    standalone: false
 })
 export class NointernetComponent{
 
