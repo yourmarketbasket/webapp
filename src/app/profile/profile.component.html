@@ -1,0 +1,187 @@
+<!-- edit info fab -->
+<button *ngIf="verified" mat-fab  class="editinfofab" (click)="editUserInfo()"><mat-icon>edit</mat-icon></button>
+<div class="welcomediv"*ngIf="verified">
+    <small *ngIf="name" class="welcome"> Hi {{name}}, Welcome to your profile</small>
+
+</div>
+
+
+
+<!-- the profile owner detalls header -->
+ <div *ngIf="!name" style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; width: 100vw;">
+  <mat-spinner strokeWidth="1"></mat-spinner>
+ </div>
+<div *ngIf="!verified && name" class="verificationpanel">
+  <h3  class="welcome"> Hi {{name}}, Welcome to your profile</h3>
+  <h5 *ngIf="name">Unfortunately your profile is not yet Verified. To proceed, please verify your mobile number.</h5>
+  <button (click)="openVerificationDialog()" mat-button mat-stroked-button>verify</button>
+</div>
+<div class="profile">    
+    <div class="profileinfoandmap" style="display: flex; flex-direction: column; width: 40%; flex:40%; margin: 10px; ">
+        <div class="profileinfomanagement">
+            <div class="profilemanagementrow">
+                <div class="avatardetailscolumn">
+                    <div class="avatardetails">
+                        <img [src]="avatar" alt="" class="useravatar">                    
+                    </div>     
+                    <hr>
+                    <div style="display: flex; flex-direction: row; justify-content: space-between;">
+                        <mat-slide-toggle color="accent"
+                        [checked]="approved"
+                        [disabled]="approved?false:true">
+                        Approved
+                    </mat-slide-toggle> 
+                    <span style="margin: 5px; vertical-align: middle;">|</span>
+                    <mat-slide-toggle color="primary"
+                        [checked]="verified"
+                        [disabled]="verified?false:true">
+                        Verified
+                    </mat-slide-toggle> 
+                    </div>               
+                </div>
+                <div style="display: flex; flex-direction: column;" class="profileinfodetails">
+                    <span style="font-weight: 800; font-size: xx-large; color: #536dfe">{{name}}</span>
+                    <hr>
+                    <div style="display: flex; flex-direction: row; font-size: 13px; vertical-align: middle; justify-content: center; align-items: center;">
+                        Rating ({{rating}}): 
+                        <div class="stars">
+                            <mat-icon *ngFor="let i of range(rating)" style="transform: scale(0.7)">
+                              star
+                            </mat-icon>
+                            <mat-icon *ngIf="rating % 1 > 0"style="transform: scale(0.7)">
+                              star_half
+                            </mat-icon>
+                            <mat-icon *ngFor="let i of range(5 - rating)"style="transform: scale(0.7)">
+                              star_border
+                            </mat-icon>
+                          </div>
+                    </div>
+                    <div style="display: flex; flex-direction: column;">
+                        <span style="font-size: 12px;"><mat-icon style="vertical-align: middle; transform: scale(0.8); color:#ff6c9e;">phone</mat-icon>({{zipcode}}){{phone}}</span>
+                        <span style="font-size: 12px;"><mat-icon style="vertical-align: middle; transform: scale(0.8); color:#ff6c9e;">location_city</mat-icon>{{address}}  {{city}}</span>   
+                    </div> 
+                    <div style="display: flex; flex-direction: column;">
+                        <span *ngIf="active" style="font-size: 12px;"><mat-icon style="vertical-align: middle; transform: scale(0.8); color:#ffc96f;">card_membership</mat-icon>Member for {{calculateTimeDifference(registered)}}</span>                        
+                    </div> 
+                    <div style="display: flex; flex-direction: column;">
+                        <span *ngIf="active" style="font-size: 12px;"><mat-icon style="vertical-align: middle; transform: scale(0.8); color:#1fb883;">brightness_1</mat-icon>{{active?"Active":"Dormant"}}</span>                        
+                    </div> 
+                    <div style="display: flex; flex-direction: column;">
+                       <button mat-stroked-button  color="primary"><mat-icon>edit_attributes</mat-icon>EDIT INFO</button>                     
+                    </div> 
+    
+                                        
+                </div>
+            </div>        
+        </div> 
+        
+        <div class="userlocationmap">
+            <iframe                
+                *ngIf="mapurl && location"
+                [src]="mapurl"
+                allowfullscreen=""
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+        </div>
+        
+    </div>
+    
+    <div class="ordersandstores" style="display: flex; margin: 10px;">
+        <div class="ordersmanagement" *ngIf="!orders" style="display: flex; flex-direction: row; justify-content: center; align-items: center; height: 20vh; width: 100%;">
+            <span><mat-icon color="accent" style="vertical-align: middle;">warning</mat-icon>No Orders Yet!</span>
+        </div>
+        <div style="display: flex; flex-direction: column;" >
+          <div class="header">
+            <span nz-icon nzType="shopping" nzTheme="outline"></span>My Orders
+          </div>
+          
+          <div class="ordersCharts" style="padding: 20px;">
+            <div style="flex: 1 1 45%; max-width: 48%; display: flex; justify-content: center; align-items: center;">
+              <canvas #chartCanvas>{{chart}}</canvas>
+            </div>
+            <div style="flex: 1 1 45%; max-width: 48%; display: flex; justify-content: center; align-items: center;">
+              <canvas #piechart>{{chart}}</canvas>
+            </div>
+          </div>
+           
+          <mat-table [dataSource]="dataSource"  class="mat-elevation-z8">
+            <!-- Transaction ID Column -->
+            <ng-container matColumnDef="transactionId">
+              <mat-header-cell *matHeaderCellDef> TID </mat-header-cell>
+              <mat-cell *matCellDef="let data"> {{data.transactionID}} </mat-cell>
+            </ng-container>
+          
+            <!-- Payment Column -->
+            <ng-container matColumnDef="payment">
+              <mat-header-cell *matHeaderCellDef> Payment </mat-header-cell>
+              <mat-cell *matCellDef="let data"> 
+                <small *ngIf="data.paymentStatus=='Failed'" class="status-failed">{{data.paymentStatus.toUpperCase()}}</small>
+                <small *ngIf="data.paymentStatus=='Completed'" class="status-completed">{{data.paymentStatus.toUpperCase()}}</small>
+                <small *ngIf="data.paymentStatus=='Pending'" class="status-pending">{{data.paymentStatus.toUpperCase()}}</small>               
+              
+              </mat-cell>
+            </ng-container>
+          
+            <!-- Order Status Column -->
+            <ng-container matColumnDef="orderStatus">
+              <mat-header-cell *matHeaderCellDef> Order Status </mat-header-cell>
+              <mat-cell *matCellDef="let data"> 
+                <small *ngIf="data.overallStatus=='failed'" class="status-failed">{{data.overallStatus.toUpperCase()}}</small>
+                <small *ngIf="data.overallStatus=='processing'" class="status-processing">{{data.overallStatus.toUpperCase()}}</small>
+                <small *ngIf="data.overallStatus=='confirmed'" class="status-confirm">{{data.overallStatus.toUpperCase()}}</small> 
+                <small *ngIf="data.overallStatus=='packed'" class="status-packed">{{data.overallStatus.toUpperCase()}}</small> 
+                <small *ngIf="data.overallStatus=='dispatched'" class="status-dispatched">{{data.overallStatus.toUpperCase()}}</small> 
+                <small *ngIf="data.overallStatus=='delivered'" class="status-delivered">{{data.overallStatus.toUpperCase()}}</small> 
+                <small *ngIf="data.overallStatus=='completed'" class="status-completed">{{data.overallStatus.toUpperCase()}}</small> 
+                <small *ngIf="data.overallStatus=='processing'" class="status-processing">{{data.overallStatus.toUpperCase()}}</small> 
+                <small *ngIf="data.overallStatus=='partialCompleted'" class="status-partialCompleted">{{data.overallStatus.toUpperCase()}}</small> 
+
+
+
+
+
+
+              </mat-cell>
+            </ng-container>
+          
+            <!-- Total Column -->
+            <ng-container matColumnDef="total">
+              <mat-header-cell *matHeaderCellDef> Total </mat-header-cell>
+              <mat-cell *matCellDef="let data"> {{data.amount | currency: ' '}} </mat-cell>
+            </ng-container>
+          
+            <!-- Header Row -->
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          
+            <!-- Data Row -->
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+          </mat-table>
+          
+          
+          <mat-paginator #ordersPaginator
+                        [pageSizeOptions]="[5, 10]"
+                        showFirstLastButtons>
+          </mat-paginator>
+        </div>
+        <div style="margin: 10px;">
+          
+          <div class="ordersCharts" style="padding: 20px; display: flex; flex-direction: column; justify-content: space-between; height: max-content;">
+            <div class="header">
+              <span nz-icon nzType="shop" nzTheme="outline"></span>My Stores
+            </div>
+            <div style="flex: 1 1 50%; display: flex;max-height: 35%; justify-content: center; align-items: center;">
+              <canvas #storePieChart>{{chart}}</canvas>
+            </div>
+            <div style="flex: 1 1 50%; min-height: 60%; display: flex; justify-content: center; align-items: center;">
+              <canvas height="300" #storeBarChart>{{chart}}</canvas>
+            </div>
+            
+          </div>
+        </div>
+        
+        
+        
+    </div>
+    
+</div>

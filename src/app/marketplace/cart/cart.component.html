@@ -1,0 +1,64 @@
+<div class="body">
+    <mat-spinner *ngIf="!cartitems" strokeWidth="2" diameter="80"></mat-spinner>
+    <!-- the table and column -->
+    <div *ngIf="cartitems" class="mainsection">
+
+        <div class="cart-details">
+            <div *ngFor="let item of cartitems; let i=index;"class="cart-items"> 
+                <!-- major row -->
+                <div class="major-row">
+                    <div class="avatar">
+                        <img (click)="viewProduct(item.productid)" class="pimage" src="{{item.avatar[0]}}" alt="">
+                    </div>
+                    <div class="pdetails">
+                        <div class="pname"><h3>{{item.productname}} Model: {{item.productmodel}}</h3></div>
+                        <div class="pcost">
+                            <div class="totalcost">
+                                <small>Total Cost: Ksh   </small><h1>{{item.totalCost.toLocaleString()}}</h1>
+                            </div>                        
+                            <div class="price">
+                                <small><b>Now Ksh {{item.price.toLocaleString()}}</b></small>                            
+                            </div>
+                            <div *ngIf="item.discount" class="originalprice">
+                                <small>Was <s>Ksh {{(100*item.price)/(100-item.discount)}}</s></small> 
+                                <small *ngIf="item.discount" class="discount-price">-{{item.discount}}%</small>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                
+                <div class="pactions">
+                    <button (click)="removeCartItem(item.productid, item.buyerid)" mat-raised-button><mat-icon>delete_outline</mat-icon> REMOVE</button>
+                    <div class="add-or-remove-items-button">
+                        <button [disabled]="(item.quantity==1)" (click)="reduceQuantityByOne(item.productid, item.buyerid, item.available)" mat-raised-button color="accent">-</button>
+                        <span>{{item.quantity}}</span>
+                        <button [disabled]="(item.available==0)" (click)="increaseQuantityByOne(item.productid, item.buyerid, item.available)" mat-raised-button color="primary">+</button>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+
+        
+        <div *ngIf="grandtotal" class="cart-summary">
+            <h2>CART SUMMARY</h2>
+            <div class="totalcostrow">
+                <span>
+                    Product Totals:
+                </span>
+                <span>
+                    Ksh. {{grandtotal.toLocaleString()}}
+                </span>
+            </div>
+            <div class="extradetails">
+                <small>Totals not inclusive of Delivery Fees</small>
+            </div>
+            <div class="checkoutbutton">
+                <button (click)="goToCheckout(grandtotal)" mat-raised-button color="primary">CHECKOUT(Ksh. {{grandtotal.toLocaleString()}})</button>
+            </div>
+        </div>
+    </div>
+   
+   
+</div>

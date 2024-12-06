@@ -1,0 +1,139 @@
+<div class="toprow">
+  <div class="phonenemail">
+    <div
+      style="
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+      "
+    >
+      <span
+        ><mat-icon style="vertical-align: middle">phone</mat-icon>
+        (+254)701650736</span
+      >
+      <div class="vertical-line"></div>
+
+      <span
+        ><mat-icon style="vertical-align: middle">email</mat-icon>
+        support&#64;nisoko.com</span
+      >
+    </div>
+
+    <span>
+      <mat-icon style="vertical-align: middle">person_outline</mat-icon>
+      <a mat-button routerLink="/register">Register</a> or
+      <a mat-button routerLink="/login">Sign in</a>
+      <button type="button" class="btn btn-outline-success" mdbRipple rippleColor="dark">test</button>
+    </span>
+
+  </div>
+</div>
+<div class="header">
+  <div class="searchArea">
+    <span style="cursor: pointer;" routerLink="/" class="title"
+      >nisoko<span style="color: rgb(7, 212, 113)">.</span>
+    </span>
+
+    <form class="searchfield" style="margin: 3px;" (ngSubmit)="searchProduct(searchInput.value)">
+      <input
+        #searchInput
+        (focus)="onSearchFieldFocus()"
+        type="text"
+        placeholder="Search..."
+      />
+      <button class="search-button"><mat-icon>search</mat-icon></button>
+    </form>
+
+    <div *ngIf="isLoggedIn" class="actionsArea">
+      <button
+        mat-icon-button
+        (mouseenter)="toggleIconAnimationExitToApp()"
+        (mouseleave)="toggleIconAnimationExitToApp()"
+        (click)="logoutUser()"
+        mat-icon-button
+      >
+        <mat-icon [@iconAnimationExitToApp]="iconStateExitToApp"
+          >exit_to_app</mat-icon
+        >
+      </button>
+      <button
+        [matMenuTriggerFor]="menu"
+        mat-icon-button
+        (mouseenter)="toggleIconAnimationNotificationsNone()"
+        (mouseleave)="toggleIconAnimationNotificationsNone()"
+        mat-icon-button
+      >
+        <mat-icon
+          [@iconAnimationNotificationsNone]="iconStateNotificationsNone"
+          matBadgeColor="accent"
+          matBadgeSize="small"
+          [matBadge]="numberOfNotifications"
+          matBadgePosition="below after"
+          >notifications_none</mat-icon
+        >
+      </button>
+      <mat-menu  #menu="matMenu" yPosition="below" xPosition="after">
+        <button *ngIf="infoNotification>0" mat-menu-item>
+          <mat-icon matBadgeColor="accent"
+          matBadgeSize="small"
+          [matBadge]="infoNotification"
+          matBadgePosition="above after">notifications_active</mat-icon>
+          <small>Info</small>
+        </button>
+        <button *ngIf="successNotification>0" mat-menu-item>
+          <mat-icon matBadgeColor="accent"
+          matBadgeSize="small"
+          [matBadge]="successNotification"
+          matBadgePosition="above after" style="color: #69F0AE">notifications_active</mat-icon>
+          <button  mat-stroked-button ><small>mark all as read</small></button>
+          <button mat-icon-button  matTooltip="View All"> <mat-icon>arrow_right_alt</mat-icon></button>
+        </button>
+        <button *ngIf="warningNotification>0" mat-menu-item>
+          <mat-icon matBadgeColor="accent"
+          matBadgeSize="small"
+          [matBadge]="warningNotification"
+          matBadgePosition="above after">notifications_active</mat-icon>
+          <small>Warning</small>
+        </button>
+        <button *ngIf="errorNotification>0" mat-menu-item>
+          <mat-icon matBadgeColor="accent"
+          matBadgeSize="small"
+          [matBadge]="errorNotification"
+          matBadgePosition="above after" style="color:#bd124b">error</mat-icon>
+          <button  mat-stroked-button> <small>mark all as read</small></button>
+          <button mat-icon-button matTooltip="View All"> <mat-icon>arrow_right_alt</mat-icon></button>
+        </button>        
+        <span style="width: 100%; display: flex; flex-direction: row; justify-content: center;"><button  mat-stroked-button> <small>view all</small></button></span>
+        
+        
+        
+      </mat-menu>
+      <button *ngIf="numOfItemsInCart"
+        mat-icon-button
+        (mouseenter)="toggleIconAnimationShoppingCart()"
+        (mouseleave)="toggleIconAnimationShoppingCart()"
+        (click)="goToCart()"
+        mat-icon-button
+      >
+        <mat-icon
+          [@iconAnimationShoppingCart]="iconStateShoppingCart"
+          matBadgeColor="accent"
+          matBadgeSize="small"
+          [matBadge]="numOfItemsInCart"
+          matBadgePosition="below after"
+          >shopping_cart</mat-icon
+        >
+      </button>
+
+      <div
+        (click)="gotoDashboard()"
+        class="avatar"
+        (mouseenter)="toggleAvatarAnimation()"
+        (mouseleave)="toggleAvatarAnimation()"
+      >
+        <img class="" [src]="userPic" alt="" [@avatarAnimation]="avatarState" />
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,85 @@
+<div class="checkoutbody">
+    <div *ngIf="!totalCost" class="loadingspinner">
+        <mat-spinner strokeWidth="1"></mat-spinner>
+    </div>
+    <div class="whitebackground">
+        <div class="checkout-header">
+            <span>CHECKOUT</span>        
+        </div>
+        
+        <div class="split">
+            <div *ngIf="totalCost" class="checkout-summary mat-elevation-z8">
+                <h1>Checkout Summary</h1>
+                <hr>
+                <div class="summarydetails">
+                    <span><b>Description</b></span>
+                    <span><b>Amount(KES)</b></span>
+                </div>
+                <div class="summarydetails">
+                    <span>Cart Total({{cartItems.length}})</span>
+                    <span>{{totalCost.toLocaleString('en-us')}}/=</span>
+                </div>
+                <div class="summarydetails">
+                    <span>Logistics</span>
+                    <span>{{logisticFee.toLocaleString('en-us')}}/=</span>
+                </div>
+                <div class="summarydetails">
+                    <span><b>Grand Total</b></span>
+                    <span><b>{{(logisticFee+totalCost).toLocaleString('en-us')}}/=</b></span>
+                </div>
+                <hr>
+                
+                <span *ngIf="totalDistance"><b>Distance:</b> {{totalDistance}} Km</span>
+                <span *ngIf="eta" ><b>ETA:</b>  {{eta.months?eta.months+" months":""}} {{eta.weeks?eta.weeks+" weeks":""}} {{eta.days?eta.days+" days":""}} {{eta.hours?eta.hours+" hours":""}}</span>
+                <span style="width: 100%;" *ngIf="logisticFee">
+                    <hr>
+                </span>
+                <mat-checkbox [(ngModel)]="accepttncs" style="margin:2%" class="accepttns">Accept Terms and Conditions</mat-checkbox>
+                <button [disabled]="!accepttncs" (click)="completeCheckout(logisticFee+totalCost)" *ngIf="logisticFee && buyerLocation" mat-stroked-button color="accent">COMPLETE CHECKOUT</button>
+            </div>
+            <div  class="checkout-location mat-elevation-z8">
+                <h1>Location</h1>
+                <!-- <small *ngIf="buyerLocation">My Location: {{buyerLocation.latitude}} {{buyerLocation.longitude}}</small> -->
+                <small *ngIf="mapfeedback">{{mapfeedback}}</small>
+                <hr>
+                <div class="deliverydetails">
+                    <div class="location">
+                            <form [formGroup]="locationForm" class="location_form_fields">
+                                <small *ngIf="savedBuyerAddress" style="color:red; width: 100%; text-align: center;"><sup>*</sup> You already have a saved address, to change, please use Nisoko Mobile App</small>
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Location</mat-label>
+                                    <mat-select formControlName="selection" #selection (selectionChange)="selectionPref($event)">
+                                        <mat-option *ngIf="!savedBuyerAddress" value="1">Enter Location</mat-option>
+                                        <mat-option *ngIf="savedBuyerAddress" value="2">Current Location</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <mat-form-field appearance="outline" *ngIf="!savedBuyerAddress">
+                                    <mat-label>Start typing to select...</mat-label>
+                                    <input #locationField formControlName="locationField" matInput type="text">
+                                </mat-form-field>
+                                <div class="preview_delivery_details">
+                                    <button (click)="preview()" mat-raised-button color="primary">Preview Delivery Time</button>
+                                </div>                        
+                            </form>                           
+                        
+                    </div>
+                    <div class="estimatedduration">
+                        <iframe class="mat-elevation-z8" *ngIf="mapUrl && buyerLocation" [src]="mapUrl" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>                       
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="buyerLocation" style="text-align: left; font-size: small; width: 100%;">
+            <span style="color:red;">* Please confirm that the map shows your correct location before proceeding. <br> * If your current location is not correctly displayed, enter your location on the field provided and preview again</span>
+
+        </div>
+        
+        <div class="checkout-header_checkout">
+            <div id="maps">
+                
+            </div>
+        </div>
+
+    </div>
+</div>

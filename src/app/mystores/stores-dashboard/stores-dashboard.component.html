@@ -1,0 +1,212 @@
+<button
+  (click)="addProductToStore(activeStoreID)"
+  mat-fab
+  matTooltip="Add Products to Store"
+>
+  <mat-icon> add_circle_outline </mat-icon>
+</button>
+
+<div class="selectiontab">
+  <mat-form-field *ngIf="stores.length>0" appearance="outline" style="margin: 0px !important;">
+    <mat-label>Choose store</mat-label>
+    <mat-select (selectionChange)="setActiveStoreID($event)">
+      <mat-option *ngFor="let store of stores" [value]="store">{{store?.storename}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <span><span nz-icon nzType="shop" nzTheme="outline"></span> {{activeStore?.toUpperCase() ?? storename?.toUpperCase()}}</span>
+</div>
+
+<div class="storedata">
+
+  <div class="storelocation">
+    <iframe
+      class="mat-elevation-z8"
+      style="border: 0px; border-radius: 5px"
+      height="300px"
+      width="100%"
+      *ngIf="mapurl"
+      [src]="mapurl"
+      allowfullscreen=""
+      loading="lazy"
+      referrerpolicy="no-referrer-when-downgrade"
+    >
+    </iframe>
+  </div>
+  
+  <div class="products">
+    <mat-form-field appearance="outline" style="width: 100%;">
+      <button mat-icon-button matSuffix>
+        <mat-icon>search</mat-icon>
+      </button>
+      <mat-label>Search {{activeStore ?? storename}} Product(s)</mat-label>
+      <input
+        matInput
+        (keyup)="applyFilter($event)"
+        placeholder="Type the name, brand, or any verifier"
+        #input
+      />
+    </mat-form-field>
+    <div style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-between; align-items: center;">
+      <small style="color: rgb(105, 212, 105);" *ngIf="dataSource">
+        <i>A total of {{ dataSource?.data?.length }} products found</i>
+      </small>    
+      
+      <button color="primary" (click)="exportToPDF('productsList', activeStore+' Products List' ?? storename +' Products List')" mat-stroked-button><span nz-icon nzType="file-pdf" nzTheme="outline" style="color: rgb(236, 71, 99);"></span> VIEW LIST</button>
+    </div>
+    <table id="productsList" mat-table [dataSource]="dataSource" matSort>
+      <!-- Checkbox Column -->
+      <ng-container matColumnDef="select">
+        <th mat-header-cell *matHeaderCellDef>
+          <mat-checkbox
+
+            (change)="toggleAllRows()"
+            [checked]="isAllSelected()"
+            [indeterminate]="selection.hasValue() && !isAllSelected()">
+          </mat-checkbox>
+
+        </th>
+        <td mat-cell *matCellDef="let product">
+          <mat-checkbox
+            color="accent"
+            (click)="$event.stopPropagation()"
+            (change)="$event ? selection.toggle(product) : null"
+            [checked]="selection.isSelected(product)"
+            [aria-label]="checkboxLabel(product)"
+          >
+          </mat-checkbox>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          Name
+        </th>
+        <td mat-cell *matCellDef="let product">
+          {{ product.name }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="brand">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          Brand
+        </th>
+        <td mat-cell *matCellDef="let product">
+          {{ product.brand }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="category">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          category
+        </th>
+        <td mat-cell *matCellDef="let product">
+          {{ product.category }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="subcategory">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          Subcategory
+        </th>
+        <td mat-cell *matCellDef="let product">
+          {{ product.subcategory }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="model">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          Model
+        </th>
+        <td mat-cell *matCellDef="let product">
+          {{ product.model }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="bp">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          BP
+        </th>
+        <td mat-cell *matCellDef="let product">
+          {{ product.bp }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="sp">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          SP
+        </th>
+        <td mat-cell *matCellDef="let product">
+          {{ product.sp }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="quantity">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          QTTY
+        </th>
+        <td mat-cell *matCellDef="let product">
+          {{ product.quantity }}
+        </td>
+      </ng-container>
+      
+      <ng-container matColumnDef="approved">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          
+        </th>
+        <td mat-cell *matCellDef="let product">
+          <mat-icon
+            style="color: rgb(6, 236, 140)"
+            *ngIf="product.approved"
+            >check_circle</mat-icon
+          >
+          <mat-icon color="accent" *ngIf="!product.approved"
+            >cancel</mat-icon
+          >
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="Actions">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          
+        </th>
+        <td mat-cell *matCellDef="let product">
+          <button
+            (click)="editProduct(product._id)"
+            mat-icon-button
+            color="primary"
+          >
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button
+            (click)="
+              deleteProduct(
+                product._id,
+                product.name,
+                product.model
+              )
+            "
+            mat-icon-button
+            color="accent"
+          >
+            <mat-icon>delete_forever</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+      <!-- rows -->
+      <tr
+        mat-header-row
+        *matHeaderRowDef="displayedStoreProductsColumns"
+      ></tr>
+      <tr
+        mat-row
+        *matRowDef="
+          let product;
+          columns: displayedStoreProductsColumns
+        "
+      ></tr>
+
+      <!-- Row shown when there is no matching data. -->
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" colspan="4">
+          {{ input.value=="" ? "No Products Found" : "No data matching "+input.value }}
+        </td>
+      </tr>
+    </table>
+    <mat-paginator
+      [pageSizeOptions]="[5, 10, 15, 25, 30]" showFirstLastButtons
+    ></mat-paginator>
+
+  </div>
+
+</div>
