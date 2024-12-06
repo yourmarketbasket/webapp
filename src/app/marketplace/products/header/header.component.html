@@ -43,27 +43,41 @@
             <button class="btn btn-link text-decoration-none" (click)="logoutUser()">
               <i-feather class="small-icon" name="log-out"></i-feather>
             </button>
-            <button class="btn btn-link text-decoration-none position-relative" data-bs-toggle="dropdown">
-              <i-feather class="small-icon"  name="bell"></i-feather>
-              <span
-                *ngIf="numberOfNotifications"
-                class="position-absolute top-0 start-100 translate-middle badge bg-danger rounded-pill badge-notification"
-                >{{ numberOfNotifications }}</span>
-            </button>
-            <ul class="dropdown-menu">
-              <li *ngIf="infoNotification > 0">
-                <a class="dropdown-item" href="#">Info ({{ infoNotification }})</a>
-              </li>
-              <li *ngIf="successNotification > 0">
-                <a class="dropdown-item" href="#">Success ({{ successNotification }})</a>
-              </li>
-              <li *ngIf="warningNotification > 0">
-                <a class="dropdown-item" href="#">Warning ({{ warningNotification }})</a>
-              </li>
-              <li *ngIf="errorNotification > 0">
-                <a class="dropdown-item" href="#">Error ({{ errorNotification }})</a>
-              </li>
-            </ul>
+            <span ngbDropdown class="dropdown">
+              <button
+                class="btn btn-link text-decoration-none position-relative dropdown-toggle"
+                type="button"
+                id="dropdownMenuButton"
+                aria-expanded="false"
+                ngbDropdownToggle
+              >
+                <i-feather class="small-icon" name="bell"></i-feather>
+                <span
+                  *ngIf="numberOfNotifications"
+                  class="position-absolute top-0 start-100 translate-middle badge bg-danger rounded-pill badge-notification"
+                >
+                  {{ numberOfNotifications }}
+                </span>
+              </button>
+              <ul ngbDropdownMenu class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <li *ngIf="infoNotification > 0">
+                  <a class="dropdown-item" href="#">Info ({{ infoNotification }})</a>
+                </li>
+                <li *ngIf="successNotification > 0">
+                  <a class="dropdown-item" href="#">Success ({{ successNotification }})</a>
+                </li>
+                <li *ngIf="warningNotification > 0">
+                  <a class="dropdown-item" href="#">Warning ({{ warningNotification }})</a>
+                </li>
+                <li *ngIf="errorNotification > 0" class="d-flex justify-content-center align-items-center">
+                    <i-feather class="small-icon text-danger" name="alert-circle"></i-feather>
+                    <a class="dropdown-item" href="#">Error ({{ errorNotification }})</a>                  
+                </li>
+              </ul>
+            </span>
+            
+            
+            
 
             <!-- Shopping Cart -->
             <button class="btn btn-link text-decoration-none position-relative" (click)="goToCart()">

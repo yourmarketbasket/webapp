@@ -13,6 +13,7 @@ import { provideAnalytics,getAnalytics,ScreenTrackingService,UserTrackingService
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatInputModule } from '@angular/material/input';
@@ -104,16 +105,19 @@ import { getPerformance, providePerformance } from '@angular/fire/performance';
 import { getStorage, provideStorage } from '@angular/fire/storage';
 import { getRemoteConfig, provideRemoteConfig } from '@angular/fire/remote-config';
 import { getVertexAI, provideVertexAI } from '@angular/fire/vertexai-preview';
+import { MdbDropdownModule } from 'mdb-angular-ui-kit/dropdown';
+import { MdbRippleModule } from 'mdb-angular-ui-kit/ripple';
 import { NZ_I18N } from 'ng-zorro-antd/i18n';
 import { en_US } from 'ng-zorro-antd/i18n';
 import en from '@angular/common/locales/en';
 import { NzCarouselModule } from 'ng-zorro-antd/carousel';
 import { FeatherModule } from 'angular-feather';
-import { Camera, Heart, Github, Bell, ShoppingCart, LogOut} from 'angular-feather/icons';
+import { Camera, Heart, Github, Bell, ShoppingCart, LogOut, AlertCircle} from 'angular-feather/icons';
 
 registerLocaleData(en);
 
 import {CloudinaryModule} from '@cloudinary/ng';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 const icons = {
   Camera,
@@ -121,7 +125,8 @@ const icons = {
   Github,
   Bell,
   ShoppingCart,
-  LogOut
+  LogOut,
+  AlertCircle
 };
 
 
@@ -191,6 +196,7 @@ const icons = {
         MatSliderModule,
         MatSnackBarModule,
         MatProgressSpinnerModule,
+        NgbDropdownModule,
         CommonModule,
         MatTableModule,
         MatTooltipModule,
@@ -198,6 +204,8 @@ const icons = {
         MatTabsModule,
         MatListModule,
         BrowserModule,
+        MdbDropdownModule, 
+        MdbRippleModule,
         MatExpansionModule,
         AppRoutingModule,
         BrowserAnimationsModule,
@@ -223,7 +231,8 @@ const icons = {
         MatPaginatorModule,
         MatSortModule,
         MatRadioModule,
-        FeatherModule.pick(icons)
+        FeatherModule.pick(icons),
+        NgbModule
       ], 
         providers: [
         {
