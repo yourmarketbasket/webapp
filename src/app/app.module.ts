@@ -108,11 +108,21 @@ import { NZ_I18N } from 'ng-zorro-antd/i18n';
 import { en_US } from 'ng-zorro-antd/i18n';
 import en from '@angular/common/locales/en';
 import { NzCarouselModule } from 'ng-zorro-antd/carousel';
-
+import { FeatherModule } from 'angular-feather';
+import { Camera, Heart, Github, Bell, ShoppingCart, LogOut} from 'angular-feather/icons';
 
 registerLocaleData(en);
 
 import {CloudinaryModule} from '@cloudinary/ng';
+
+const icons = {
+  Camera,
+  Heart,
+  Github,
+  Bell,
+  ShoppingCart,
+  LogOut
+};
 
 
 
@@ -174,7 +184,8 @@ import {CloudinaryModule} from '@cloudinary/ng';
     bootstrap: [AppComponent], 
     imports: [
         NzCarouselModule,
-        MatMenuModule,     
+        MatMenuModule,   
+        FeatherModule,  
         CloudinaryModule,   
         MatSlideToggleModule,
         MatSliderModule,
@@ -211,7 +222,8 @@ import {CloudinaryModule} from '@cloudinary/ng';
         MatBadgeModule,
         MatPaginatorModule,
         MatSortModule,
-        MatRadioModule
+        MatRadioModule,
+        FeatherModule.pick(icons)
       ], 
         providers: [
         {

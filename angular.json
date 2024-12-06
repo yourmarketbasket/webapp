@@ -42,12 +42,17 @@
               }
             ],
             "styles": [
+              "src/styles.css",
               "./node_modules/ng-zorro-antd/ng-zorro-antd.min.css",
               "@angular/material/prebuilt-themes/azure-blue.css",
-              "src/styles.css"
+              "node_modules/@fortawesome/fontawesome-free/css/all.min.css"
             ],
             "scripts": [
-              "node_modules/chart.js/dist/chart.js"
+              "node_modules/chart.js/dist/chart.js",
+              "node_modules/apexcharts/dist/apexcharts.min.js",
+              "node_modules/@fortawesome/fontawesome-free/js/all.min.js",
+              "node_modules/feather-icons/dist/feather.min.js"
+
             ]
           },
           "configurations": {

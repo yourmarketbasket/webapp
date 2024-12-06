@@ -178,6 +178,10 @@ export class HeaderComponent implements OnInit {
         
   }
 
+  redirect(route:string){
+    this.router.navigate([route])
+  }
+
   toggleIconAnimationExitToApp() {
     this.iconStateExitToApp = (this.iconStateExitToApp === 'up' ? 'down' : 'up');
   }
