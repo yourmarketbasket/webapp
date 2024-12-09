@@ -7,8 +7,8 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class MasterServiceService {
-  baseurl = "https://marketapi.fly.dev";
-  // baseurl = "http://localhost:3000";
+  // baseurl = "https://marketapi.fly.dev";
+  baseurl = "http://localhost:3000";
   // socket = io('wss://marketapi.fly.dev');
 
   // provider logic
@@ -138,6 +138,9 @@ export class MasterServiceService {
   }
   getUserNotifications(userid:any){
     return this.http.get(`${this.baseurl}/api/users/getUserNotifications/${userid}`, this.getAuthHeaders());
+  }
+  markNotificationAsRead(id:any){
+    return this.http.get(`${this.baseurl}/api/users/markNotificationAsRead/${id}`, this.getAuthHeaders());
   }
   sendCommonNotifications(data:any){
     return this.http.post(`${this.baseurl}/api/notifications/sendCommonNotification`, data, this.getAuthHeaders());

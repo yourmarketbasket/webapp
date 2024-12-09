@@ -36,6 +36,13 @@ mat-table{
     width: max-content;
 }
 
+.small-icon{
+    transform: scale(0.7);
+}
+
+.xs-icon{
+    transform: scale(0.5);
+}
 
   /* Error Message Style */
   :root{

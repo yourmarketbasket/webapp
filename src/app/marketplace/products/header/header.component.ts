@@ -4,9 +4,7 @@ import { AuthService } from 'src/app/auth.service';
 import { Router } from '@angular/router';
 import { SocketService } from 'src/app/services/socket.service';
 import { trigger, state, style, animate, transition, query, keyframes } from '@angular/animations';
-import { debounceTime } from 'rxjs';
-import { NgbDropdown } from '@ng-bootstrap/ng-bootstrap';
-import { MdbDropdownDirective } from 'mdb-angular-ui-kit/dropdown';
+import { OffcanvasService } from 'src/app/offcanvas.service';
 
 
 
@@ -131,7 +129,7 @@ export class HeaderComponent implements OnInit {
 
 
   // constructor
-  constructor(private ms:MasterServiceService, private socketService:SocketService, private authService:AuthService, private router:Router){}
+  constructor(private ms:MasterServiceService, private socketService:SocketService, private authService:AuthService, private router:Router, private offcanvasService: OffcanvasService){}
   // methods
   ngOnInit() {
     
@@ -234,6 +232,10 @@ export class HeaderComponent implements OnInit {
 
   goToCart(){
     this.router.navigate(['/market_place/cart'])
+  }
+
+  openNotifications() {
+    this.offcanvasService.openNotifications(this.notificationsData);
   }
 
   

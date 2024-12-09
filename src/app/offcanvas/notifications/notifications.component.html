@@ -1,0 +1,113 @@
+<div class="offcanvas-header">
+    <span class="offcanvas-title" id="offcanvas-basic-title">Notifications({{notificationData.total}})</span>
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close"
+      (click)="close()"
+    ></button>
+</div>
+<div class="offcanvas-body p-0" style="max-height: 90vh; overflow-y: auto;">
+    <div>
+        <ul class="list-group list-group-flush mb-0">
+            <!-- Loop through notifications dynamically -->
+            <li *ngIf="notificationData.error.data.length>0" class="list-group-item"><small>Needs Attention({{notificationData.error.count}})</small></li>
+            <li class="list-group-item" *ngFor="let notification of notificationData.error.data; let i=index">
+                <div class="d-flex align-items-center">
+                    <div class="me-2">
+                        <!-- Avatar display logic: dynamic first letters or user image -->
+                        
+                            <i-feather [ngClass]="{
+                                'text-danger': notification.type === 'error',
+                                'text-success': notification.type === 'success',
+                                'text-info': notification.type === 'info',
+                                'text-warning': notification.type === 'warning'
+                            }" name="alert-octagon" class="small-icon"></i-feather>
+                        
+
+                    </div>
+                    <div class="flex-fill">
+                        <small [ngClass]="{ 'fw-semibold': !notification.isRead }" class="mb-0 text-truncate d-block" style="max-width: 100%; overflow: hidden; white-space: wrap; text-overflow: ellipsis;">
+                            {{ splitMessageByFirstFullstop(notification.message).part1}} 
+                            <span class="badge bg-light text-muted float-end">{{ formatDate(notification.createdAt) }}</span>
+                        </small>
+                        <small class="fs-12 text-muted justify-content-between d-flex w-100">
+                            <span class="time">
+                              <i-feather name="clock" class="xs-icon"></i-feather>
+                              <small>{{ timeAgo(notification.createdAt) }}</small>
+                            </span>
+                            
+                            <span class="actions">
+                              <button class="btn btn-outline-primary btn-sm text-decoration-none m-1" (click)="toggleAccordion(notification._id)">
+                                <small>view</small>
+                              </button>
+                              <button *ngIf="!notification.isRead" (click)="markAsRead(notification._id)" class="btn btn-outline-success btn-sm text-decoration-none m-1">
+                                <small>mark as read</small>
+                              </button>
+                            </span>                            
+                            
+                          </small>
+                          <!-- Conditionally apply 'expanded' class to toggle visibility -->
+                          <div [ngClass]="{'expanded': expandedNotificationId === notification._id}" class="message">
+                            <small class="d-block mt-2">
+                                {{notification.message}}
+                            </small>
+                        </div>
+                          
+                    </div>                    
+                    
+                </div>
+            </li>
+            <li *ngIf="notificationData.success.data.length>0" class="list-group-item"><small>Success</small></li>
+            <li class="list-group-item" *ngFor="let notification of notificationData.success.data; let i=index">
+                <div class="d-flex align-items-center">
+                    <div class="me-2">
+                        <!-- Avatar display logic: dynamic first letters or user image -->
+                        
+                            <i-feather [ngClass]="{
+                                'text-danger': notification.type === 'error',
+                                'text-success': notification.type === 'success',
+                                'text-info': notification.type === 'info',
+                                'text-warning': notification.type === 'warning'
+                            }" name="check-circle" class="small-icon"></i-feather>
+                        
+
+                    </div>
+                    <div class="flex-fill">
+                        <small [ngClass]="{ 'fw-semibold': !notification.isRead }" class="mb-0 text-truncate d-block" style="max-width: 100%; overflow: hidden; white-space: wrap; text-overflow: ellipsis;">
+                            {{ splitMessageByFirstFullstop(notification.message).part1}} 
+                            <span class="badge bg-light text-muted float-end">{{ formatDate(notification.createdAt) }}</span>
+                        </small>
+                        <small class="fs-12 text-muted justify-content-between d-flex w-100">
+                            <span class="time">
+                              <i-feather name="clock" class="xs-icon"></i-feather>
+                              <small>{{ timeAgo(notification.createdAt) }}</small>
+                            </span>
+                            
+                            <span class="actions">
+                              <button class="btn btn-outline-primary btn-sm text-decoration-none m-1" (click)="toggleAccordion(notification._id)">
+                                <small>view</small>
+                              </button>
+                              <button *ngIf="!notification.isRead" (click)="markAsRead(notification._id)" class="btn btn-outline-success btn-sm text-decoration-none m-1">
+                                <small>mark as read</small>
+                              </button>
+                            </span>                            
+                            
+                          </small>
+                          <!-- Conditionally apply 'expanded' class to toggle visibility -->
+                          <div [ngClass]="{'expanded': expandedNotificationId === notification._id}" class="message">
+                            <small class="d-block mt-2">
+                                {{notification.message}}
+                            </small>
+                        </div>
+                          
+                    </div>                    
+                    
+                </div>
+            </li>
+
+        </ul>
+    </div>
+</div>
+
+  

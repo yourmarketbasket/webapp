@@ -1,0 +1,13 @@
+.text-truncate {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.message {
+    display: none; /* Hide by default */
+  }
+  
+  .expanded {
+    display: block; /* Show when the 'expanded' class is added */
+  }
+  

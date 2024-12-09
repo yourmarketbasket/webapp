@@ -112,12 +112,15 @@ import { en_US } from 'ng-zorro-antd/i18n';
 import en from '@angular/common/locales/en';
 import { NzCarouselModule } from 'ng-zorro-antd/carousel';
 import { FeatherModule } from 'angular-feather';
-import { Camera, Heart, Github, Bell, ShoppingCart, LogOut, AlertCircle} from 'angular-feather/icons';
+import { Camera, Heart, Github, Bell, ShoppingCart, LogOut, AlertCircle, Clock, CheckCircle, AlertOctagon} from 'angular-feather/icons';
+import { NgbOffcanvasModule } from '@ng-bootstrap/ng-bootstrap';
 
 registerLocaleData(en);
 
 import {CloudinaryModule} from '@cloudinary/ng';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NotificationsComponent } from './offcanvas/notifications/notifications.component';
+import { NotificationModalComponent } from './offcanvas/notification-modal/notification-modal.component';
 
 const icons = {
   Camera,
@@ -126,7 +129,10 @@ const icons = {
   Bell,
   ShoppingCart,
   LogOut,
-  AlertCircle
+  AlertCircle,
+  Clock,
+  CheckCircle,
+  AlertOctagon
 };
 
 
@@ -184,7 +190,9 @@ const icons = {
         PhonePipe,
         VerifyComponent,
         RatingPipe,
-        CapitalizePipe
+        CapitalizePipe,
+        NotificationsComponent,
+        NotificationModalComponent
     ],
     bootstrap: [AppComponent], 
     imports: [
@@ -232,7 +240,8 @@ const icons = {
         MatSortModule,
         MatRadioModule,
         FeatherModule.pick(icons),
-        NgbModule
+        NgbModule,
+        NgbOffcanvasModule
       ], 
         providers: [
         {
