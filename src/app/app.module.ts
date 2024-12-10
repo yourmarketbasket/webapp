@@ -12,6 +12,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import { provideAnalytics,getAnalytics,ScreenTrackingService,UserTrackingService } from '@angular/fire/analytics';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { NgbRatingModule } from '@ng-bootstrap/ng-bootstrap';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -112,9 +113,10 @@ import { en_US } from 'ng-zorro-antd/i18n';
 import en from '@angular/common/locales/en';
 import { NzCarouselModule } from 'ng-zorro-antd/carousel';
 import { FeatherModule } from 'angular-feather';
-import { Camera, Heart, Github, Bell, ShoppingCart, LogOut, AlertCircle, Clock, CheckCircle, AlertOctagon} from 'angular-feather/icons';
+import { Star, Camera, List, Heart, Github, Bell, Eye, ShoppingCart, LogOut, AlertCircle, Clock, CheckCircle, AlertOctagon} from 'angular-feather/icons';
 import { NgbOffcanvasModule } from '@ng-bootstrap/ng-bootstrap';
 import { MdbCarouselModule } from 'mdb-angular-ui-kit/carousel';
+import { MdbRatingModule } from 'mdb-angular-ui-kit/rating';
 
 registerLocaleData(en);
 
@@ -133,7 +135,10 @@ const icons = {
   AlertCircle,
   Clock,
   CheckCircle,
-  AlertOctagon
+  AlertOctagon,
+  Star,
+  Eye,
+  List
 };
 
 
@@ -222,6 +227,7 @@ const icons = {
         FormsModule,
         ReactiveFormsModule,
         MatDialogModule,
+        MdbRatingModule,
         MatFormFieldModule,
         MatInputModule,
         MatIconModule,
@@ -243,7 +249,8 @@ const icons = {
         MatRadioModule,
         FeatherModule.pick(icons),
         NgbModule,
-        NgbOffcanvasModule
+        NgbOffcanvasModule,
+        NgbRatingModule
       ], 
         providers: [
         {

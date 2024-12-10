@@ -7,7 +7,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { SharedDataService } from 'src/app/services/shared-data.service';
 import { SocketService } from 'src/app/services/socket.service';
 import { NzCarouselComponent } from 'ng-zorro-antd/carousel';
-import { take } from 'rxjs';
+import { NgbRating } from '@ng-bootstrap/ng-bootstrap';
+
+// initMDB({ Rating });
 
 
 @Component({
@@ -17,9 +19,12 @@ import { take } from 'rxjs';
     standalone: false
 })
 export class ProductsComponent implements OnInit,OnDestroy{
-   
+    rating = 3.7;
+
+    ariaValueText(current: number, max: number) {
+      return `${current} out of ${max} hearts`;
+    }
     products:any[] = [];
-    rating:number = 2.5;
     err!:any;
     page:number = 1;
     limit:number = 20;

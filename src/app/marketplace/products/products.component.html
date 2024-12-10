@@ -5,44 +5,66 @@
   <div class="container-fluid px-3">
     <!-- Carousel component -->
     <mdb-carousel [indicators]="true" [animation]="'fade'" [dark]="true">
-      <mdb-carousel-item *ngFor="let item of carouselProducts; let i = index">
+      <mdb-carousel-item *ngFor="let item of carouselProducts; let i = index" [interval]="1000">
         <!-- Card with three columns layout inside the carousel item -->
-        <div class="card mb-3 w-100 h-100">
+        <div class=" mb-3 w-100 h-100">
           <div class="row g-0">
             <!-- First column for the image -->
             <div class="col-md-3 ">
               <img
                 src="{{item.value[0].avatar[0]}}"
                 alt="Trendy Pants and Shoes"
-                class="img-fluid rounded-start w-100"
+                class="img-fluid rounded w-100"
                 style="height: 300px; width: 100%;"
               />
             </div>
 
             <!-- Second column for the main content -->
-            <div class="col-md-2 d-flex flex-column flex">
-              <div class="card-body p-2 flex-column justify-content-center align-items-center d-flex">
-                <h5 class="card-title">{{item.key.toUpperCase()}}</h5>
-                <span>Category: {{item.value[0].category}}</span>
-                <p *ngIf="item.value[0].discount > 0">
+            <div class="col-md-2">
+              <div class="p-2 card flex-column justify-content-center align-items-center d-flex border-primary my-5 mx-1">
+                <span class="fw-semibold">{{item.key.toUpperCase()}}</span>
+                <small>Category: {{item.value[0].category}}</small>
+                <small *ngIf="item.value[0].discount > 0">
                   Discount: {{item.value[0].discount}}%
-                </p>
-                <p>
+                </small>
+                <small>
                   Price: KES {{item.value[0].sp | currency: ' '}}
-                </p>
-                <button (click)="viewProduct(item.value[0])" class="btn btn-outline-success">
-                  view
-                </button>
+                </small>
+                <div class="d-flex flex-column justify-content-center align-items-center">
+                  <ng-template #t let-fill="fill">
+                    <i class="bi-star-fill">
+                      @if (fill > 0) {
+                        <i class="bi-star-fill filled" [style.width.%]="fill"></i>
+                      }
+                    </i>
+                  </ng-template>
+                  
+                  <ngb-rating [(rate)]="rating" [starTemplate]="t" [readonly]="true" [max]="5" [ariaValueText]="ariaValueText" />
+                
+                  <!-- View Product Button -->
+                  <div class="d-flex d-row w-100 justify-content-between">
+                    <button  class="btn btn-outline-success btn-floating">
+                      <i-feather name="eye" class="small-icon"></i-feather>
+                    </button>
+                    <button  class="btn btn-outline-primary btn-floating">
+                      <i-feather name="heart" class="small-icon"></i-feather>
+                    </button>
+                    <button  class="btn btn-outline-info btn-floating">
+                      <i-feather name="shopping-cart" class="small-icon"></i-feather>
+                    </button>
+                  </div>
+                </div>
+                
               </div>
             </div>
 
             <!-- Third column for additional content or more details -->
-            <div class="col-md-7">
-              <div class="card-body p-2 d-flex flex-column justify-content-center h-100 align-items-center text-primary">
-                <h3>
+            <div class="col-md-6">
+              <div class="p-2 d-flex flex-column justify-content-center h-100 align-items-center text-primary">
+                <h5 class="d-flex flex-row w-100 justify-content-center align-items-center">
                   Shop
                   with Convinience
-                </h3>
+                </h5>
                 <div class="d-flex flex-row">
                   <span>Pay with M-PESA, VISA, MasterCard, American Express and Airtel Money</span>
                 </div>

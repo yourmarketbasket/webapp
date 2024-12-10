@@ -1,6 +1,8 @@
 
 @import "mdb-angular-ui-kit/assets/scss/mdb.scss";
 @import "master.css";
+@import 'bootstrap-icons/font/bootstrap-icons.css';
+
 /* style the scrollbar */
 ::-webkit-scrollbar-track{
     background: #fdfdfd !important;
@@ -27,6 +29,20 @@ tr:nth-child(even),mat-row:nth-child(even)  {
  tr:nth-child(odd), mat-row:nth-child(odd){
     color: rgb(111, 56, 241);
     font-size: small;
+}
+i {
+    position: relative;
+    display: inline-block;
+    padding-right: 0.1rem;
+    color: #d3d3d3;
+}
+
+.filled {
+    color: rgb(18, 241, 167);
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 mat-header-cell{
     color: rgb(111, 56, 241);
