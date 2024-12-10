@@ -133,8 +133,8 @@
 
   <div class="cateogories">
     <div class="categoriesmenu">
-      <h3 style="font-weight: 600">Filter by Brand or Category</h3>
-      <h4 style="font-weight: 600">Categories</h4>
+      <span class="fw-semibold">Filter by Brand or Category</span>
+      <span class="fw-semibold">Categories</span>
       <mat-radio-group
         style="display: flex; flex-direction: column"
         (change)="filterProducts($event.value)"
@@ -147,7 +147,7 @@
         </mat-radio-button>
       </mat-radio-group>
       <mat-divider></mat-divider>
-      <h4 style="font-weight: 600">Brands</h4>
+      <span class="fw-semibold">Brands</span>
 
       <mat-radio-group
         style="display: flex; flex-direction: column"
@@ -161,7 +161,7 @@
         </mat-radio-button>
       </mat-radio-group>
       <mat-divider></mat-divider>
-      <h4 style="font-weight: 600">Filter by Price</h4>
+      <span class="fw-semibold">Filter by Price</span>
       <small
         >{{ filterAmountMinValue | currency : "KES " }} -
         {{ filterAmountMaxValue | currency : "KES " }}</small
@@ -263,7 +263,7 @@
           </button>
         </div>
       </div>
-      <h3 style="font-weight: 600">All Products({{ products.length }})</h3>
+      <span class="fw-semibold" >All Products({{ products.length }})</span>
       <div
         *ngIf="allproductsloading"
         class="allproductslisting"
