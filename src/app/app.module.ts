@@ -118,6 +118,7 @@ import { NgbOffcanvasModule } from '@ng-bootstrap/ng-bootstrap';
 import { MdbCarouselModule } from 'mdb-angular-ui-kit/carousel';
 import { MdbRatingModule } from 'mdb-angular-ui-kit/rating';
 
+
 registerLocaleData(en);
 
 import {CloudinaryModule} from '@cloudinary/ng';

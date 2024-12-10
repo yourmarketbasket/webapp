@@ -7,9 +7,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { SharedDataService } from 'src/app/services/shared-data.service';
 import { SocketService } from 'src/app/services/socket.service';
 import { NzCarouselComponent } from 'ng-zorro-antd/carousel';
-import { NgbRating } from '@ng-bootstrap/ng-bootstrap';
-
-// initMDB({ Rating });
 
 
 @Component({
@@ -20,6 +17,8 @@ import { NgbRating } from '@ng-bootstrap/ng-bootstrap';
 })
 export class ProductsComponent implements OnInit,OnDestroy{
     rating = 3.7;
+    id = "tsparticles";
+    particlesUrl = "http://foo.bar/particles.json";
 
     ariaValueText(current: number, max: number) {
       return `${current} out of ${max} hearts`;
@@ -79,6 +78,15 @@ export class ProductsComponent implements OnInit,OnDestroy{
           clearInterval(this.imageLoopData[productId].imageLoopInterval);
         }
       }
+    }
+
+    ngAfterViewInit() {
+      const particles = document.querySelectorAll('.particle');
+      particles.forEach(particle => {
+        const randomX = Math.random() * window.innerWidth;
+        const randomY = Math.random() * window.innerHeight;
+        (particle as HTMLElement).style.transform = `translate(${randomX}px, ${randomY}px)`;
+      });
     }
 
     startImageLoop(productId: string, avatars: string[]) {
@@ -233,7 +241,7 @@ export class ProductsComponent implements OnInit,OnDestroy{
        
 
     // constructor
-    constructor(private ms:MasterServiceService,private router:Router, private dialog: MatDialog, private sharedData: SharedDataService, private socketService:SocketService){}
+    constructor( private ms:MasterServiceService,private router:Router, private dialog: MatDialog, private sharedData: SharedDataService, private socketService:SocketService){}
     // onInit
     ngOnInit() {
       this.userid = localStorage.getItem('userId')      
@@ -244,6 +252,8 @@ export class ProductsComponent implements OnInit,OnDestroy{
       this.socketService.listen('addproductevent').subscribe((data: any) => {
         this.products.unshift(data.product);  
       });
+
+      
      
 
       this.socketService.listen('viewsupdate')
@@ -297,6 +307,7 @@ export class ProductsComponent implements OnInit,OnDestroy{
       }
     }
 
+
     fetchPaginatedProducts(){
       this.allproductsloading = true;
       this.ms.getPaginatedProducts({page:this.page, limit:this.limit}).subscribe((res:any)=>{
@@ -328,6 +339,8 @@ export class ProductsComponent implements OnInit,OnDestroy{
     browseByCategory(category:any){
       this.router.navigate([`/market_place/category/${category}`])
     }
+
+    
 
 
   
