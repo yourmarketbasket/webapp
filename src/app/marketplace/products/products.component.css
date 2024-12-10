@@ -10,6 +10,9 @@
 
 
 
+
+
+
 .details{
   display: flex; 
   flex-direction: column; 
@@ -23,6 +26,9 @@
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.27); /* Adjust the shadow properties */
 
 }
+
+
+
 
 [nz-carousel-content]::before,
 [nz-carousel-content]::after {

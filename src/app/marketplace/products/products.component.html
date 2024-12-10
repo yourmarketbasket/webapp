@@ -1,119 +1,90 @@
 <div class="marketplace" #marketplace id="marketplace">
-  <div class="carousel-div">
-    <nz-carousel
-      nzEnableSwipe="true"
-      nzEffect="fade"
-      nzAutoPlay="true"
-      nzDotPosition="bottom"
-      nzAutoPlaySpeed="2000"
-    >
-      <div nz-carousel-content *ngFor="let item of carouselProducts">
-        <div class="carousel-row">
-          <div class="containersandimage">
-            <div class="floating-container">
-              <div class="sheet"></div>
-              <div class="sheet"></div>
+  
+<!-- Section: Split screen within Carousel -->
+<section>
+  <div class="container-fluid px-3">
+    <!-- Carousel component -->
+    <mdb-carousel [indicators]="true" [animation]="'fade'" [dark]="true">
+      <mdb-carousel-item *ngFor="let item of carouselProducts; let i = index">
+        <!-- Card with three columns layout inside the carousel item -->
+        <div class="card mb-3 w-100 h-100">
+          <div class="row g-0">
+            <!-- First column for the image -->
+            <div class="col-md-3 ">
+              <img
+                src="{{item.value[0].avatar[0]}}"
+                alt="Trendy Pants and Shoes"
+                class="img-fluid rounded-start w-100"
+                style="height: 300px; width: 100%;"
+              />
             </div>
-            <img class="carousel-image" src="{{ item.value[0].avatar[0] }}" alt="" />
-          </div>
 
-          <div  class="details">
-            <h1 style="font-family: 'bauhaus 93'; color: rgb(27, 8, 102)">
-              <b>{{ item.value[0].name }}</b>
-            </h1>
-            <p>Brand: {{ item.key }}</p>
-            <span *ngIf="item.value[0].discount">
-              Was
-              <strong style="color: rgb(27, 8, 102)">
-                <s>{{ item.value[0].sp | currency : "KES " }}/-</s>
-              </strong>
-            </span>
+            <!-- Second column for the main content -->
+            <div class="col-md-2 d-flex flex-column flex">
+              <div class="card-body p-2 flex-column justify-content-center align-items-center d-flex">
+                <h5 class="card-title">{{item.key.toUpperCase()}}</h5>
+                <span>Category: {{item.value[0].category}}</span>
+                <p *ngIf="item.value[0].discount > 0">
+                  Discount: {{item.value[0].discount}}%
+                </p>
+                <p>
+                  Price: KES {{item.value[0].sp | currency: ' '}}
+                </p>
+                <button (click)="viewProduct(item.value[0])" class="btn btn-outline-success">
+                  view
+                </button>
+              </div>
+            </div>
 
-            <span>
-              Now starting at
-              <h2 style="color: rgb(27, 8, 102)">
-                <strong
-                  >{{
-                    computeDiscountedSP(
-                      item.value[0].sp,
-                      item.value[0].discount
-                    ) | currency : "KES "
-                  }}/-</strong
-                >
-              </h2>
-            </span>
-            <button
-              mat-stroked-button
-              color="primary"
-              (click)="viewProduct(item.value[0])"
-            >
-              <mat-icon> add_shopping_cart </mat-icon>
-              VIEW
-            </button>
-          </div>
-
-          <div class="stats">
-            <h1>
-              Shop
-              with Convinience
-            </h1>
-            <p>Pay with M-PESA, VISA</p>
-            <p>MasterCard, American Express</p>
-            <p>and Airtel Money</p>
-            <div
-              class="iconrow"
-              style="
-                display: flex;
-                justify-content: center;
-                align-items: center;
-              "
-            >
-              <img
-                style="width: 100px"
-                src="https://brand.mastercard.com/content/dam/mccom/brandcenter/thumbnails/mc_dla_symbol_92.png"
-                alt=""
-              />
-              <img
-                style="width: 100px"
-                src="https://www.logo.wine/a/logo/Visa_Inc./Visa_Inc.-Logo.wine.svg"
-                alt=""
-              />
-              <img
-                style="width: 100px"
-                src="https://www.safaricom.co.ke/images/Lipanampesa.png"
-                alt=""
-              />
-              <img
-                style="width: 100px"
-                src="https://www.logo.wine/a/logo/American_Express/American_Express-Logo.wine.svg"
-                alt=""
-              />
-              <img
-                style="width: 100px"
-                src="https://www.logo.wine/a/logo/Bharti_Airtel/Bharti_Airtel-Logo.wine.svg"
-                alt=""
-              />
+            <!-- Third column for additional content or more details -->
+            <div class="col-md-7">
+              <div class="card-body p-2 d-flex flex-column justify-content-center h-100 align-items-center text-primary">
+                <h3>
+                  Shop
+                  with Convinience
+                </h3>
+                <div class="d-flex flex-row">
+                  <span>Pay with M-PESA, VISA, MasterCard, American Express and Airtel Money</span>
+                </div>
+                <div class="d-flex flex-row justify-content-center">
+                  <img
+                    style="width: 100px"
+                    src="https://brand.mastercard.com/content/dam/mccom/brandcenter/thumbnails/mc_dla_symbol_92.png"
+                    alt=""
+                  />
+                  <img
+                    style="width: 100px"
+                    src="https://www.logo.wine/a/logo/Visa_Inc./Visa_Inc.-Logo.wine.svg"
+                    alt=""
+                  />
+                  <img
+                    style="width: 100px"
+                    src="https://www.safaricom.co.ke/images/Lipanampesa.png"
+                    alt=""
+                  />
+                  <img
+                    style="width: 100px"
+                    src="https://www.logo.wine/a/logo/American_Express/American_Express-Logo.wine.svg"
+                    alt=""
+                  />
+                  <img
+                    style="width: 100px"
+                    src="https://www.logo.wine/a/logo/Bharti_Airtel/Bharti_Airtel-Logo.wine.svg"
+                    alt=""
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </div>
-        <div class="carousel-controls">
-          <span
-            (click)="previous()"
-            nz-icon
-            nzType="arrow-left"
-            nzTheme="outline"
-          ></span>
-          <span
-            (click)="next()"
-            nz-icon
-            nzType="arrow-right"
-            nzTheme="outline"
-          ></span>
-        </div>
-        <!-- <h3>{{ item }}</h3> -->
-      </div>
-    </nz-carousel>
+      </mdb-carousel-item>
+    </mdb-carousel>
   </div>
+</section>
+<!-- End of split screen section -->
+
+
+
   <mat-divider style="margin-top: 2%; margin-bottom: 1%"></mat-divider>
   <!--display  -->
   <div class="features" style="display: flex; justify-content: space-around">
@@ -230,7 +201,7 @@
               
               <!-- Looping through the product images -->
               <img 
-                [src]="product.avatar[imageLoopData[product._id].currentImageIndex || 0]" 
+                [src]="product.avatar[imageLoopData[product._id]?.currentImageIndex || 0]" 
                 alt="Product Image" 
               />
               

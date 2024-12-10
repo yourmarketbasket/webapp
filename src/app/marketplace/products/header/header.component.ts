@@ -146,6 +146,14 @@ export class HeaderComponent implements OnInit {
       }
       // Your logic for product added to cart event
     });
+
+    // listen for notifications
+    this.socketService.listen('new-notification').subscribe((data:any)=>{
+      if(data.userId===localStorage.getItem('userId')){
+        this.getUserNotifications();
+      }
+
+    });
     
     // set login status
       this.isLoggedIn = this.authService.loggedIn();     
@@ -163,19 +171,26 @@ export class HeaderComponent implements OnInit {
          // get number of items in cart
       this.getNumOfCartItems();
       // get notifications
-      this.ms.getUserNotifications(localStorage.getItem('userId')).subscribe((res:any)=>{
-        if(res.success){
-          this.errorNotification = res.data.error.count;
-          this.warningNotification = res.data.warning.count;
-          this.successNotification = res.data.success.count;
-          this.infoNotification = res.data.info.count;
-
-          this.numberOfNotifications = res.data.total;
-          this.notificationsData = res.data
-        }
-      })
+      this.getUserNotifications();
        
         
+  }
+
+  getUserNotifications(){
+    this.ms.getUserNotifications(localStorage.getItem('userId')).subscribe((res:any)=>{
+      if(res.success){
+        this.errorNotification = res.data.error.count;
+        this.warningNotification = res.data.warning.count;
+        this.successNotification = res.data.success.count;
+        this.infoNotification = res.data.info.count;
+
+        this.numberOfNotifications = res.data.total;
+        this.notificationsData = res.data
+        this.openNotifications();
+
+      }
+    })
+    
   }
 
   redirect(route:string){

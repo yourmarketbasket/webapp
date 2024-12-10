@@ -40,7 +40,7 @@
             </form>
           </div>
           <div class="col-auto">
-            <button class="btn btn-link text-decoration-none" (click)="logoutUser()">
+            <button *ngIf="isLoggedIn" class="btn btn-link text-decoration-none" (click)="logoutUser()">
               <i-feather class="small-icon" name="log-out"></i-feather>
             </button>
             <button
@@ -70,7 +70,7 @@
                 >{{ numOfItemsInCart }}</span>
             </button>
 
-            <img
+            <img *ngIf="isLoggedIn"
               class="rounded-circle ms-3"
               [src]="userPic"
               alt="User Avatar"

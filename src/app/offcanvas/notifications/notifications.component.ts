@@ -33,10 +33,7 @@ export class NotificationsComponent implements OnInit{
   markAsRead(_id:any){
     this.ms.markNotificationAsRead(_id).subscribe((res:any)=>{
       if (res) {
-        // Wait for 30 seconds (30000 milliseconds) before calling toggleAccordion
-        setTimeout(() => {
-          this.toggleAccordion(_id);
-        }, 30000);
+        this.toggleAccordion(_id);        
       } else {
         console.log(res);
       }

@@ -58,7 +58,7 @@
                     
                 </div>
             </li>
-            <li *ngIf="notificationData.success.data.length>0" class="list-group-item"><small>Success</small></li>
+            <li *ngIf="notificationData.success.data.length>0" class="list-group-item"><small>Success({{notificationData.success.data.length}})</small></li>
             <li class="list-group-item" *ngFor="let notification of notificationData.success.data; let i=index">
                 <div class="d-flex align-items-center">
                     <div class="me-2">

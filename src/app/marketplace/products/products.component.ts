@@ -277,6 +277,8 @@ export class ProductsComponent implements OnInit,OnDestroy{
       this.searchedProduct.forEach((product) => {
         this.startImageLoop(product.id, product.avatar);
       });
+
+      console.log(this.carouselProducts[0].value[0]);
       
 
 

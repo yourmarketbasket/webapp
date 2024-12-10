@@ -114,6 +114,7 @@ import { NzCarouselModule } from 'ng-zorro-antd/carousel';
 import { FeatherModule } from 'angular-feather';
 import { Camera, Heart, Github, Bell, ShoppingCart, LogOut, AlertCircle, Clock, CheckCircle, AlertOctagon} from 'angular-feather/icons';
 import { NgbOffcanvasModule } from '@ng-bootstrap/ng-bootstrap';
+import { MdbCarouselModule } from 'mdb-angular-ui-kit/carousel';
 
 registerLocaleData(en);
 
@@ -205,6 +206,7 @@ const icons = {
         MatSnackBarModule,
         MatProgressSpinnerModule,
         NgbDropdownModule,
+        MdbCarouselModule,
         CommonModule,
         MatTableModule,
         MatTooltipModule,
