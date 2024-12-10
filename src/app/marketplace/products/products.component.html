@@ -131,54 +131,7 @@
   </div>
   <mat-divider></mat-divider>
 
-  <div class="cateogories">
-    <div class="categoriesmenu">
-      <span class="fw-semibold">Filter by Brand or Category</span>
-      <span class="fw-semibold">Categories</span>
-      <mat-radio-group
-        style="display: flex; flex-direction: column"
-        (change)="filterProducts($event.value)"
-      >
-        <mat-radio-button
-          *ngFor="let category of carouselData.categories.slice(0, 10)"
-          [value]="category"
-        >
-          {{ category }}
-        </mat-radio-button>
-      </mat-radio-group>
-      <mat-divider></mat-divider>
-      <span class="fw-semibold">Brands</span>
-
-      <mat-radio-group
-        style="display: flex; flex-direction: column"
-        (change)="filterProducts($event.value)"
-      >
-        <mat-radio-button
-          *ngFor="let brand of carouselData.brands.slice(0, 10)"
-          [value]="brand"
-        >
-          {{ brand }}
-        </mat-radio-button>
-      </mat-radio-group>
-      <mat-divider></mat-divider>
-      <span class="fw-semibold">Filter by Price</span>
-      <small
-        >{{ filterAmountMinValue | currency : "KES " }} -
-        {{ filterAmountMaxValue | currency : "KES " }}</small
-      >
-      <mat-slider min="0" max="100000" step="100" [displayWith]="formatLabel">
-        <input
-          [(ngModel)]="filterAmountMinValue"
-          value="300"
-          matSliderStartThumb
-        />
-        <input
-          value="400"
-          [(ngModel)]="filterAmountMaxValue"
-          matSliderEndThumb
-        />
-      </mat-slider>
-    </div>
+  <div class="container">   
 
     <div class="categoriessection" style="margin-bottom: 5px">
       <mat-divider *ngIf="numberOfResults > 0"></mat-divider>
