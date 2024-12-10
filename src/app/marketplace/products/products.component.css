@@ -177,6 +177,7 @@ span[nz-icon]{
 
 .allproductlistingitem {
   display: flex; 
+  padding: 5px;
   flex-direction: column; /* Keeps items arranged vertically inside the flex container */
   flex-grow: 1;           /* Allow the item to grow horizontally */
   flex-shrink: 0;         /* Prevent shrinking */
