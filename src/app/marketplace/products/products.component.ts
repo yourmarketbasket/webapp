@@ -7,6 +7,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { SharedDataService } from 'src/app/services/shared-data.service';
 import { SocketService } from 'src/app/services/socket.service';
 import { NzCarouselComponent } from 'ng-zorro-antd/carousel';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 
 @Component({
@@ -51,8 +52,10 @@ export class ProductsComponent implements OnInit,OnDestroy{
     isCollapsed=true;//placeholder
     isCollapsed1=true;//placeholder
     isCollapsed3=true;//placeholder
-    collapse1: any;//placeholder
+    collapse1: any;
+    isChecked=true;
     public someRange: number[] = [0.00, 10000.00];//placeholder
+    form!: FormGroup;
 
   
 
@@ -246,9 +249,12 @@ export class ProductsComponent implements OnInit,OnDestroy{
        
 
     // constructor
-    constructor( private ms:MasterServiceService,private router:Router, private dialog: MatDialog, private sharedData: SharedDataService, private socketService:SocketService){}
+    constructor( private fb: FormBuilder, private ms:MasterServiceService,private router:Router, private dialog: MatDialog, private sharedData: SharedDataService, private socketService:SocketService){}
     // onInit
     ngOnInit() {
+      this.form = this.fb.group({
+        dapzem1: [false] // default value (false means unchecked)
+      });
       this.userid = localStorage.getItem('userId')      
       this.ms.searchQuery$.subscribe((query) => {
         this.searchQuery = query;

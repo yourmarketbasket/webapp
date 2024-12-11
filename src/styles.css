@@ -4,7 +4,6 @@
 @import 'bootstrap-icons/font/bootstrap-icons.css';
 @import "nouislider/dist/nouislider.css";
 @import "./assets/css/bootstrap.css";
-
 /* style the scrollbar */
 ::-webkit-scrollbar-track{
     background: #fdfdfd !important;
@@ -181,6 +180,12 @@ body { margin: 0; font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', m
     overflow: hidden; /* Ensures the blur doesn't spill outside the container */
   }
   
+  body .ui-chkbox {
+    width: 20px !important;
+    height: 20px !important;
+  }
 
-  
-  
+  body .ui-chkbox .ui-chkbox-box {
+    width: 20px !important;
+    height: 20px !important; 
+  }

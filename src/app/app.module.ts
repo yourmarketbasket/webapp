@@ -255,7 +255,7 @@ const icons = {
         NgbModule,
         NgbOffcanvasModule,
         NgbRatingModule,
-        NouisliderModule
+        NouisliderModule,
       ], 
         providers: [
         {

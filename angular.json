@@ -47,7 +47,8 @@
               "src/styles.css",
               "./node_modules/ng-zorro-antd/ng-zorro-antd.min.css",
               "@angular/material/prebuilt-themes/azure-blue.css",
-              "node_modules/@fortawesome/fontawesome-free/css/all.min.css"
+              "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
+              "src/assets/css/bootstrap.css"
             ],
             "scripts": [
               "node_modules/chart.js/dist/chart.js",
