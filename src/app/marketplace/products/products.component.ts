@@ -48,6 +48,11 @@ export class ProductsComponent implements OnInit,OnDestroy{
     searchproductsloading!:boolean;
     currentImageIndex = 0;
     imageLoopInterval: any;
+    isCollapsed=true;//placeholder
+    isCollapsed1=true;//placeholder
+    isCollapsed3=true;//placeholder
+    collapse1: any;//placeholder
+    public someRange: number[] = [0.00, 10000.00];//placeholder
 
   
 

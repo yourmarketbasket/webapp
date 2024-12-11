@@ -1,179 +1,584 @@
 <div class="marketplace" #marketplace id="marketplace">
   
-<!-- Section: Split screen within Carousel -->
-<section>
-  <div class="container-fluid px-3">
-    <!-- Carousel component -->
-    <mdb-carousel [indicators]="true" indicatorsColor="bg-secondary" [animation]="'fade'" [dark]="true" class="carousel-background rounded-2">
-      <!-- particles -->
-       <!-- the carousel -->
-      <mdb-carousel-item *ngFor="let item of carouselProducts; let i = index" [interval]="2000">
-        <!-- Card with three columns layout inside the carousel item -->
-        <div class="w-100 h-100">
-          <div class="row g-0 d-flex justify-content-between">
-            <!-- First column for the image -->
-            <div class="col-md-3">
-              <img
-                src="{{item.value[0].avatar[0]}}"
-                alt="Trendy Pants and Shoes"
-                class="img-fluid rounded-start w-100 shadow-5-strong"
-                style="height: 300px; width: 100%;"
-              />
-            </div>
+    <!-- Section: Split screen within Carousel -->
+    <section>
+      <div class="container-fluid px-3">
+        <!-- Carousel component -->
+        <mdb-carousel [indicators]="true" indicatorsColor="bg-secondary" [animation]="'fade'" [dark]="true" class="carousel-background rounded-2">
+          <!-- particles -->
+          <!-- the carousel -->
+          <mdb-carousel-item *ngFor="let item of carouselProducts; let i = index" [interval]="2000">
+            <!-- Card with three columns layout inside the carousel item -->
+            <div class="w-100 h-100">
+              <div class="row g-0 d-flex justify-content-between">
+                <!-- First column for the image -->
+                <div class="col-md-3">
+                  <img
+                    src="{{item.value[0].avatar[0]}}"
+                    alt="Trendy Pants and Shoes"
+                    class="img-fluid rounded-start w-100 shadow-5-strong"
+                    style="height: 300px; width: 100%;"
+                  />
+                </div>
 
-            <!-- Second column for the main content -->
-            <div class="col-md-2 d-flex align-items-end">
-              <div class="p-2 w-100 h-80 card flex-column justify-content-center align-items-center d-flex border-primary my-5 mx-1">
-                <span class="fw-semibold">{{item.key.toUpperCase()}}</span>
-                <small>Category: {{item.value[0].category}}</small>
-                <small *ngIf="item.value[0].discount > 0">
-                  Discount: {{item.value[0].discount}}%
-                </small>
-                <small>
-                  Price: KES {{item.value[0].sp | currency: ' '}}
-                </small>
-                <div class="d-flex flex-column justify-content-center align-items-center">
-                  <ng-template #t let-fill="fill">
-                    <i class="bi-star-fill">
-                      @if (fill > 0) {
-                        <i class="bi-star-fill filled" [style.width.%]="fill"></i>
-                      }
-                    </i>
-                  </ng-template>
-                  
-                  <ngb-rating [(rate)]="rating" [starTemplate]="t" [readonly]="true" [max]="5" [ariaValueText]="ariaValueText" />
-                
-                  <!-- View Product Button -->
-                  <div class="d-flex d-row w-100 justify-content-between">
-                    <button  class="btn btn-outline-success btn-floating">
-                      <i-feather name="eye" class="small-icon"></i-feather>
-                    </button>
-                    <button  class="btn btn-outline-primary btn-floating">
-                      <i-feather name="heart" class="small-icon"></i-feather>
-                    </button>
-                    <button  class="btn btn-outline-info btn-floating">
-                      <i-feather name="shopping-cart" class="small-icon"></i-feather>
-                    </button>
+                <!-- Second column for the main content -->
+                <div class="col-md-2 d-flex align-items-end">
+                  <div class="p-2 w-100 h-80 card flex-column justify-content-center align-items-center d-flex border-primary my-5 mx-1">
+                    <span class="fw-semibold">{{item.key.toUpperCase()}}</span>
+                    <small>Category: {{item.value[0].category}}</small>
+                    <small *ngIf="item.value[0].discount > 0">
+                      Discount: {{item.value[0].discount}}%
+                    </small>
+                    <small>
+                      Price: KES {{item.value[0].sp | currency: ' '}}
+                    </small>
+                    <div class="d-flex flex-column justify-content-center align-items-center">
+                      <ng-template #t let-fill="fill">
+                        <i class="bi-star-fill">
+                          @if (fill > 0) {
+                            <i class="bi-star-fill filled" [style.width.%]="fill"></i>
+                          }
+                        </i>
+                      </ng-template>
+                      
+                      <ngb-rating [(rate)]="rating" [starTemplate]="t" [readonly]="true" [max]="5" [ariaValueText]="ariaValueText" />
+                    
+                      <!-- View Product Button -->
+                      <div class="d-flex d-row w-100 justify-content-between">
+                        <button  class="btn btn-outline-success btn-floating">
+                          <i-feather name="eye" class="small-icon"></i-feather>
+                        </button>
+                        <button  class="btn btn-outline-primary btn-floating">
+                          <i-feather name="heart" class="small-icon"></i-feather>
+                        </button>
+                        <button  class="btn btn-outline-info btn-floating">
+                          <i-feather name="shopping-cart" class="small-icon"></i-feather>
+                        </button>
+                      </div>
+                    </div>
+                    
                   </div>
                 </div>
+
+                <!-- Third column for additional content or more details -->
+                <div class="col-md-6">
+                  <div class="p-2 d-flex flex-column justify-content-center h-100 align-items-center text-primary">
+                    <h5 class="d-flex flex-row w-100 justify-content-center align-items-center">
+                      Shop
+                      with Convinience
+                    </h5>
+                    <div class="d-flex flex-row">
+                      <span>Pay with M-PESA, VISA, MasterCard, American Express and Airtel Money</span>
+                    </div>
+                    <div class="d-flex flex-row justify-content-center paymentmethod-icons">
+                      <img
+                        style="width: 100px"
+                        src="https://brand.mastercard.com/content/dam/mccom/brandcenter/thumbnails/mc_dla_symbol_92.png"
+                        alt=""
+                      />
+                      <img
+                        style="width: 100px"
+                        src="https://www.logo.wine/a/logo/Visa_Inc./Visa_Inc.-Logo.wine.svg"
+                        alt=""
+                      />
+                      <img
+                        style="width: 100px"
+                        src="https://www.safaricom.co.ke/images/MicrosoftTeams-image.jpg"
+                        alt=""
+                      />
+                      <img
+                        style="width: 100px"
+                        src="https://www.logo.wine/a/logo/American_Express/American_Express-Logo.wine.svg"
+                        alt=""
+                      />
+                      <img
+                        style="width: 100px"
+                        src="https://www.logo.wine/a/logo/Bharti_Airtel/Bharti_Airtel-Logo.wine.svg"
+                        alt=""
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </mdb-carousel-item>
+        </mdb-carousel>
+      </div>
+    </section>
+    <!-- End of split screen section -->
+
+
+
+  <div class="container-fluid" style="margin-bottom: 5px">
+    <div class="row m-2">
+      <div class="col-xxl-3 col-xl-4 col-lg-4 col-md-12">
+        <div class="card custom-card products-navigation-card">
+          <div class="card-body p-0">
+            <div class="p-4 border-bottom">
+              <p class="fw-medium mb-0 text-muted">BRANDS</p>
+              <div class="px-2 py-3 pb-0">
+                <div class="d-flex flex-row justify-content-between w-100 align-items-center mb-2">
+                    <div class="checkbox d-flex align-items-center gap-2">
+                        <input class="form-check-input" type="checkbox" value="" id="Jimmy-Lolfiger" checked>
+                        <label class="form-check-label mb-0" for="Jimmy-Lolfiger">
+                            ShopSwift
+                        </label>
+                    </div>
+                    <span class="badge bg-primary-transparent">512</span>
+                </div>
+                <div class="d-flex flex-row justify-content-between w-100 align-items-center mb-2">
+                    <div class="checkbox d-flex align-items-center gap-2">
+                        <input class="form-check-input" type="checkbox" value="" id="dapzem1" checked>
+                        <label class="form-check-label mb-0" for="dapzem1">
+                            LuxeCart
+                        </label>
+                    </div>
+                    <span class="badge bg-primary-transparent">2,186</span>
+                </div>
+                <div class="d-flex flex-row justify-content-between w-100 align-items-center mb-2">
+                    <div class="checkbox d-flex align-items-center gap-2">
+                        <input class="form-check-input" type="checkbox" value="" id="denim-winjo1" checked>
+                        <label class="form-check-label mb-0" for="denim-winjo1">
+                            EcoTrend
+                        </label>
+                    </div>
+                    <span class="badge bg-primary-transparent">734</span>
+                </div>
+                <div class="d-flex flex-row justify-content-between w-100 align-items-center mb-2">
+                    <div class="checkbox d-flex align-items-center gap-2">
+                        <input class="form-check-input" type="checkbox" value="" id="Louie-Phillippe">
+                        <label class="form-check-label mb-0" for="Louie-Phillippe">
+                            UrbanHaven
+                        </label>
+                    </div>
+                    <span class="badge bg-primary-transparent">16</span>
+                </div>
+                <div class="d-flex flex-row justify-content-between w-100 align-items-center mb-2">
+                    <div class="checkbox d-flex align-items-center gap-2">
+                        <input class="form-check-input" type="checkbox" value="" id="garage-clothing">
+                        <label class="form-check-label mb-0" for="garage-clothing">
+                            SwiftStyle
+                        </label>
+                    </div>
+                    <span class="badge bg-primary-transparent">1,432</span>
+                </div>
+                <div #collapse1="ngbCollapse" [(ngbCollapse)]="isCollapsed1">
+                    <div class="card-body p-0">
+                        <div class="d-flex flex-row justify-content-between w-100 align-items-center mb-2">
+                            <div class="checkbox d-flex align-items-center gap-2">
+                                <input class="form-check-input" type="checkbox" value="" id="blueberry" checked>
+                                <label class="form-check-label mb-0" for="blueberry">
+                                    GigaGoods
+                                </label>
+                            </div>
+                            <span class="badge bg-primary-transparent">257</span>
+                        </div>
+                        <div class="d-flex flex-row justify-content-between w-100 align-items-center mb-2">
+                            <div class="checkbox d-flex align-items-center gap-2">
+                                <input class="form-check-input" type="checkbox" value="" id="aus-polo-assn" checked>
+                                <label class="form-check-label mb-0" for="aus-polo-assn">
+                                    TrendyTreasures
+                                </label>
+                            </div>
+                            <span class="badge bg-primary-transparent">1,845</span>
+                        </div>
+                        <div class="d-flex flex-row justify-content-between w-100 align-items-center mb-2">
+                            <div class="checkbox d-flex align-items-center gap-2">
+                                <input class="form-check-input" type="checkbox" value="" id="denim-corp" checked>
+                                <label class="form-check-label mb-0" for="denim-corp">
+                                    AquaGrove
+                                </label>
+                            </div>
+                            <span class="badge bg-primary-transparent">5,893</span>
+                        </div>
+                    </div>
+                </div>
+                <a class="ecommerce-more-link d-flex align-items-center gap-1" data-bs-toggle="collapse" (click)="collapse1.toggle()" [attr.aria-expanded]="!isCollapsed1" role="button" aria-expanded="false" aria-controls="brands-more">
+                  <span>MORE</span>                  
+              </a>
+              
+            </div>
+            
+            
+              
+              </div>
+              <div class="p-4 border-bottom">
+                  <p class="fw-medium mb-0 text-muted">PRICE</p>
+                  <div class="px-2 py-3 pb-0">
+                    <div class="d-flex flex-row justify-content-between w-100 align-items-center mb-2">
+                        <div class="checkbox d-flex align-items-center gap-2">
+                            <input class="form-check-input" type="checkbox" value="" id="low">
+                            <label class="form-check-label mb-0" for="low">
+                                $0 - $599
+                            </label>
+                        </div>
+                        <span class="badge bg-primary-transparent">22,873</span>
+                    </div>
+                    <div class="d-flex flex-row justify-content-between w-100 align-items-center mb-2">
+                        <div class="checkbox d-flex align-items-center gap-2">
+                            <input class="form-check-input" type="checkbox" value="" id="low1" checked>
+                            <label class="form-check-label mb-0" for="low1">
+                                $599 - $1,299
+                            </label>
+                        </div>
+                        <span class="badge bg-primary-transparent">11,345</span>
+                    </div>
+                    <div class="d-flex flex-row justify-content-between w-100 align-items-center mb-2">
+                        <div class="checkbox d-flex align-items-center gap-2">
+                            <input class="form-check-input" type="checkbox" value="" id="medium">
+                            <label class="form-check-label mb-0" for="medium">
+                                $1,299 - $2,199
+                            </label>
+                        </div>
+                        <span class="badge bg-primary-transparent">6,987</span>
+                    </div>
+                    <div class="d-flex flex-row justify-content-between w-100 align-items-center mb-2">
+                        <div class="checkbox d-flex align-items-center gap-2">
+                            <input class="form-check-input" type="checkbox" value="" id="high">
+                            <label class="form-check-label mb-0" for="high">
+                                $2,199 - $3,499
+                            </label>
+                        </div>
+                        <span class="badge bg-primary-transparent">5,236</span>
+                    </div>
+                    <div class="d-flex flex-row justify-content-between w-100 align-items-center mb-4">
+                        <div class="checkbox d-flex align-items-center gap-2">
+                            <input class="form-check-input" type="checkbox" value="" id="high1">
+                            <label class="form-check-label mb-0" for="high1">
+                                $3,499 & Above
+                            </label>
+                        </div>
+                        <span class="badge bg-primary-transparent">3,735</span>
+                    </div>
+                
+                    <p class="fw-medium mb-0 text-muted">PRICE RANGE</p>
+                    <div class="mt-5 mx-3" id="product-price-range">
+                        <nouislider
+                            [connect]="true"
+                            [min]="0.00"
+                            [max]="10000.00"
+                            [step]="1"
+                            [tooltips]="[true, true]"
+                            [(ngModel)]="someRange"
+                        ></nouislider>
+                    </div>
+                </div>
                 
               </div>
+              <div class="p-4 border-bottom">
+                <p class="fw-medium mb-0 text-muted">CATEGORIES</p>
+                <div class="px-2 py-3 pb-0">
+                  <div class="d-flex flex-row justify-content-between w-100 align-items-center mb-2">
+                      <div class="checkbox d-flex align-items-center gap-2">
+                          <input class="form-check-input" type="checkbox" value="" id="electronics">
+                          <label class="form-check-label mb-0" for="electronics">
+                              Electronics
+                          </label>
+                      </div>
+                      <span class="badge bg-primary-transparent">2,712</span>
+                  </div>
+                  <div class="d-flex flex-row justify-content-between w-100 align-items-center mb-2">
+                      <div class="checkbox d-flex align-items-center gap-2">
+                          <input class="form-check-input" type="checkbox" value="" id="Accesories">
+                          <label class="form-check-label mb-0" for="Accesories">
+                              Accesories
+                          </label>
+                      </div>
+                      <span class="badge bg-primary-transparent">536</span>
+                  </div>
+                  <div class="d-flex flex-row justify-content-between w-100 align-items-center mb-2">
+                      <div class="checkbox d-flex align-items-center gap-2">
+                          <input class="form-check-input" type="checkbox" value="" id="clothing" checked>
+                          <label class="form-check-label mb-0" for="clothing">
+                              Clothing
+                          </label>
+                      </div>
+                      <span class="badge bg-primary-transparent">18,289</span>
+                  </div>
+                  <div class="d-flex flex-row justify-content-between w-100 align-items-center mb-2">
+                      <div class="checkbox d-flex align-items-center gap-2">
+                          <input class="form-check-input" type="checkbox" value="" id="fashion">
+                          <label class="form-check-label mb-0" for="fashion">
+                              Fashion
+                          </label>
+                      </div>
+                      <span class="badge bg-primary-transparent">3,453</span>
+                  </div>
+              
+                  <div class="collapse" id="category-more" #collapse3="ngbCollapse" [(ngbCollapse)]="isCollapsed3">
+                      <div class="card-body p-0">
+                          <div class="d-flex flex-row justify-content-between w-100 align-items-center mb-2">
+                              <div class="checkbox d-flex align-items-center gap-2">
+                                  <input class="form-check-input" type="checkbox" value="" id="furniture">
+                                  <label class="form-check-label mb-0" for="furniture">
+                                      Furniture
+                                  </label>
+                              </div>
+                              <span class="badge bg-primary-transparent">7,165</span>
+                          </div>
+                          <div class="d-flex flex-row justify-content-between w-100 align-items-center mb-2">
+                              <div class="checkbox d-flex align-items-center gap-2">
+                                  <input class="form-check-input" type="checkbox" value="" id="footwear">
+                                  <label class="form-check-label mb-0" for="footwear">
+                                      Footwear
+                                  </label>
+                              </div>
+                              <span class="badge bg-primary-transparent">5,964</span>
+                          </div>
+                          <div class="d-flex flex-row justify-content-between w-100 align-items-center mb-2">
+                              <div class="checkbox d-flex align-items-center gap-2">
+                                  <input class="form-check-input" type="checkbox" value="" id="mobiles">
+                                  <label class="form-check-label mb-0" for="mobiles">
+                                      Mobiles
+                                  </label>
+                              </div>
+                              <span class="badge bg-primary-transparent">2,123</span>
+                          </div>
+                      </div>
+                  </div>
+              
+                  <a class="ecommerce-more-link d-flex align-items-center gap-1" data-bs-toggle="collapse" data-bs-target="#category-more" (click)="collapse3.toggle()" role="button" aria-expanded="false" aria-controls="category-more">
+                      <span>MORE</span>
+                  </a>
+                </div>
+              
+               
+
+              </div>
+              <div class="p-4 border-bottom">
+                <p class="fw-medium mb-0 text-muted">DISCOUNT</p>
+                <div class="px-2 py-3 pb-0">
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" value="" id="Jimmy-Lolfiger1">
+                        <label class="form-check-label" for="Jimmy-Lolfiger1">
+                            0% - 20%
+                        </label>
+                        <span class="badge bg-primary-transparent float-end">16,563</span>
+                    </div>
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" value="" id="dapzem2">
+                        <label class="form-check-label" for="dapzem2">
+                            20% - 40%
+                        </label>
+                        <span class="badge bg-primary-transparent float-end">15,234</span>
+                    </div>
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" value="" id="denim-winjo">
+                        <label class="form-check-label" for="denim-winjo">
+                            40% - 60%
+                        </label>
+                        <span class="badge bg-primary-transparent float-end">6,278</span>
+                    </div>
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" value="" id="Louie-Phillippe1" checked>
+                        <label class="form-check-label" for="Louie-Phillippe1">
+                            60% - 80%
+                        </label>
+                        <span class="badge bg-primary-transparent float-end">4,531</span>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="garage-clothing1">
+                        <label class="form-check-label" for="garage-clothing1">
+                            80% - 90%
+                        </label>
+                        <span class="badge bg-primary-transparent float-end">2,405</span>
+                    </div>
+                </div>
+            </div>
+            <div class="p-4">
+                <p class="fw-medium mb-0 text-muted">SIZES</p>
+                <div class="px-2 py-3 pb-0">
+                  <div class="d-flex flex-row justify-content-between w-100 align-items-center mb-2">
+                      <div class="checkbox d-flex align-items-center gap-2">
+                          <input class="form-check-input" type="checkbox" value="" id="extra-small">
+                          <label class="form-check-label mb-0" for="extra-small">
+                              Extra Small (XS)
+                          </label>
+                      </div>
+                      <span class="badge bg-primary-transparent">23,156</span>
+                  </div>
+                  <div class="d-flex flex-row justify-content-between w-100 align-items-center mb-2">
+                      <div class="checkbox d-flex align-items-center gap-2">
+                          <input class="form-check-input" type="checkbox" value="" id="small">
+                          <label class="form-check-label mb-0" for="small">
+                              Small (SM)
+                          </label>
+                      </div>
+                      <span class="badge bg-primary-transparent">15,632</span>
+                  </div>
+                  <div class="d-flex flex-row justify-content-between w-100 align-items-center mb-2">
+                      <div class="checkbox d-flex align-items-center gap-2">
+                          <input class="form-check-input" type="checkbox" value="" id="medium1">
+                          <label class="form-check-label mb-0" for="medium1">
+                              Medium (MD)
+                          </label>
+                      </div>
+                      <span class="badge bg-primary-transparent">15,032</span>
+                  </div>
+                  <div class="d-flex flex-row justify-content-between w-100 align-items-center mb-2">
+                      <div class="checkbox d-flex align-items-center gap-2">
+                          <input class="form-check-input" type="checkbox" value="" id="large" checked>
+                          <label class="form-check-label mb-0" for="large">
+                              Large (L)
+                          </label>
+                      </div>
+                      <span class="badge bg-primary-transparent">7,154</span>
+                  </div>
+              
+                  <div class="collapse" id="sizes-more" #collapse2="ngbCollapse" [(ngbCollapse)]="isCollapsed">
+                      <div class="card-body p-0">
+                          <div class="d-flex flex-row justify-content-between w-100 align-items-center mb-2">
+                              <div class="checkbox d-flex align-items-center gap-2">
+                                  <input class="form-check-input" type="checkbox" value="" id="extra-large">
+                                  <label class="form-check-label mb-0" for="extra-large">
+                                      Extra Large (XL)
+                                  </label>
+                              </div>
+                              <span class="badge bg-primary-transparent">5,946</span>
+                          </div>
+                          <div class="d-flex flex-row justify-content-between w-100 align-items-center mb-2">
+                              <div class="checkbox d-flex align-items-center gap-2">
+                                  <input class="form-check-input" type="checkbox" value="" id="double-extralarge">
+                                  <label class="form-check-label mb-0" for="double-extralarge">
+                                      XXL
+                                  </label>
+                              </div>
+                              <span class="badge bg-primary-transparent">3,267</span>
+                          </div>
+                          <div class="d-flex flex-row justify-content-between w-100 align-items-center mb-2">
+                              <div class="checkbox d-flex align-items-center gap-2">
+                                  <input class="form-check-input" type="checkbox" value="" id="triple-extralarge">
+                                  <label class="form-check-label mb-0" for="triple-extralarge">
+                                      XXL
+                                  </label>
+                              </div>
+                              <span class="badge bg-primary-transparent">578</span>
+                          </div>
+                      </div>
+                  </div>
+              
+                  <a class="ecommerce-more-link d-flex align-items-center gap-1" data-bs-toggle="collapse" (click)="collapse2.toggle()" role="button" aria-expanded="false" aria-controls="sizes-more">
+                      <span>MORE</span>
+                  </a>
+              </div>
+              
             </div>
 
-            <!-- Third column for additional content or more details -->
-            <div class="col-md-6">
-              <div class="p-2 d-flex flex-column justify-content-center h-100 align-items-center text-primary">
-                <h5 class="d-flex flex-row w-100 justify-content-center align-items-center">
-                  Shop
-                  with Convinience
-                </h5>
-                <div class="d-flex flex-row">
-                  <span>Pay with M-PESA, VISA, MasterCard, American Express and Airtel Money</span>
-                </div>
-                <div class="d-flex flex-row justify-content-center paymentmethod-icons">
-                  <img
-                    style="width: 100px"
-                    src="https://brand.mastercard.com/content/dam/mccom/brandcenter/thumbnails/mc_dla_symbol_92.png"
-                    alt=""
-                  />
-                  <img
-                    style="width: 100px"
-                    src="https://www.logo.wine/a/logo/Visa_Inc./Visa_Inc.-Logo.wine.svg"
-                    alt=""
-                  />
-                  <img
-                    style="width: 100px"
-                    src="https://www.safaricom.co.ke/images/MicrosoftTeams-image.jpg"
-                    alt=""
-                  />
-                  <img
-                    style="width: 100px"
-                    src="https://www.logo.wine/a/logo/American_Express/American_Express-Logo.wine.svg"
-                    alt=""
-                  />
-                  <img
-                    style="width: 100px"
-                    src="https://www.logo.wine/a/logo/Bharti_Airtel/Bharti_Airtel-Logo.wine.svg"
-                    alt=""
-                  />
-                </div>
-              </div>
-            </div>
           </div>
         </div>
-      </mdb-carousel-item>
-    </mdb-carousel>
-  </div>
-</section>
-<!-- End of split screen section -->
+        
 
-
-
-  <mat-divider style="margin-top: 2%; margin-bottom: 1%"></mat-divider>
-  <!--display  -->
-  <div class="features" style="display: flex; justify-content: space-around">
-    <p>
-      <span nz-icon nzType="appstore" nzTheme="outline"></span> Trusted by More
-      than {{ carouselData.brands.length }} Brands
-    </p>
-    <p>
-      <span nz-icon nzType="line-chart" nzTheme="outline"></span> Offering More
-      than {{ carouselData.categories.length }} categories
-    </p>
-    <p>
-      <span nz-icon nzType="check-circle" nzTheme="outline"></span> And more
-      than {{ carouselData.subcategories.length }} subcategories
-    </p>
-    <p>
-      <span nz-icon nzType="home" nzTheme="outline"></span> Get your shopping
-      delivered to your location
-    </p>
-  </div>
-  <mat-divider></mat-divider>
-
-  <div class="container" style="margin-bottom: 5px">
-    <mat-divider *ngIf="numberOfResults > 0"></mat-divider>
-    <span class="fw-semibold" *ngIf="numberOfResults > 0">
-      Query Results
-    </span>
-
-    <div
-      id="searchResults"
-      #searchResults
-      class="search-results"
-      *ngIf="searchQuery"
-    >
-      <span *ngIf="numberOfResults > 0" class="search-term"
-        >Your query
-        <span style="color: green">"{{ searchQuery }}"</span> returned
-        <span style="color: green">{{ numberOfResults }}</span> results</span
-      >
-      <span *ngIf="numberOfResults == 0" class="search-term" style="color:rgb(235, 85, 110)"
-        >No Products found for Search Phrase "{{ searchQuery }}"</span
-      >
-      <div
-        class="allproductslisting"
-        *ngIf="searchproductsloading"
-        style="
-          width: 100%;
-          height: auto;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-        "
-      >
-        <mat-spinner *ngIf="searchproductsloading && numberOfResults !==0" strokeWidth="1"></mat-spinner>
       </div>
-      <div class="allproductslisting" *ngIf="!searchproductsloading">
-        <div
-            (click)="viewProduct(product)"
-            class="allproductlistingitem"
-            *ngFor="let product of searchedProduct.slice((currentPage - 1) * productItemsPerPage, currentPage * productItemsPerPage)"
-            (ngOnInit)="startImageLoop(product.id, product.avatar)"
+      <div class="col-xxl-9 col-xl-8 col-lg-8 col-md-12">
+        <mat-divider *ngIf="numberOfResults > 0"></mat-divider>
+          <span class="fw-semibold" *ngIf="numberOfResults > 0">
+            Query Results
+          </span>
+
+          <div
+            id="searchResults"
+            #searchResults
+            class="search-results"
+            *ngIf="searchQuery"
           >
+            <span *ngIf="numberOfResults > 0" class="search-term"
+              >Your query
+              <span style="color: green">"{{ searchQuery }}"</span> returned
+              <span style="color: green">{{ numberOfResults }}</span> results</span
+            >
+            <span *ngIf="numberOfResults == 0" class="search-term" style="color:rgb(235, 85, 110)"
+              >No Products found for Search Phrase "{{ searchQuery }}"</span
+            >
+            <div
+              class="allproductslisting"
+              *ngIf="searchproductsloading"
+              style="
+                width: 100%;
+                height: auto;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+              "
+            >
+              <mat-spinner *ngIf="searchproductsloading && numberOfResults !==0" strokeWidth="1"></mat-spinner>
+            </div>
+            <div class="allproductslisting" *ngIf="!searchproductsloading">
+              <div
+                  (click)="viewProduct(product)"
+                  class="allproductlistingitem"
+                  *ngFor="let product of searchedProduct.slice((currentPage - 1) * productItemsPerPage, currentPage * productItemsPerPage)"
+                  (ngOnInit)="startImageLoop(product.id, product.avatar)"
+                >
+                  <small>{{ product.brand.toUpperCase() }}</small>
+                  
+                  <!-- Looping through the product images -->
+                  <img 
+                    [src]="product.avatar[imageLoopData[product._id]?.currentImageIndex || 0]" 
+                    alt="Product Image" 
+                  />
+                  
+                  <small><strong>{{ product.name.toUpperCase() }}</strong></small>
+
+                  <small *ngIf="product.views[0]" style="color: rgb(174, 174, 174); font-size: 10">
+                    <mat-icon style="vertical-align: middle; transform: scale(0.7)">visibility</mat-icon>
+                    {{ convertNumberToShortScale(product.views[0].totalViews) }}({{ product.views[0].users.length }})
+                  </small>
+
+                  <div style="display: flex; flex-direction: row; justify-content: center; flex: 1 1 auto;">
+                    <small><s *ngIf="product.discount">Was {{ convertNumberToShortScale(product.sp) }}</s></small>
+                    <small>Now KES.{{ convertNumberToShortScale(product.sp, product.discount) }}</small>
+                  </div>
+
+                  <div *ngIf="product.discount" class="discountdot">
+                    <small>-{{ product.discount }}%</small>
+                  </div>
+                  
+                  <div class="stars">
+                    <mat-icon *ngFor="let i of range(rating)" style="transform: scale(0.6); color: white;">star</mat-icon>
+                    <mat-icon *ngIf="rating % 1 > 0" style="transform: scale(0.6); color: white">star_half</mat-icon>
+                    <mat-icon *ngFor="let i of range(5 - rating)" style="transform: scale(0.6); color: white">star_border</mat-icon>
+                  </div>
+                </div>
+
+            </div>
+            <div class="allproductspagination" *ngIf="numberOfResults !==0">
+              <button
+                mat-stroked-button
+                *ngFor="let page of getPageRange()"
+                (click)="setPage(page)"
+              >
+                {{ page }}
+              </button>
+            </div>
+          </div>
+          <span class="fw-semibold" >All Products({{ products.length }})</span>
+          <div
+            *ngIf="allproductsloading"
+            class="allproductslisting"
+            style="
+              width: 100%;
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              align-items: center;
+            "
+          >
+            <mat-spinner strokeWidth="1"></mat-spinner>
+          </div>
+          <div *ngIf="!allproductsloading" class="allproductslisting">
+            <div
+              (click)="viewProduct(product)"
+              class="allproductlistingitem"
+              *ngFor="
+                let product of products.slice(
+                  (currentPage - 1) * productItemsPerPage,
+                  currentPage * productItemsPerPage
+                )
+              "
+            >
             <small>{{ product.brand.toUpperCase() }}</small>
-            
+                  
             <!-- Looping through the product images -->
             <img 
               [src]="product.avatar[imageLoopData[product._id]?.currentImageIndex || 0]" 
@@ -201,83 +606,18 @@
               <mat-icon *ngIf="rating % 1 > 0" style="transform: scale(0.6); color: white">star_half</mat-icon>
               <mat-icon *ngFor="let i of range(5 - rating)" style="transform: scale(0.6); color: white">star_border</mat-icon>
             </div>
+            </div>
           </div>
-
+          <div class="allproductspagination">
+            <button
+              mat-stroked-button
+              *ngFor="let page of getPageRange()"
+              (click)="setPage(page)"
+            >
+              {{ page }}
+            </button>
+          </div>
       </div>
-      <div class="allproductspagination" *ngIf="numberOfResults !==0">
-        <button
-          mat-stroked-button
-          *ngFor="let page of getPageRange()"
-          (click)="setPage(page)"
-        >
-          {{ page }}
-        </button>
-      </div>
-    </div>
-    <span class="fw-semibold" >All Products({{ products.length }})</span>
-    <div
-      *ngIf="allproductsloading"
-      class="allproductslisting"
-      style="
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-      "
-    >
-      <mat-spinner strokeWidth="1"></mat-spinner>
-    </div>
-    <div *ngIf="!allproductsloading" class="allproductslisting">
-      <div
-        (click)="viewProduct(product)"
-        class="allproductlistingitem"
-        *ngFor="
-          let product of products.slice(
-            (currentPage - 1) * productItemsPerPage,
-            currentPage * productItemsPerPage
-          )
-        "
-      >
-      <small>{{ product.brand.toUpperCase() }}</small>
-            
-      <!-- Looping through the product images -->
-      <img 
-        [src]="product.avatar[imageLoopData[product._id]?.currentImageIndex || 0]" 
-        alt="Product Image" 
-      />
-      
-      <small><strong>{{ product.name.toUpperCase() }}</strong></small>
-
-      <small *ngIf="product.views[0]" style="color: rgb(174, 174, 174); font-size: 10">
-        <mat-icon style="vertical-align: middle; transform: scale(0.7)">visibility</mat-icon>
-        {{ convertNumberToShortScale(product.views[0].totalViews) }}({{ product.views[0].users.length }})
-      </small>
-
-      <div style="display: flex; flex-direction: row; justify-content: center; flex: 1 1 auto;">
-        <small><s *ngIf="product.discount">Was {{ convertNumberToShortScale(product.sp) }}</s></small>
-        <small>Now KES.{{ convertNumberToShortScale(product.sp, product.discount) }}</small>
-      </div>
-
-      <div *ngIf="product.discount" class="discountdot">
-        <small>-{{ product.discount }}%</small>
-      </div>
-      
-      <div class="stars">
-        <mat-icon *ngFor="let i of range(rating)" style="transform: scale(0.6); color: white;">star</mat-icon>
-        <mat-icon *ngIf="rating % 1 > 0" style="transform: scale(0.6); color: white">star_half</mat-icon>
-        <mat-icon *ngFor="let i of range(5 - rating)" style="transform: scale(0.6); color: white">star_border</mat-icon>
-      </div>
-      </div>
-    </div>
-    <div class="allproductspagination">
-      <button
-        mat-stroked-button
-        *ngFor="let page of getPageRange()"
-        (click)="setPage(page)"
-      >
-        {{ page }}
-      </button>
     </div>
   </div>
 </div>

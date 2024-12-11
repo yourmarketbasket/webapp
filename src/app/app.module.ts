@@ -117,6 +117,8 @@ import { Star, Camera, List, Heart, Github, Bell, Eye, ShoppingCart, LogOut, Ale
 import { NgbOffcanvasModule } from '@ng-bootstrap/ng-bootstrap';
 import { MdbCarouselModule } from 'mdb-angular-ui-kit/carousel';
 import { MdbRatingModule } from 'mdb-angular-ui-kit/rating';
+import { NouisliderModule } from 'ng2-nouislider';
+import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 registerLocaleData(en);
@@ -214,6 +216,7 @@ const icons = {
         NgbDropdownModule,
         MdbCarouselModule,
         CommonModule,
+        NgbCollapseModule,
         MatTableModule,
         MatTooltipModule,
         MatChipsModule,
@@ -251,7 +254,8 @@ const icons = {
         FeatherModule.pick(icons),
         NgbModule,
         NgbOffcanvasModule,
-        NgbRatingModule
+        NgbRatingModule,
+        NouisliderModule
       ], 
         providers: [
         {
