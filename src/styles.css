@@ -3,7 +3,6 @@
 @import "master.css";
 @import 'bootstrap-icons/font/bootstrap-icons.css';
 @import "nouislider/dist/nouislider.css";
-@import "./assets/css/bootstrap.css";
 /* style the scrollbar */
 ::-webkit-scrollbar-track{
     background: #fdfdfd !important;

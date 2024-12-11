@@ -111,7 +111,7 @@
 
   <div class="container-fluid" style="margin-bottom: 5px">
     <div class="row m-2">
-      <div class="col-xxl-3 col-xl-4 col-lg-4 col-md-12">
+      <div class="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-xs-6">
         <div class="card custom-card products-navigation-card">
           <div class="card-body p-0">
             <div class="p-4 border-bottom">
@@ -307,7 +307,7 @@
         </div>
       </div>
       
-      <div class="col-xxl-9 col-xl-8 col-lg-8 col-md-12">
+      <div class="col-xxl-9 col-xl-9 col-lg-9 col-md-8  col-xs-6">
         <mat-divider *ngIf="numberOfResults > 0"></mat-divider>
         <span class="fw-semibold" *ngIf="numberOfResults > 0">Query Results</span>
       
@@ -324,42 +324,38 @@
             <mat-spinner *ngIf="searchproductsloading && numberOfResults !== 0" strokeWidth="1"></mat-spinner>
           </div>
       
-          <div class="allproductslisting" *ngIf="!searchproductsloading">
-            <div class="card custom-card product-card" *ngFor="let product of searchedProduct.slice((currentPage - 1) * productItemsPerPage, currentPage * productItemsPerPage)">
-              <div class="card-body">
-                <a class="product-image" (click)="viewProduct(product)">
-                  <img [src]="product.avatar[imageLoopData[product._id]?.currentImageIndex || 0]" class="card-img mb-3" alt="Product Image">
-                </a>
-                <p class="product-name fw-medium mb-0 d-flex align-items-center justify-content-between">
-                  {{ product.name.toUpperCase() }}
-                  <span class="float-end text-warning fs-12">
-                    {{ product.rating }}
-                    <i class="ri-star-s-fill align-middle ms-1 d-inline-block"></i>
-                  </span>
-                </p>
-                <p class="product-description fs-11 text-muted mb-2">{{ product.brand.toUpperCase() }}</p>
-                <p class="mb-1 fw-medium fs-16 d-flex align-items-center justify-content-between">
-                  <span>
-                    KES.{{ convertNumberToShortScale(product.sp, product.discount) }}
-                    <span *ngIf="product.discount" class="text-muted text-decoration-line-through ms-1 d-inline-block op-6">
-                      {{ convertNumberToShortScale(product.sp) }}
+          <div class="allproductslisting row d-flex flex-row" *ngIf="!searchproductsloading">
+            <div class="col-xxl-auto col-xl-auto col-lg-auto col-md-auto col-sm-6" *ngFor="let product of searchedProduct.slice((currentPage - 1) * productItemsPerPage, currentPage * productItemsPerPage)">
+              <div class="card custom-card product-card">
+                <div class="card-body">
+                  <a class="product-image" (click)="viewProduct(product)">
+                    <img [src]="product.avatar[imageLoopData[product._id]?.currentImageIndex || 0]" class="card-img mb-3" alt="Product Image">
+                  </a>
+                  <small class="product-name fw-medium mb-0 d-flex align-items-center justify-content-between">
+                    {{ product.name.toUpperCase() }}
+                    <span class="float-end text-warning fs-12">
+                      {{ product.rating }}
+                      <i class="ri-star-s-fill align-middle ms-1 d-inline-block"></i>
                     </span>
+                  </small>
+                  <span class="product-description fs-11 text-muted mb-2">{{ product.brand.toUpperCase() }}</span>
+                  <small class="mb-1 fw-medium fs-16 d-flex align-items-center justify-content-between flex-wrap">
+                    <small>
+                      Kes.{{ convertNumberToShortScale(product.sp, product.discount) }}
+                      <small *ngIf="product.discount" class="text-muted text-decoration-line-through ms-1 d-inline-block op-6">
+                        {{ convertNumberToShortScale(product.sp) }}
+                      </small> 
+                    </small>
+                    <small *ngIf="product.discount" class="badge bg-success float-end fs-10">-{{ product.discount }}% off</small>
+                  </small>
+                  <span class="fs-11 text-success fw-medium mb-0 d-flex align-items-center">
+                    <small class="fs-10">Now Kes.</small><small class="fs-6">{{ convertNumberToShortScale(product.sp, product.discount) }}</small>
                   </span>
-                  <span *ngIf="product.discount" class="badge bg-green float-end fs-10">-{{ product.discount }}%</span>
-                </p>
-                <p class="fs-11 text-success fw-medium mb-0 d-flex align-items-center">
-                  <i class="ti ti-discount-2 fs-16 me-1"></i>
-                  Offer Price KES.{{ convertNumberToShortScale(product.sp, product.discount) }}
-                </p>
-                <div class="stars">
-                  <mat-icon *ngFor="let i of range(rating)" style="transform: scale(0.6); color: white;">star</mat-icon>
-                  <mat-icon *ngIf="rating % 1 > 0" style="transform: scale(0.6); color: white">star_half</mat-icon>
-                  <mat-icon *ngFor="let i of range(5 - rating)" style="transform: scale(0.6); color: white">star_border</mat-icon>
+                  <small *ngIf="product.views[0]" style="color: rgb(174, 174, 174); font-size: 10">
+                    <mat-icon style="vertical-align: middle; transform: scale(0.7)">visibility</mat-icon>
+                    {{ convertNumberToShortScale(product.views[0].totalViews) }}({{ product.views[0].users.length }})
+                  </small>
                 </div>
-                <p *ngIf="product.views[0]" style="color: rgb(174, 174, 174); font-size: 10">
-                  <mat-icon style="vertical-align: middle; transform: scale(0.7)">visibility</mat-icon>
-                  {{ convertNumberToShortScale(product.views[0].totalViews) }}({{ product.views[0].users.length }})
-                </p>
               </div>
             </div>
           </div>
@@ -378,7 +374,7 @@
         </div>
       
         <div *ngIf="!allproductsloading" class="allproductslisting row d-flex flex-row">
-          <div class="col-xxl-auto col-xl-auto col-lg-auto col-md-auto col-sm-12" *ngFor="let product of products.slice((currentPage - 1) * productItemsPerPage, currentPage * productItemsPerPage)">
+          <div class="col-xxl-auto col-xl-auto col-lg-auto col-md-auto col-sm-6 col-xs-6" *ngFor="let product of products.slice((currentPage - 1) * productItemsPerPage, currentPage * productItemsPerPage)">
             <div class="card custom-card product-card">
               <div class="card-body">
                 <a class="product-image" (click)="viewProduct(product)">
@@ -392,23 +388,22 @@
                   </span>
                 </small>
                 <span class="product-description fs-11 text-muted mb-2">{{ product.brand.toUpperCase() }}</span>
-                <small class="mb-1 fw-medium fs-16 d-flex align-items-center justify-content-between flex-wrap">
+                <small class="mb-1 fw-medium fs-16 d-flex align-items-center flex-wrap">
                   <small>
                     Kes.{{ convertNumberToShortScale(product.sp, product.discount) }}
                     <small *ngIf="product.discount" class="text-muted text-decoration-line-through ms-1 d-inline-block op-6">
                       {{ convertNumberToShortScale(product.sp) }}
-                    </small>
+                    </small> 
                   </small>
-                  <small *ngIf="product.discount" class="badge rounded-pill badge-success float-end">-{{ product.discount }}%</small>
+                  <small *ngIf="product.discount" class="badge bg-success float-end fs-10">-{{ product.discount }}% off</small>
                 </small>
                 <span class="fs-11 text-success fw-medium mb-0 d-flex align-items-center">
-                  <i class="ti ti-discount-2 fs-16 me-1"></i>
-                  Offer Price Kes.{{ convertNumberToShortScale(product.sp, product.discount) }}
+                  <small class="fs-10">Offer Kes.</small><small class="fs-6">{{ convertNumberToShortScale(product.sp, product.discount) }}</small>
                 </span>
-                <p *ngIf="product.views[0]" style="color: rgb(174, 174, 174); font-size: 10">
+                <small *ngIf="product.views[0]" style="color: rgb(174, 174, 174); font-size: 10">
                   <mat-icon style="vertical-align: middle; transform: scale(0.7)">visibility</mat-icon>
                   {{ convertNumberToShortScale(product.views[0].totalViews) }}({{ product.views[0].users.length }})
-                </p>
+                </small>
               </div>
             </div>
           </div>
