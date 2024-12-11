@@ -17539,7 +17539,7 @@ html[dir=rtl] .translate-middle {
   font-size: 0.8725rem;
 }
 .card.custom-card .card-body {
-  padding: 1rem;
+  padding: 0.3rem;
   color: var(--default-text-color);
 }
 .card.custom-card .card-link {

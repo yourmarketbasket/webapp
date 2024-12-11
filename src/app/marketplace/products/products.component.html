@@ -131,7 +131,7 @@
                 </div>
                 <div class="d-flex flex-row justify-content-between w-100 align-items-center mb-2">
                   <div class="checkbox d-flex align-items-center gap-2">
-                    <mat-checkbox checked> EcoTrend </mat-checkbox>
+                    <mat-checkbox> EcoTrend </mat-checkbox>
                   </div>
                   <span class="badge bg-primary-transparent">734</span>
                 </div>
@@ -151,19 +151,19 @@
                   <div class="card-body p-0">
                     <div class="d-flex flex-row justify-content-between w-100 align-items-center mb-2">
                       <div class="checkbox d-flex align-items-center gap-2">
-                        <mat-checkbox checked> GigaGoods </mat-checkbox>
+                        <mat-checkbox> GigaGoods </mat-checkbox>
                       </div>
                       <span class="badge bg-primary-transparent">257</span>
                     </div>
                     <div class="d-flex flex-row justify-content-between w-100 align-items-center mb-2">
                       <div class="checkbox d-flex align-items-center gap-2">
-                        <mat-checkbox checked> TrendyTreasures </mat-checkbox>
+                        <mat-checkbox> TrendyTreasures </mat-checkbox>
                       </div>
                       <span class="badge bg-primary-transparent">1,845</span>
                     </div>
                     <div class="d-flex flex-row justify-content-between w-100 align-items-center mb-2">
                       <div class="checkbox d-flex align-items-center gap-2">
-                        <mat-checkbox checked> AquaGrove </mat-checkbox>
+                        <mat-checkbox> AquaGrove </mat-checkbox>
                       </div>
                       <span class="badge bg-primary-transparent">5,893</span>
                     </div>
@@ -185,7 +185,7 @@
                 </div>
                 <div class="d-flex flex-row justify-content-between w-100 align-items-center mb-2">
                   <div class="checkbox d-flex align-items-center gap-2">
-                    <mat-checkbox checked> $599 - $1,299 </mat-checkbox>
+                    <mat-checkbox> $599 - $1,299 </mat-checkbox>
                   </div>
                   <span class="badge bg-primary-transparent">11,345</span>
                 </div>
@@ -237,7 +237,7 @@
                 </div>
                 <div class="d-flex flex-row justify-content-between w-100 align-items-center mb-2">
                   <div class="checkbox d-flex align-items-center gap-2">
-                    <mat-checkbox checked> Clothing </mat-checkbox>
+                    <mat-checkbox> Clothing </mat-checkbox>
                   </div>
                   <span class="badge bg-primary-transparent">18,289</span>
                 </div>
@@ -285,7 +285,7 @@
                 </div>
                 <div class="d-flex flex-row justify-content-between w-100 align-items-center mb-2">
                   <div class="checkbox d-flex align-items-center gap-2">
-                    <mat-checkbox checked> 20% - 40% </mat-checkbox>
+                    <mat-checkbox> 20% - 40% </mat-checkbox>
                   </div>
                   <span class="badge bg-primary-transparent">7,128</span>
                 </div>
@@ -309,152 +309,116 @@
       
       <div class="col-xxl-9 col-xl-8 col-lg-8 col-md-12">
         <mat-divider *ngIf="numberOfResults > 0"></mat-divider>
-          <span class="fw-semibold" *ngIf="numberOfResults > 0">
-            Query Results
+        <span class="fw-semibold" *ngIf="numberOfResults > 0">Query Results</span>
+      
+        <div id="searchResults" class="d-flex flex-row flex-wrap" #searchResults class="search-results" *ngIf="searchQuery">
+          <span *ngIf="numberOfResults > 0" class="search-term">
+            Your query <span style="color: green">"{{ searchQuery }}"</span> returned
+            <span style="color: green">{{ numberOfResults }}</span> results
           </span>
-
-          <div
-            id="searchResults"
-            #searchResults
-            class="search-results"
-            *ngIf="searchQuery"
-          >
-            <span *ngIf="numberOfResults > 0" class="search-term"
-              >Your query
-              <span style="color: green">"{{ searchQuery }}"</span> returned
-              <span style="color: green">{{ numberOfResults }}</span> results</span
-            >
-            <span *ngIf="numberOfResults == 0" class="search-term" style="color:rgb(235, 85, 110)"
-              >No Products found for Search Phrase "{{ searchQuery }}"</span
-            >
-            <div
-              class="allproductslisting"
-              *ngIf="searchproductsloading"
-              style="
-                width: 100%;
-                height: auto;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-              "
-            >
-              <mat-spinner *ngIf="searchproductsloading && numberOfResults !==0" strokeWidth="1"></mat-spinner>
-            </div>
-            <div class="allproductslisting" *ngIf="!searchproductsloading">
-              <div
-                  (click)="viewProduct(product)"
-                  class="allproductlistingitem"
-                  *ngFor="let product of searchedProduct.slice((currentPage - 1) * productItemsPerPage, currentPage * productItemsPerPage)"
-                  (ngOnInit)="startImageLoop(product.id, product.avatar)"
-                >
-                  <small>{{ product.brand.toUpperCase() }}</small>
-                  
-                  <!-- Looping through the product images -->
-                  <img 
-                    [src]="product.avatar[imageLoopData[product._id]?.currentImageIndex || 0]" 
-                    alt="Product Image" 
-                  />
-                  
-                  <small><strong>{{ product.name.toUpperCase() }}</strong></small>
-
-                  <small *ngIf="product.views[0]" style="color: rgb(174, 174, 174); font-size: 10">
-                    <mat-icon style="vertical-align: middle; transform: scale(0.7)">visibility</mat-icon>
-                    {{ convertNumberToShortScale(product.views[0].totalViews) }}({{ product.views[0].users.length }})
-                  </small>
-
-                  <div style="display: flex; flex-direction: row; justify-content: center; flex: 1 1 auto;">
-                    <small><s *ngIf="product.discount">Was {{ convertNumberToShortScale(product.sp) }}</s></small>
-                    <small>Now KES.{{ convertNumberToShortScale(product.sp, product.discount) }}</small>
-                  </div>
-
-                  <div *ngIf="product.discount" class="discountdot">
-                    <small>-{{ product.discount }}%</small>
-                  </div>
-                  
-                  <div class="stars">
-                    <mat-icon *ngFor="let i of range(rating)" style="transform: scale(0.6); color: white;">star</mat-icon>
-                    <mat-icon *ngIf="rating % 1 > 0" style="transform: scale(0.6); color: white">star_half</mat-icon>
-                    <mat-icon *ngFor="let i of range(5 - rating)" style="transform: scale(0.6); color: white">star_border</mat-icon>
-                  </div>
+          <span *ngIf="numberOfResults == 0" class="search-term" style="color:rgb(235, 85, 110)">
+            No Products found for Search Phrase "{{ searchQuery }}"
+          </span>
+      
+          <div class="allproductslisting" *ngIf="searchproductsloading" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+            <mat-spinner *ngIf="searchproductsloading && numberOfResults !== 0" strokeWidth="1"></mat-spinner>
+          </div>
+      
+          <div class="allproductslisting" *ngIf="!searchproductsloading">
+            <div class="card custom-card product-card" *ngFor="let product of searchedProduct.slice((currentPage - 1) * productItemsPerPage, currentPage * productItemsPerPage)">
+              <div class="card-body">
+                <a class="product-image" (click)="viewProduct(product)">
+                  <img [src]="product.avatar[imageLoopData[product._id]?.currentImageIndex || 0]" class="card-img mb-3" alt="Product Image">
+                </a>
+                <p class="product-name fw-medium mb-0 d-flex align-items-center justify-content-between">
+                  {{ product.name.toUpperCase() }}
+                  <span class="float-end text-warning fs-12">
+                    {{ product.rating }}
+                    <i class="ri-star-s-fill align-middle ms-1 d-inline-block"></i>
+                  </span>
+                </p>
+                <p class="product-description fs-11 text-muted mb-2">{{ product.brand.toUpperCase() }}</p>
+                <p class="mb-1 fw-medium fs-16 d-flex align-items-center justify-content-between">
+                  <span>
+                    KES.{{ convertNumberToShortScale(product.sp, product.discount) }}
+                    <span *ngIf="product.discount" class="text-muted text-decoration-line-through ms-1 d-inline-block op-6">
+                      {{ convertNumberToShortScale(product.sp) }}
+                    </span>
+                  </span>
+                  <span *ngIf="product.discount" class="badge bg-green float-end fs-10">-{{ product.discount }}%</span>
+                </p>
+                <p class="fs-11 text-success fw-medium mb-0 d-flex align-items-center">
+                  <i class="ti ti-discount-2 fs-16 me-1"></i>
+                  Offer Price KES.{{ convertNumberToShortScale(product.sp, product.discount) }}
+                </p>
+                <div class="stars">
+                  <mat-icon *ngFor="let i of range(rating)" style="transform: scale(0.6); color: white;">star</mat-icon>
+                  <mat-icon *ngIf="rating % 1 > 0" style="transform: scale(0.6); color: white">star_half</mat-icon>
+                  <mat-icon *ngFor="let i of range(5 - rating)" style="transform: scale(0.6); color: white">star_border</mat-icon>
                 </div>
-
-            </div>
-            <div class="allproductspagination" *ngIf="numberOfResults !==0">
-              <button
-                mat-stroked-button
-                *ngFor="let page of getPageRange()"
-                (click)="setPage(page)"
-              >
-                {{ page }}
-              </button>
+                <p *ngIf="product.views[0]" style="color: rgb(174, 174, 174); font-size: 10">
+                  <mat-icon style="vertical-align: middle; transform: scale(0.7)">visibility</mat-icon>
+                  {{ convertNumberToShortScale(product.views[0].totalViews) }}({{ product.views[0].users.length }})
+                </p>
+              </div>
             </div>
           </div>
-          <span class="fw-semibold" >All Products({{ products.length }})</span>
-          <div
-            *ngIf="allproductsloading"
-            class="allproductslisting"
-            style="
-              width: 100%;
-              display: flex;
-              flex-direction: column;
-              justify-content: center;
-              align-items: center;
-            "
-          >
-            <mat-spinner strokeWidth="1"></mat-spinner>
-          </div>
-          <div *ngIf="!allproductsloading" class="allproductslisting">
-            <div
-              (click)="viewProduct(product)"
-              class="allproductlistingitem"
-              *ngFor="
-                let product of products.slice(
-                  (currentPage - 1) * productItemsPerPage,
-                  currentPage * productItemsPerPage
-                )
-              "
-            >
-            <small>{{ product.brand.toUpperCase() }}</small>
-                  
-            <!-- Looping through the product images -->
-            <img 
-              [src]="product.avatar[imageLoopData[product._id]?.currentImageIndex || 0]" 
-              alt="Product Image" 
-            />
-            
-            <small><strong>{{ product.name.toUpperCase() }}</strong></small>
-
-            <small *ngIf="product.views[0]" style="color: rgb(174, 174, 174); font-size: 10">
-              <mat-icon style="vertical-align: middle; transform: scale(0.7)">visibility</mat-icon>
-              {{ convertNumberToShortScale(product.views[0].totalViews) }}({{ product.views[0].users.length }})
-            </small>
-
-            <div style="display: flex; flex-direction: row; justify-content: center; flex: 1 1 auto;">
-              <small><s *ngIf="product.discount">Was {{ convertNumberToShortScale(product.sp) }}</s></small>
-              <small>Now KES.{{ convertNumberToShortScale(product.sp, product.discount) }}</small>
-            </div>
-
-            <div *ngIf="product.discount" class="discountdot">
-              <small>-{{ product.discount }}%</small>
-            </div>
-            
-            <div class="stars">
-              <mat-icon *ngFor="let i of range(rating)" style="transform: scale(0.6); color: white;">star</mat-icon>
-              <mat-icon *ngIf="rating % 1 > 0" style="transform: scale(0.6); color: white">star_half</mat-icon>
-              <mat-icon *ngFor="let i of range(5 - rating)" style="transform: scale(0.6); color: white">star_border</mat-icon>
-            </div>
-            </div>
-          </div>
-          <div class="allproductspagination">
-            <button
-              mat-stroked-button
-              *ngFor="let page of getPageRange()"
-              (click)="setPage(page)"
-            >
+      
+          <div class="allproductspagination" *ngIf="numberOfResults !== 0">
+            <button mat-stroked-button *ngFor="let page of getPageRange()" (click)="setPage(page)">
               {{ page }}
             </button>
           </div>
+        </div>
+      
+        <span class="fw-semibold">All Products ({{ products.length }})</span>
+      
+        <div *ngIf="allproductsloading" class="allproductslisting" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+          <mat-spinner strokeWidth="1"></mat-spinner>
+        </div>
+      
+        <div *ngIf="!allproductsloading" class="allproductslisting row d-flex flex-row">
+          <div class="col-xxl-auto col-xl-auto col-lg-auto col-md-auto col-sm-12" *ngFor="let product of products.slice((currentPage - 1) * productItemsPerPage, currentPage * productItemsPerPage)">
+            <div class="card custom-card product-card">
+              <div class="card-body">
+                <a class="product-image" (click)="viewProduct(product)">
+                  <img [src]="product.avatar[imageLoopData[product._id]?.currentImageIndex || 0]" class="card-img mb-3" alt="Product Image">
+                </a>
+                <small class="product-name fw-medium mb-0 d-flex align-items-center justify-content-between">
+                  {{ product.name.toUpperCase() }}
+                  <span class="float-end text-warning fs-12">
+                    {{ product.rating }}
+                    <i class="ri-star-s-fill align-middle ms-1 d-inline-block"></i>
+                  </span>
+                </small>
+                <span class="product-description fs-11 text-muted mb-2">{{ product.brand.toUpperCase() }}</span>
+                <small class="mb-1 fw-medium fs-16 d-flex align-items-center justify-content-between flex-wrap">
+                  <small>
+                    Kes.{{ convertNumberToShortScale(product.sp, product.discount) }}
+                    <small *ngIf="product.discount" class="text-muted text-decoration-line-through ms-1 d-inline-block op-6">
+                      {{ convertNumberToShortScale(product.sp) }}
+                    </small>
+                  </small>
+                  <small *ngIf="product.discount" class="badge rounded-pill badge-success float-end">-{{ product.discount }}%</small>
+                </small>
+                <span class="fs-11 text-success fw-medium mb-0 d-flex align-items-center">
+                  <i class="ti ti-discount-2 fs-16 me-1"></i>
+                  Offer Price Kes.{{ convertNumberToShortScale(product.sp, product.discount) }}
+                </span>
+                <p *ngIf="product.views[0]" style="color: rgb(174, 174, 174); font-size: 10">
+                  <mat-icon style="vertical-align: middle; transform: scale(0.7)">visibility</mat-icon>
+                  {{ convertNumberToShortScale(product.views[0].totalViews) }}({{ product.views[0].users.length }})
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      
+        <div class="allproductspagination">
+          <button mat-stroked-button *ngFor="let page of getPageRange()" (click)="setPage(page)">
+            {{ page }}
+          </button>
+        </div>
       </div>
     </div>
   </div>
