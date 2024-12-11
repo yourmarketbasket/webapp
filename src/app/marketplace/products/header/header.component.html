@@ -20,7 +20,7 @@
         <div class="row w-100 d-flex justify-content-center flex-nowrap">
           <div class="col-auto d-flex align-items-center">
             <a href="/" class="navbar-brand">
-              <span class="fw-bold" style="font-size:80px; font-family: 'bauhaus 93'; color: rgb(0, 0, 0);">nisoko</span>
+              <span class="fw-bold" style="font-size:100px; font-family: 'bauhaus 93'; color: rgb(0, 0, 0);">nisoko</span>
               <span style="color: rgb(7, 212, 113); font-size:100px;">.</span>
             </a>
           </div>
@@ -41,12 +41,12 @@
           
           
           <div class="col-auto">
-            <button *ngIf="isLoggedIn" class="btn btn-icon btn-success-light rounded-pill btn-wave justify-content-center align-items-center white-text" (click)="logoutUser()">
+            <button *ngIf="isLoggedIn" class="btn btn-icon btn-success-light rounded-pill btn-wave justify-content-center align-items-center white-text m-1" (click)="logoutUser()">
               <i-feather class="small-icon" name="log-out"></i-feather>
             </button>
             <button
               *ngIf="numberOfNotifications>0"
-                class="btn btn-icon btn-success-light rounded-pill btn-wave position-relative justify-content-center align-items-center"
+                class="btn btn-icon btn-success-light rounded-pill btn-wave position-relative justify-content-center align-items-center m-1"
                 type="button"
                 (click)="openNotifications()"
               >
@@ -60,7 +60,7 @@
             </button>
 
             
-            <button *ngIf="numOfItemsInCart>0" class="btn btn-link text-decoration-none position-relative btn btn-icon btn-success-light rounded-pill btn-wave justify-content-center align-items-center" (click)="goToCart()">
+            <button *ngIf="numOfItemsInCart>0" class="m-1 btn btn-link text-decoration-none position-relative btn btn-icon btn-success-light rounded-pill btn-wave justify-content-center align-items-center" (click)="goToCart()">
               <i-feather class="small-icon"  name="shopping-cart"></i-feather>
               <span                
                 class="position-absolute top-0 start-100 translate-middle badge-xs badge bg-success rounded-pill badge-notification"

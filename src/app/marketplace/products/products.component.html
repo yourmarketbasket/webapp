@@ -321,7 +321,11 @@
           </span>
       
           <div class="allproductslisting" *ngIf="searchproductsloading" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
-            <mat-spinner *ngIf="searchproductsloading && numberOfResults !== 0" strokeWidth="1"></mat-spinner>
+            <button *ngIf="searchproductsloading && numberOfResults !== 0" class="btn btn-success-light" type="button" disabled>
+              <span class="spinner-border spinner-border-sm align-middle" role="status" aria-hidden="true"></span>
+              Loading...
+            </button>
+            
           </div>
       
           <div class="allproductslisting row d-flex flex-row" *ngIf="!searchproductsloading">
@@ -370,9 +374,12 @@
         <span class="fw-semibold">All Products ({{ products.length }})</span>
       
         <div *ngIf="allproductsloading" class="allproductslisting" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
-          <mat-spinner strokeWidth="1"></mat-spinner>
+          <button class="btn btn-success-light" type="button" disabled>
+            <span class="spinner-border spinner-border-sm align-middle" role="status" aria-hidden="true"></span>
+            Loading...
+          </button>
         </div>
-      
+        
         <div *ngIf="!allproductsloading" class="allproductslisting row d-flex flex-row">
           <div class="col-xxl-auto col-xl-auto col-lg-auto col-md-auto col-sm-6 col-xs-6" *ngFor="let product of products.slice((currentPage - 1) * productItemsPerPage, currentPage * productItemsPerPage)">
             <div class="card custom-card product-card">
