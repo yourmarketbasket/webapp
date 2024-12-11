@@ -102,7 +102,7 @@ typography
   --menu-prime-color: #6f778e;
   --menu-border-color: #e8e8e8;
   --header-bg: #fff;
-  --header-prime-color: #6f778e;
+  --header-prime-color: #697086;
   --header-border-color: #e8e8e8;
   --custom-white: #fff;
   --custom-black: #000;
@@ -24954,7 +24954,7 @@ h1.nft-title {
 
 .header-search-bar {
   position: relative;
-  margin-block: 13px;
+  /* margin-block: 13px; */
   margin-inline-start: 0.5625rem;
   width: 14rem;
   border-radius: 0.5rem;
