@@ -1,1 +1,142 @@
-<p>manage-views works!</p>
+<div class="container overflow-auto d-flex flex-row flex-wrap justify-content-center align-items-center">
+  
+    <div class="col-md-12 py-5">
+            <mdb-form-control class="mb-2">
+                <mdb-select [(ngModel)]="selectedImageType" id="imageType">
+                <mdb-option *ngFor="let option of imageCategorySelection" [value]="option.value">
+                    {{ option.label }}
+                </mdb-option>
+                </mdb-select>
+                <label mdbLabel class="form-label">Select Image Purpose</label>
+            </mdb-form-control>
+        <!-- Carousel Images Upload -->
+        <div class="card mb-4 border border-primary " *ngIf="selectedImageType === 'carousel'">
+            <div class="card-header text-center bg-info ">
+                Carousel Images
+            </div>
+            <div
+            class="card-body text-center position-relative d-flex flex-column justify-content-center align-items-center"
+            [class.bg-light]="isCarouselDragOver"
+            (dragover)="onDragOver($event, 'carousel')"
+            (dragleave)="onDragLeave('carousel')"
+            (drop)="onDrop($event, 'carousel')"
+            (click)="triggerFileInput('carousel')"
+            style="cursor: pointer; min-height: 200px;"
+            >
+            <i class="fa fa-cloud"></i>
+            Drag & Drop or Click to Upload Carousel Images
+            <input
+                type="file"
+                #carouselFileInput
+                (change)="onFileChange($event, 'carousel')"
+                accept="image/*"
+                multiple
+                hidden
+            />
+            <button *ngIf="uploadingInprogress" class="btn btn-primary-light" type="button" disabled>
+                <span class="spinner-border spinner-border-sm align-middle" role="status" aria-hidden="true"></span>
+                Uploading...
+            </button>
+            <div class="row mt-3">
+                <div *ngFor="let image of carousel; let i = index" class="col-md-3 mb-1 position-relative">
+                <img [src]="image" alt="Carousel Image" class="img-thumbnail" />
+                <button
+                    (click)="removeImage(i, 'carousel')"
+                    class="btn btn-danger btn-sm position-absolute  top-0 end-0 m-1"
+                    aria-label="Delete"
+                >
+                <i class="fa fa-trash"></i>
+                </button>
+                </div>
+            </div>
+            </div>
+            <div class="card-footer text-center">
+            <button class="btn btn-outline-primary" (click)="uploadFiles()">Upload Carousel Images</button>
+            </div>
+        </div>
+        <!-- Category Images Upload -->
+        <div class="card border border-primary mb-4" *ngIf="selectedImageType === 'categories'">
+            <div class="card-header text-center bg-primary ">
+            Category Images
+            </div>
+            <div
+            class="card-body text-center position-relative"
+            [class.bg-light]="isCategoryDragOver"
+            (dragover)="onDragOver($event, 'categories')"
+            (dragleave)="onDragLeave('categories')"
+            (drop)="onDrop($event, 'categories')"
+            (click)="triggerFileInput('categories')"
+            style="cursor: pointer; min-height: 200px;"
+            >
+            Drag & Drop or Click to Upload Category Images
+            <input
+                type="file"
+                #categoriesFileInput
+                (change)="onFileChange($event, 'categories')"
+                accept="image/*"
+                multiple
+                hidden
+            />
+            <div class="row mt-3">
+                <div *ngFor="let image of categories; let i = index" class="col-md-3 mb-3 position-relative">
+                <img [src]="image" alt="Category Image" class="img-thumbnail" />
+                <button
+                    (click)="removeImage(i, 'categories')"
+                    class="btn btn-outline-danger btn-sm position-absolute  top-0 end-0 m-1"
+                    aria-label="Delete"
+                >
+                    &times;
+                </button>
+                </div>
+            </div>
+            </div>
+            <div class="card-footer text-center">
+            <button class="btn btn-outline-secondary">Upload Category Images</button>
+            </div>
+        </div>
+    
+        <!-- Brand Images Upload -->
+        <div class="card border border-primary mb-4" *ngIf="selectedImageType === 'brands'">
+            <div class="card-header text-center bg-success ">
+            Brand Images
+            </div>
+            <div
+            class="card-body text-center position-relative"
+            [class.bg-light]="isBrandDragOver"
+            (dragover)="onDragOver($event, 'brands')"
+            (dragleave)="onDragLeave('brands')"
+            (drop)="onDrop($event, 'brands')"
+            (click)="triggerFileInput('brands')"
+            style="cursor: pointer; min-height: 200px;"
+            >
+            Drag & Drop or Click to Upload Brand Images
+            <input
+                type="file"
+                #brandsFileInput
+                (change)="onFileChange($event, 'brands')"
+                accept="image/*"
+                multiple
+                hidden
+            />
+            <div class="row mt-3">
+                <div *ngFor="let image of brands; let i = index" class="col-md-3 mb-3 position-relative">
+                <img [src]="image" alt="Brand Image" class="img-thumbnail" />
+                <button
+                    (click)="removeImage(i, 'brands')"
+                    class="btn btn-outline-danger btn-sm position-absolute  top-0 end-0 m-1"
+                    aria-label="Delete"
+                >
+                    &times;
+                </button>
+                </div>
+            </div>
+            </div>
+            <div class="card-footer text-center">
+            <button class="btn btn-outline-info">Upload Brands Images</button>
+            </div>
+        </div>
+        
+        
+    </div>
+  </div>
+  

@@ -16,6 +16,7 @@ import { NgbRatingModule } from '@ng-bootstrap/ng-bootstrap';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MdbSelectModule } from 'mdb-angular-ui-kit/select';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
@@ -120,7 +121,7 @@ import { MdbRatingModule } from 'mdb-angular-ui-kit/rating';
 import { NouisliderModule } from 'ng2-nouislider';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 
-
+ 
 registerLocaleData(en);
 
 import {CloudinaryModule} from '@cloudinary/ng';
@@ -261,6 +262,7 @@ const icons = {
         NgbOffcanvasModule,
         NgbRatingModule,
         NouisliderModule,
+        MdbSelectModule
       ], 
         providers: [
         {

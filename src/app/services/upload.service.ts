@@ -12,9 +12,10 @@ export class UploadService {
 
   constructor(private http: HttpClient) {}
 
-  uploadFiles(files: File[]): Observable<any> {
+  // Modified to accept a transform flag (defaults to true)
+  uploadFiles(files: File[], transform: boolean = true): Observable<any> {
     // Store individual file upload observables
-    const uploadObservables = files.map((file, index) => this.uploadSingleFile(file, index, files.length));
+    const uploadObservables = files.map((file, index) => this.uploadSingleFile(file, index, files.length, transform));
 
     // Use forkJoin to combine all upload observables and emit when all are complete
     return forkJoin(uploadObservables).pipe(
@@ -27,7 +28,8 @@ export class UploadService {
     );
   }
 
-  private uploadSingleFile(file: File, fileIndex: number, totalFiles: number): Observable<any> {
+  // Modified to accept a transform flag (defaults to true)
+  private uploadSingleFile(file: File, fileIndex: number, totalFiles: number, transform: boolean): Observable<any> {
     const formData = new FormData();
     formData.append('file', file);
     formData.append('upload_preset', this.uploadPreset);
@@ -47,8 +49,10 @@ export class UploadService {
             return { status: 'progress', fileIndex, progress, overallProgress };
           case HttpEventType.Response:
             const responseBody = event.body;
-            // Construct the transformation URL
-            const transformedUrl = this.getTransformedUrl(responseBody.public_id, responseBody.version, responseBody.format);
+            // Construct the URL with or without transformation
+            const transformedUrl = transform 
+              ? this.getTransformedUrl(responseBody.public_id, responseBody.version, responseBody.format)
+              : this.getOriginalUrl(responseBody.public_id, responseBody.version, responseBody.format);
             return { status: 'complete', fileIndex, message: responseBody, transformedUrl };
           default:
             return { status: 'other', fileIndex };
@@ -58,8 +62,14 @@ export class UploadService {
     );
   }
 
+  // Method to get the transformed image URL (with transformation)
   private getTransformedUrl(publicId: string, version: string, format: string): string {
-    const transformation = 't_thumbnail_100x100'; // Specify your transformation here
-    return `https://res.cloudinary.com/${this.cloudName}/image/upload/${transformation}/v${version}/${publicId}.${format}`; // Use the correct file format
+    const transformation = 't_thumbnail_100x100'; // Example transformation (thumbnail)
+    return `https://res.cloudinary.com/${this.cloudName}/image/upload/${transformation}/v${version}/${publicId}.${format}`;
+  }
+
+  // Method to get the original image URL (without transformation)
+  private getOriginalUrl(publicId: string, version: string, format: string): string {
+    return `https://res.cloudinary.com/${this.cloudName}/image/upload/v${version}/${publicId}.${format}`;
   }
 }
