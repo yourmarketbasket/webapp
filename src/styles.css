@@ -188,3 +188,12 @@ body { margin: 0; font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', m
     width: 20px !important;
     height: 20px !important; 
   }
+
+  a.btn{
+    text-decoration: none;
+    color: black !important;
+  }
+
+  a:hover{
+    color: rgb(7, 212, 113) !important;
+  }
