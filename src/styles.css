@@ -197,3 +197,7 @@ body { margin: 0; font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', m
   a:hover{
     color: rgb(7, 212, 113) !important;
   }
+
+  a:active{
+    color: rgb(7, 212, 113) !important;
+  }

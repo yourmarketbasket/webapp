@@ -24,9 +24,10 @@
 
 
   <div class="container-fluid" style="margin-bottom: 5px">
+
     <div class="row m-2">
       <div class="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-xs-6">
-        <div class="card custom-card products-navigation-card">
+        <div class="card rounded-0 custom-card products-navigation-card">
           <div class="card-body p-0">
             <div class="p-4 border-bottom">
               <p class="fw-medium mb-0 text-muted">BRANDS</p>
@@ -221,7 +222,7 @@
         </div>
       </div>
       
-      <div class="col-xxl-9 col-xl-9 col-lg-9 col-md-8  col-xs-6">
+      <div class="col-xxl-9 col-xl-9 col-lg-9 col-md-8  col-xs-6 g-0">
         <mat-divider *ngIf="numberOfResults > 0"></mat-divider>
         <span class="fw-semibold" *ngIf="numberOfResults > 0">Query Results</span>
       
@@ -242,8 +243,8 @@
             
           </div>
       
-          <div class="allproductslisting row d-flex flex-row" *ngIf="!searchproductsloading">
-            <div class="col-xxl-auto col-xl-auto col-lg-auto col-md-auto col-sm-6" *ngFor="let product of searchedProduct.slice((currentPage - 1) * productItemsPerPage, currentPage * productItemsPerPage)">
+          <div class="allproductslisting row d-flex flex-row px-5" *ngIf="!searchproductsloading">
+            <div class="col-xxl-auto col-xl-auto col-lg-auto col-md-auto col-sm-6 g-2" *ngFor="let product of searchedProduct.slice((currentPage - 1) * productItemsPerPage, currentPage * productItemsPerPage)">
               <div class="card custom-card product-card">
                 <div class="card-body">
                   <a class="product-image" (click)="viewProduct(product)">
@@ -284,9 +285,7 @@
             </button>
           </div>
         </div>
-      
-        <span class="fw-semibold">All Products ({{ products.length }})</span>
-      
+            
         <div *ngIf="allproductsloading" class="allproductslisting" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
           <button class="btn btn-success-light" type="button" disabled>
             <span class="spinner-border spinner-border-sm align-middle" role="status" aria-hidden="true"></span>
@@ -294,8 +293,8 @@
           </button>
         </div>
         
-        <div *ngIf="!allproductsloading" class="allproductslisting row d-flex flex-row">
-          <div class="col-xxl-auto col-xl-auto col-lg-auto col-md-auto col-sm-6 col-xs-6" *ngFor="let product of products.slice((currentPage - 1) * productItemsPerPage, currentPage * productItemsPerPage)">
+        <div *ngIf="!allproductsloading" class="allproductslisting row d-flex flex-row px-5">
+          <div class="col-xxl-auto col-xl-auto col-lg-auto col-md-auto col-sm-6 col-xs-6 g-2" *ngFor="let product of products.slice((currentPage - 1) * productItemsPerPage, currentPage * productItemsPerPage)">
             <div class="card custom-card product-card">
               <div class="card-body">
                 <a class="product-image" (click)="viewProduct(product)">
