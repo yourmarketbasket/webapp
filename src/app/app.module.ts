@@ -128,6 +128,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NotificationsComponent } from './offcanvas/notifications/notifications.component';
 import { NotificationModalComponent } from './offcanvas/notification-modal/notification-modal.component';
 
+
 const icons = {
   Camera,
   Heart,
@@ -201,7 +202,7 @@ const icons = {
         RatingPipe,
         CapitalizePipe,
         NotificationsComponent,
-        NotificationModalComponent
+        NotificationModalComponent,
     ],
     bootstrap: [AppComponent], 
     imports: [
