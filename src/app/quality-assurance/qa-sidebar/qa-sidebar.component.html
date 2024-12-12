@@ -1,26 +1,53 @@
-<!-- the profile section -->
-<div class="profile">
-  <div class="profile-image">
-    <img class="prifilepic" [src]="avatar" alt="profile image" />
-  </div>
-  <div class="profile-info">
-    <p class="profile-name">{{name}}</p>
-    <p class="profile-role">Quality Assurance</p>
+<!-- Profile Section -->
+<div class="card mb-3" style="max-width: 540px;">
+  <div class="row g-0">
+    <div class="col-12 p-4">
+      <img [src]="avatar" alt="profile image" class="img-fluid w-100 rounded-circle " />
+    </div>
+    <div class="col-12">
+      <div class="card-body d-flex flex-column justify-content-center align-items-center">
+        <span >{{name}}</span>
+        <span class="d-flex flex-row justify-content-center align-items-center badge rounded-pill bg-success fs-10">
+          <i-feather class="small-icon" name="check-circle"></i-feather>
+          <span>Management</span>
+        </span>
+      </div>
+    </div>
   </div>
 </div>
-<!-- mat-accordion navigation -->
-<mat-accordion class="mat-accordion">
-    <mat-expansion-panel>
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            <mat-icon>dashboard</mat-icon>
-            Dashboard
-          </mat-panel-title>
-        </mat-expansion-panel-header>
-        <mat-nav-list>
-          <a color="primary" routerLink="/quality-assurance/review-products" routerLinkActive="active">Review Products</a>
-          <a color="primary" routerLink="/quality-assurance" routerLinkActive="active">Review Stores</a>
-        </mat-nav-list>
-      </mat-expansion-panel>
-</mat-accordion>
-
+<!-- Collapse Navigation -->
+<div class="justify-content-center">
+  <a class="btn btn-link text-decoration-none justify-content-center align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#storeOps" aria-expanded="false" aria-controls="storeOps">
+    <small><i class="fa fa-store"></i> Store Operations</small>
+  </a>
+  <div class="collapse round-0" id="storeOps">
+    <ul class="list-group">
+      <li class="list-group-item rounded-0">
+        <a class="text-decoration-none" href="/management/review-products"><small>Products</small></a>
+      </li>
+      <li class="list-group-item rounded-0">
+        <a class="text-decoration-none" href="/management"><small>Stores</small></a>
+      </li>
+    </ul>
+  </div>
+  <a class="btn btn-link text-decoration-none justify-content-center align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#userOps" aria-expanded="false" aria-controls="userOps">
+    <small><i class="fa fa-users"></i> User Operations</small>
+  </a>
+  <div class="collapse round-0" id="userOps">
+    <ul class="list-group">
+      <li class="list-group-item rounded-0">
+        <a class="text-decoration-none" href="/management/manage-users"><small>Manage Users</small></a>
+      </li>
+    </ul>
+  </div>
+  <a class="btn btn-link text-decoration-none justify-content-center align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#siteOps" aria-expanded="false" aria-controls="siteOps">
+    <small><i class="fa fa-computer"></i> Site Operations</small>
+  </a>
+  <div class="collapse round-0" id="siteOps">
+    <ul class="list-group">
+      <li class="list-group-item rounded-0">
+        <a class="text-decoration-none" href="/management/manage-views"><small>Manage Views</small></a>
+      </li>
+    </ul>
+  </div>
+</div>

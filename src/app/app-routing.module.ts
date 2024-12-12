@@ -32,6 +32,8 @@ import { PaymentSuccessComponent } from './marketplace/checkout/payment-success/
 import { CategoriesComponent } from './marketplace/categories/categories.component';
 import { OrdersComponent } from './marketplace/orders/orders.component';
 import { ProcessOrderComponent } from './mystores/process-order/process-order.component';
+import { ManageViewsComponent } from './quality-assurance/manage-views/manage-views.component';
+import { ManageUsersComponent } from './quality-assurance/manage-users/manage-users.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/market_place', pathMatch: 'full' },
@@ -60,10 +62,14 @@ const routes: Routes = [
       {path: '', component: ManagerComponent, canActivate: [AuthGuard]},
     ]
   },
-  {path: 'quality-assurance', component: QaDashboardComponent, canActivate: [AuthGuard],
+  {path: 'management', component: QaDashboardComponent, canActivate: [AuthGuard],
     children: [
       {path: '', component: QualityAssuranceComponent, canActivate: [AuthGuard]},
       {path: 'review-products', component: ReviewProductsComponent, canActivate:[AuthGuard]},
+      {path: 'manage-views', component: ManageViewsComponent, canActivate:[AuthGuard]},
+      {path: 'manage-users', component: ManageUsersComponent, canActivate:[AuthGuard]},
+
+
 
     ]
   },

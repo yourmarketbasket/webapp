@@ -127,6 +127,8 @@ import {CloudinaryModule} from '@cloudinary/ng';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NotificationsComponent } from './offcanvas/notifications/notifications.component';
 import { NotificationModalComponent } from './offcanvas/notification-modal/notification-modal.component';
+import { ManageViewsComponent } from './quality-assurance/manage-views/manage-views.component';
+import { ManageUsersComponent } from './quality-assurance/manage-users/manage-users.component';
 
 
 const icons = {
@@ -203,6 +205,8 @@ const icons = {
         CapitalizePipe,
         NotificationsComponent,
         NotificationModalComponent,
+        ManageViewsComponent,
+        ManageUsersComponent,
     ],
     bootstrap: [AppComponent], 
     imports: [

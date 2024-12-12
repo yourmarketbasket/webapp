@@ -1,14 +1,26 @@
-<mat-toolbar>
-    <button (click)="toggleThisSidebar()"  mat-icon-button >
-        <mat-icon>menu</mat-icon>
-    </button>
-    <span class="pagetitle">
-        Quality Assurance
-    </span>
-    <span class="spacer"></span>  
-    <mat-icon *ngIf="numOfProductstoReview" class="badge-container" routerLink="/quality-assurance/review-products" color="primary"
-    matBadge="{{numOfProductstoReview}}" matBadgePosition="before" matBadgeColor="accent">store</mat-icon>
-        
-      
-    <span *ngIf="connectedUser" class="welcome">Hi, {{connectedUser}}</span>   
-</mat-toolbar>
+<nav class="navbar navbar-expand-lg navbar-light bg-light rounded-0">
+    <div class="container-fluid">
+      <!-- Sidebar Toggle Button -->
+      <button class="btn btn-outline-success me-2" type="button" (click)="toggleThisSidebar()">
+        <i class="bi bi-list"></i>
+      </button>
+  
+      <!-- Page Title -->
+      <a class="navbar-brand" href="#">Manager</a>
+  
+      <!-- Spacer -->
+      <div class="flex-grow-1"></div>
+  
+      <!-- Badge Icon with Router Link -->
+      <a *ngIf="numOfProductstoReview" class="nav-link position-relative" href="/quality-assurance/review-products">
+        <i class="bi bi-shop"></i>
+        <span class="badge bg-primary position-absolute top-0 start-100 translate-middle">
+          {{numOfProductstoReview}}
+        </span>
+      </a>
+  
+      <!-- Welcome Message -->
+      <span *ngIf="connectedUser" class="navbar-text ms-3">Hi, {{connectedUser}}</span>
+    </div>
+  </nav>
+  
