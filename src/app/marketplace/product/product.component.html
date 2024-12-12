@@ -1,107 +1,101 @@
-<div class="product-details">
-  <div class="image-details">
-    <div class="displayimage">
-      <div *ngIf="discount" class="offer">
-        <small class="discount-text"
-          >{{ discount }}% <br />
-          Off</small
-        >
-        <mat-icon>bookmark</mat-icon>
-      </div>
-      <img class="displayedimg" [src]="displayimg" alt="" />
-    </div>
-    <div class="thumbnails">
-      <div
-        [ngClass]="{
-          'selected-thumbnail': image === displayimg,
-          'non-selected-thumbnail': image !== displayimg
-        }"
-        *ngFor="let image of avatar"
-      >
-        <img
-            (mouseover)="setDisplayImage(image)"
-          (click)="setDisplayImage(image)"
-          class="image-thumbnail"
-          [src]="image"
-          alt=""
-        />
-      </div>
-    </div>
-  </div>
+<div class="container">
+  <div class="row my-5 my-xs-5  my-md-5 my-sm-5 pt-sm-5 pt-xs-5  pt-md-1 my-xxl-5 justify-content-center align-items-center">
+    <div class="card custom-card rounded-3">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-xxl-4 col-sm-12 col-xs-12 col-md-4 col-lg-4 col-xl-4 align-items-center justify-content-center d-flex flex-column">
+            <img class="rounded-2 img-fluid" style="max-width: 300px;" [src]="displayimg" alt="" />
+            <div class="d-flex flex-row flex-wrap g-2">
+              <div class="col-auto"
+                  [ngClass]="{
+                    'selected-thumbnail': image === displayimg,
+                    'non-selected-thumbnail': image !== displayimg
+                  }"
+                  *ngFor="let image of avatar"
+                >
+                  <img
+                      (mouseover)="setDisplayImage(image)"
+                    (click)="setDisplayImage(image)"
+                    class="image-thumbnail rounded-1"
+                    [src]="image"
+                    alt=""
+                  />
+                </div>
+            </div>
+            
+          </div>
+          <div class="col-xxl-8 col-sm-12 col-xs-12 col-md-8 col-lg-8 col-xl-8">
+            <div class="container mt-4">
+              <!-- Header Section -->
+              <div class="text-center mb-4">
+                <span class="fw-semibold fs-3 text-primary">Product: {{ pname + " " + model + " " + brand }}</span>
+              </div>
+            
+              <!-- Description Section -->
+              <div class="mb-4">
+                <span class="fw-semibold fs-6">Description</span>
+                <p class="text-muted">{{ description }}</p>
+              </div>
+            
+              <hr />
+            
+              <!-- Product Details Section -->
+              <div class="row mb-4">
+                <div class="col-md-6">
+                  <span class="fw-semibold fs-6 text-primary">Product Details</span>
+                  <ul class="list-unstyled">
+                    <li><strong>Name:</strong> {{ pname == null ? "" : pname.toUpperCase() }}</li>
+                    <li><strong>Brand:</strong> {{ brand == null ? "" : brand.toUpperCase() }}</li>
+                    <li><strong>Model:</strong> {{ model == null ? "" : model.toUpperCase() }}</li>
+                    <li><strong>Category:</strong> {{ category == null ? "" : category.toUpperCase() }}</li>
+                    <li><strong>Sub-category:</strong> {{ subcategory == null ? "" : subcategory.toUpperCase() }}</li>
+                    <li><strong>Available Quantity:</strong> {{ quantity }} UNITS</li>
+                  </ul>
+                </div>
+            
+                <!-- Features Section -->
+                <div class="col-md-6">
+                  <span class="fw-semibold fs-6 text-primary">Features</span>
+                  <ul class="list-unstyled">
+                    <li *ngFor="let feature of features" class="d-flex align-items-center">
+                      <i class="bi bi-check-circle-fill text-success me-2"></i>
+                      {{ feature.toUpperCase() }}
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            
+              <!-- Price Section -->
+              <!-- <div class="d-flex align-items-center bg-light p-3 rounded mb-4">
+                <i class="bi bi-tag-fill text-primary fs-1 me-3"></i>
+                <div class="d-flex flex-row">
+                  <span class="m-0">Now at:</span>
+                  <span class="fw-semibold fs-6 text-primary">KES {{ thousandsInK(calculateDiscountedPrice(price, discount)) }}/=</span>
+                </div>
+              </div> -->
+            
+              <!-- Total Price Section -->
+              <div class="text-center mb-4 d-flex flex-column bg-light p-3">
+                <small class="text-muted">{{ addtocartfeedback }}</small>
+                <span class="fw-semibold fs-6 text-primary">Price: {{ calculateDiscountedPrice(price, discount) | currency : (currency ? currency + "." : "") }}</span>
+              </div>
+            
+              <!-- Action Buttons -->
+              <div class="d-flex justify-content-center gap-3">
+                <button *ngIf="quantity" class="btn btn-outline-primary d-flex align-items-center" (click)="addToCart(productid, storeid, quantity, model, pname, calculateDiscountedPrice(price, discount), avatar, discount)">
+                  <i class="bi bi-cart-plus me-2"></i> ADD TO CART
+                </button>
+                <button *ngIf="quantity" class="btn btn-outline-secondary d-flex align-items-center" (click)="viewCart()">
+                  <i class="bi bi-cart4 me-2"></i> VIEW CART
+                </button>
+              </div>
+            </div>
 
-  <div class="textual-details">
-    <div class="details-header">
-      <h1>Product: {{ pname + " " + model + " " + brand }}</h1>
-    </div>
-    <div class="description">
-      <h2>Description</h2>
-      <span>{{ description }}</span>
-    </div>
-    <hr />
-    <div class="features">
-      <div class="other-details">
-        <h2>PRODUCT DETAILS</h2>
-        <span>Name: {{ pname == null ? "" : pname.toUpperCase() }}</span>
-        <span>Brand: {{ brand == null ? "" : brand.toUpperCase() }}</span>
-        <span>Model: {{ model == null ? "" : model.toUpperCase() }}</span>
-        <span
-          >Category: {{ category == null ? "" : category.toUpperCase() }}</span
-        >
-        <span
-          >Sub-category:
-          {{ subcategory == null ? "" : subcategory.toUpperCase() }}</span
-        >
-        <span>Available Qtty: {{ quantity }} UNITS</span>
-      </div>
-      <div class="features-details">
-        <h2>FEATURES</h2>
-        <div class="feature" *ngFor="let feature of features">
-          <span><mat-icon>done_all</mat-icon>{{ feature.toUpperCase() }}</span>
+          </div>
         </div>
       </div>
-      <div class="local-offer">
-        <mat-icon>local_offer</mat-icon>
-        <div class="price-div">
-          <small class="discount-price-text">
-            Now at<br />KES
-            {{ thousandsInK(calculateDiscountedPrice(price, discount)) }}/=
-          </small>
-        </div>
-      </div>
-    </div>
-    <div class="price-diplay-div">
-      <h1>
-        TOTAL:
-        {{
-          calculateDiscountedPrice(price, discount)
-            | currency : (currency ? currency + "." : "")
-        }}
-      </h1>
-      <small>{{ addtocartfeedback }}</small>
-    </div>
-    <div class="button-div">
-      <button
-        *ngIf="quantity"
-        (click)="
-          addToCart(
-            productid,
-            storeid,
-            quantity,
-            model,
-            pname,
-            calculateDiscountedPrice(price, discount),
-            avatar,
-            discount
-          )
-        "
-        color="primary"
-        mat-raised-button
-      >
-        <mat-icon>add_shopping_cart</mat-icon> ADD TO CART
-      </button>
-      <button *ngIf="quantity" (click)="viewCart()" color="accent" mat-raised-button>
-        VIEW CART
-      </button>
     </div>
   </div>
 </div>
+
+
