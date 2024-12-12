@@ -224,10 +224,10 @@
       
       <div class="col-xxl-9 col-xl-9 col-lg-9 col-md-8  col-xs-6 g-0">
         <mat-divider *ngIf="numberOfResults > 0"></mat-divider>
-        <span class="fw-semibold" *ngIf="numberOfResults > 0">Query Results</span>
+        <span class="fw-semibold px-5" *ngIf="numberOfResults > 0">Query Results</span>
       
         <div id="searchResults" class="d-flex flex-row flex-wrap" #searchResults class="search-results" *ngIf="searchQuery">
-          <span *ngIf="numberOfResults > 0" class="search-term">
+          <span *ngIf="numberOfResults > 0" class="search-term px-5">
             Your query <span style="color: green">"{{ searchQuery }}"</span> returned
             <span style="color: green">{{ numberOfResults }}</span> results
           </span>
