@@ -104,6 +104,12 @@ export class MasterServiceService {
   sendOTP(data: any) {
     return this.http.post(`${this.baseurl}/sendOTP`, data);
   }
+  addStaticImages(data: any) {
+    return this.http.post(`${this.baseurl}/api/admin/addStaticImagesRoute`, data);
+  }
+  getCarouselStaticImages(){
+    return this.http.get(`${this.baseurl}/api/admin/getCarouselStaticImagesRoute`, this.getAuthHeaders());
+  }
   addStore (data: any) {
     return this.http.post(`${this.baseurl}/addStore`, data, this.getAuthHeaders());
   }

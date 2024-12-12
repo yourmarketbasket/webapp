@@ -54,6 +54,7 @@ export class ProductsComponent implements OnInit,OnDestroy{
     isCollapsed3=true;//placeholder
     collapse1: any;
     isChecked=true;
+    carouselStaticImages!:any;
     public someRange: number[] = [0.00, 10000.00];//placeholder
     form!: FormGroup;
 
@@ -251,7 +252,11 @@ export class ProductsComponent implements OnInit,OnDestroy{
     // constructor
     constructor( private fb: FormBuilder, private ms:MasterServiceService,private router:Router, private dialog: MatDialog, private sharedData: SharedDataService, private socketService:SocketService){}
     // onInit
-    ngOnInit() {
+    async ngOnInit() {
+      
+      this.carouselStaticImages =  await this.getCarouselImages()
+      
+
       this.form = this.fb.group({
         dapzem1: [false] // default value (false means unchecked)
       });
@@ -304,7 +309,8 @@ export class ProductsComponent implements OnInit,OnDestroy{
         this.startImageLoop(product.id, product.avatar);
       });
 
-      console.log(this.carouselProducts[0].value[0]);
+
+      
       
 
 
@@ -317,6 +323,8 @@ export class ProductsComponent implements OnInit,OnDestroy{
         return price;
       }
     }
+
+    
 
 
     fetchPaginatedProducts(){
@@ -337,6 +345,21 @@ export class ProductsComponent implements OnInit,OnDestroy{
 
     setPage(page: number) {
       this.currentPage = page;
+    }
+
+    async getCarouselImages() {
+      return new Promise((resolve, reject) => {
+        this.ms.getCarouselStaticImages().subscribe(
+          (res: any) => {
+            if (res.success) {
+              resolve(res.data);
+            } else {
+              reject('Failed to fetch carousel images');
+            }
+          },
+          (error) => reject(error)
+        );
+      });
     }
 
     formatLabel(value: number): string {

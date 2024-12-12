@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Cloudinary, CloudinaryImage} from '@cloudinary/url-gen';
 import { UploadService } from 'src/app/services/upload.service';
+import { MasterServiceService } from 'src/app/services/master-service.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -10,12 +11,12 @@ import Swal from 'sweetalert2';
 })
 export class ManageViewsComponent implements OnInit {
   // constructor
-  constructor(private uploadservice: UploadService){}
+  constructor(private uploadservice: UploadService, private ms: MasterServiceService){}
   // Arrays to store images for each category (categories, brands, carousel)
   categories: string[] = [];
   brands: string[] = [];
   carousel: string[] = [];
-  img!: CloudinaryImage;
+  img!: CloudinaryImage; 
   uploadingInprogress:boolean = false;
   selectedImageType: string = 'carousel'; 
   filesToUpload: File[] = [];
@@ -134,35 +135,35 @@ export class ManageViewsComponent implements OnInit {
     // Display a loading message or initiate a progress bar (optional)
     this.uploadingInprogress = true;
   
-    // Upload files using the uploadService
     this.uploadservice.uploadFiles(this.filesToUpload, false).subscribe(
       (response: any) => {
-        console.log(response);
-  
-        // Handle different status cases based on the response
         if (response.status === 'complete') {
           this.uploadingInprogress = false;
   
-          // Clear the arrays to prevent duplicates before adding the new images
+          // Clear arrays for new uploads
           switch (this.selectedImageType) {
             case 'categories':
-              this.categories = []; // Clear the existing categories array
+              this.categories = [];
               break;
             case 'brands':
-              this.brands = []; // Clear the existing brands array
+              this.brands = [];
               break;
             case 'carousel':
-              this.carousel = []; // Clear the existing carousel array
+              this.carousel = [];
               break;
             default:
               console.error('Invalid selected image type');
           }
   
-          // Process the uploaded results and add URLs to the respective category arrays
-          response.results.forEach((result: any) => {
-            const imageUrl = result.transformedUrl; // Get the transformed image URL
+          const saveOperations: Promise<any>[] = [];
+          const successResults: any[] = [];
+          const failedResults: any[] = [];
   
-            // Add the image URLs to the corresponding category array based on selected image type
+          // Process each uploaded image
+          response.results.forEach((result: any) => {
+            const imageUrl = result.transformedUrl;
+  
+            // Add URLs to the respective category array
             switch (this.selectedImageType) {
               case 'categories':
                 this.categories.push(imageUrl);
@@ -176,56 +177,101 @@ export class ManageViewsComponent implements OnInit {
               default:
                 console.error('Invalid selected image type');
             }
+  
+            // Prepare data for saving
+            const data = {
+              managerId: localStorage.getItem('userId'),
+              imageUrl: result.message.url,
+              category: this.selectedImageType,
+              fileSize: result.message.bytes,
+            };
+  
+            // Add save operation with error handling
+            const saveOperation = this.ms.addStaticImages(data).toPromise()
+              .then((res: any) => {
+                if (res.success) {
+                  successResults.push(result.message.url);
+                } else {
+                  failedResults.push(result.message.url);
+                }
+              })
+              .catch(() => {
+                failedResults.push(result.message.url);
+              });
+  
+            saveOperations.push(saveOperation);
           });
   
-          // Clear the files and previews after a successful upload
-          this.filesToUpload = [];
-          this.imagePreviews = [];
+          // Wait for all save operations to complete
+          Promise.all(saveOperations)
+            .then(() => {
+              const successCount = successResults.length;
+              const failureCount = failedResults.length;
   
-          // Show success alert using SweetAlert2
-          Swal.fire({
-            icon: 'success',
-            title: 'Upload Successful!',
-            text: 'All files were uploaded successfully.',
-            confirmButtonText: 'Close'
-          });
-  
+              // Display consolidated results
+              if (failureCount === 0) {
+                Swal.fire({
+                  icon: 'success',
+                  title: 'Upload Complete',
+                  text: `All ${successCount} image(s) were uploaded and saved successfully.`,
+                  confirmButtonText: 'Close',
+                  timer: 5000,
+                });
+              } else {
+                Swal.fire({
+                  icon: 'warning',
+                  title: 'Partial Success',
+                  html: `Successfully uploaded and saved ${successCount} image(s).<br>` +
+                    `Failed to save ${failureCount} image(s). Please retry.`,
+                  confirmButtonText: 'Close',
+                  timer: 5000,
+                });
+              }
+            })
+            .catch(() => {
+              Swal.fire({
+                icon: 'error',
+                title: 'Upload Error',
+                text: 'An unexpected error occurred while saving some images. Please try again.',
+                confirmButtonText: 'Close',
+              });
+            })
+            .finally(() => {
+              // Clear files and previews
+              this.filesToUpload = [];
+              this.imagePreviews = [];
+            });
         } else if (response.status === 'progress') {
-          // Log progress or update progress bar
           console.log(`File ${response.fileIndex + 1}: ${response.progress}%`);
           console.log(`Overall progress: ${response.overallProgress}%`);
         } else if (response.status === 'error') {
-          // Handle upload error
           console.error(`Error uploading file ${response.fileIndex + 1}: ${response.message}`);
   
-          // Show SweetAlert2 in case of an error
           Swal.fire({
             icon: 'error',
             title: 'Upload Failed!',
             text: `An error occurred while uploading file ${response.fileIndex + 1}. Please try again.`,
-            confirmButtonText: 'Close'
+            confirmButtonText: 'Close',
           });
   
-          // Set the uploadingInprogress flag to false after failure
           this.uploadingInprogress = false;
         }
       },
       (error: any) => {
         console.error('Error during upload:', error);
   
-        // Show SweetAlert2 for general error handling (network issues, etc.)
         Swal.fire({
           icon: 'error',
           title: 'Upload Failed!',
           text: 'There was an error during the upload. Please check your connection and try again.',
-          confirmButtonText: 'Close'
+          confirmButtonText: 'Close',
         });
   
-        // Set the uploadingInprogress flag to false after failure
         this.uploadingInprogress = false;
       }
     );
   }
+  
   
   
 }
