@@ -130,6 +130,8 @@ import { NotificationsComponent } from './offcanvas/notifications/notifications.
 import { NotificationModalComponent } from './offcanvas/notification-modal/notification-modal.component';
 import { ManageViewsComponent } from './quality-assurance/manage-views/manage-views.component';
 import { ManageUsersComponent } from './quality-assurance/manage-users/manage-users.component';
+import { AbbreviateNumberPipe } from './abbreviate-number.pipe';
+import { NipipePipe } from './nipipe.pipe';
 
 
 const icons = {
@@ -208,6 +210,8 @@ const icons = {
         NotificationModalComponent,
         ManageViewsComponent,
         ManageUsersComponent,
+        AbbreviateNumberPipe,
+        NipipePipe,
     ],
     bootstrap: [AppComponent], 
     imports: [

@@ -40,6 +40,7 @@ export class ProductComponent implements OnInit{
   addtocartfeedback!:any;
   currency:any;
   location:any;
+  views:any;
 
   // methods
   ngOnInit() { 
@@ -62,6 +63,7 @@ export class ProductComponent implements OnInit{
          this.storeid = this.product.storeid;
          this.location = this.product.storeLocation;
          this.currency = this.product.storeCurrency;
+         this.views = this.product.views;
 
       
       }

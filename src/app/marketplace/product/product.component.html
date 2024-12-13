@@ -27,14 +27,17 @@
           <div class="col-xxl-8 col-sm-12 col-xs-12 col-md-8 col-lg-8 col-xl-8">
             <div class="container mt-4">
               <!-- Header Section -->
-              <div class="text-center mb-4">
-                <span class="fw-semibold fs-3 text-primary">Product: {{ pname + " " + model + " " + brand }}</span>
+              <div class="mb-4 d-flex flex-column">
+                <span class="fw-semibold fs-3 text-primary">{{ pname + " " + model + " " + brand }} </span>
+                <span [innerHTML]="4.5 | nipipe"></span>
               </div>
-            
+              
               <!-- Description Section -->
               <div class="mb-4">
                 <span class="fw-semibold fs-6">Description</span>
                 <p class="text-muted">{{ description }}</p>
+                <small class="text-muted ms-1">({{views[0].totalViews | abbreviateNumber}} views)</small>
+                
               </div>
             
               <hr />

@@ -320,9 +320,12 @@
                 <span class="fs-11 text-success fw-medium mb-0 d-flex align-items-center">
                   <small class="fs-10">Offer Kes.</small><small class="fs-6">{{ convertNumberToShortScale(product.sp, product.discount) }}</small>
                 </span>
-                <small *ngIf="product.views[0]" style="color: rgb(174, 174, 174); font-size: 10">
-                  <mat-icon style="vertical-align: middle; transform: scale(0.7)">visibility</mat-icon>
-                  {{ convertNumberToShortScale(product.views[0].totalViews) }}({{ product.views[0].users.length }})
+                <small class="d-flex flex-row justify-content-between" *ngIf="product.views[0]" style="color: rgb(174, 174, 174); font-size: 10">
+                  <span class="fs-10">
+                    <mat-icon style="vertical-align: middle; transform: scale(0.7)">visibility</mat-icon>
+                    {{ convertNumberToShortScale(product.views[0].totalViews) }}({{ product.views[0].users.length }})
+                  </span>
+                  <span [innerHTML]="4.5 | nipipe:5:false"></span>
                 </small>
               </div>
             </div>

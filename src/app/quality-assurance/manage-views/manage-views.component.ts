@@ -181,7 +181,7 @@ export class ManageViewsComponent implements OnInit {
             // Prepare data for saving
             const data = {
               managerId: localStorage.getItem('userId'),
-              imageUrl: result.message.url,
+              imageUrl: result.transformedUrl,
               category: this.selectedImageType,
               fileSize: result.message.bytes,
             };

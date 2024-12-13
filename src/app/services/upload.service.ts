@@ -62,14 +62,14 @@ export class UploadService {
     );
   }
 
-  // Method to get the transformed image URL (with transformation)
   private getTransformedUrl(publicId: string, version: string, format: string): string {
-    const transformation = 't_thumbnail_100x100'; // Example transformation (thumbnail)
+    const transformation = 't_thumbnail_100x100,q_100'; // Example transformation (thumbnail with quality 100)
     return `https://res.cloudinary.com/${this.cloudName}/image/upload/${transformation}/v${version}/${publicId}.${format}`;
   }
 
-  // Method to get the original image URL (without transformation)
+  // Method to get the original image URL (with quality parameter)
   private getOriginalUrl(publicId: string, version: string, format: string): string {
-    return `https://res.cloudinary.com/${this.cloudName}/image/upload/v${version}/${publicId}.${format}`;
+      const quality = 'q_100'; // Quality parameter for original image
+      return `https://res.cloudinary.com/${this.cloudName}/image/upload/${quality}/v${version}/${publicId}.${format}`;
   }
 }
