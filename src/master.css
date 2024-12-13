@@ -20853,11 +20853,11 @@ input[type=range]::-webkit-slider-runnable-track {
   box-shadow: 0 0.313rem 0.313rem rgba(var(--danger-rgb), 0.2);
 }
 .progress-custom .progress-bar-title {
-  padding: 0.313rem 0.625rem;
+  /* padding: 1px 0 1px 0; */
   margin: 0;
   background: var(--primary-color);
-  border-radius: 0.313rem 0 0 0.313rem;
-  font-size: 0.625rem;
+  border-radius: 0.313rem ;
+  font-size: auto;
   font-weight: 400;
   color: #fff;
   text-transform: uppercase;
@@ -20868,10 +20868,10 @@ input[type=range]::-webkit-slider-runnable-track {
 }
 .progress-custom .progress-bar-title:after {
   content: "";
-  border-inline-start: 1.063rem solid var(--primary-color);
-  border-block-start: 0.688rem solid transparent;
-  border-block-end: 0.688rem solid transparent;
-  position: absolute;
+  /* border-inline-start: 1.063rem solid var(--primary-color); */
+  /* border-block-start: 0.688rem solid transparent; */
+  /* border-block-end: 0.688rem solid transparent; */
+  position: relative;
   inset-block-start: 0;
   inset-inline-end: -1.063rem;
 }

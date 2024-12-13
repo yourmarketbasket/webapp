@@ -36,8 +36,8 @@
               <!-- Total Price Section -->
               <div class="row">
                 <div class="col-12 col-sm-12 col-xs-12">
-                  <div class="row">
-                    <div class="col-auto rounded-3 col-sm-auto col-md-auto col-xs-12 d-flex flex-row align-items-center bg-light">
+                  <div class="row d-flex align-items-center">
+                    <div class="col-6 rounded-3 col-sm-auto col-md-auto col-xs-12 d-flex flex-row align-items-center bg-light">
                       <div class="mb-1 py-3">
                         <div class="fs-6">
                           <small class="text-success ">Special Offer</small>
@@ -51,23 +51,33 @@
                       </div>
                       <span *ngIf="discount" class="badge rounded-pill bg-danger-transparent">-{{discount}}%</span>                    
                     </div>
-                    <div class="col-auto rounded-0 col-sm-8 col-md-8 col-xs-12 d-flex flex-row align-items-center">
-                      <div class="col-xl-12">
-                          <div class="border rounded-1 p-3" *ngIf="calculateRemainingQuantityPercentage(sold, quantity).remainingPercentage.toFixed()">
-                              <p class="fs-12 fw-medium mb-0 text-muted" id="product1-title">
-                                  Available
-                                  <span class="float-end fs-10 fw-normal" id="product1-percentage">{{calculateRemainingQuantityPercentage(sold, quantity).remainingPercentage.toFixed()}}%</span>
-                              </p>
-                              <div class="progress progress-xs mb-4 progress-animate" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">
-                                <div class="progress-bar bg-primary" [style.width]="calculateRemainingQuantityPercentage(sold, quantity).remainingPercentage + '%'"></div>
-
-                              </div>
-                          </div>
-                      </div>
+                    <div class="col-xl-6 col-sm-12 col-md-12 col-xs-12">
+                      <p class="fs-10 alert alert-success">
+                        <i class="fa fa-alert-circle"></i>
+                        7 days return and exchange policy. Return Policies may vary based on products and promotions. For full details on our Returns Policies, check our policy here.</p>
+                    </div>
                   </div>
-                  
-                    
+                  <div class="row my-3">
+                    <div class="col-xl-8 col-sm-8 col-md-12 col-xs-12">
+                      <div class="progress progress-sm progress-custom progress-animate border border-primary" 
+                        role="progressbar" 
+                        [attr.aria-valuenow]="calculateRemainingQuantityPercentage(sold, quantity).remainingPercentage" 
+                        aria-valuemin="0" 
+                        aria-valuemax="100">
+                        <small class="progress-bar-title px-1">
+                            <small *ngIf="quantity > 10">Available</small>
+                            <small *ngIf="quantity <= 10">Only {{ quantity }} left in stock</small>
+                        </small>
+                        <div class="progress-bar" 
+                            [style.width]="calculateRemainingQuantityPercentage(sold, quantity).remainingPercentage + '%'">
+                            <div class="progress-bar-value">
+                                {{ calculateRemainingQuantityPercentage(sold, quantity).remainingPercentage.toFixed() }}%
+                            </div>
+                        </div>
+                      </div>
 
+
+                    </div>
                   </div>
                 </div> 
                 
@@ -92,7 +102,6 @@
                     <li><strong>Model:</strong> {{ model == null ? "" : model.toUpperCase() }}</li>
                     <li><strong>Category:</strong> {{ category == null ? "" : category.toUpperCase() }}</li>
                     <li><strong>Sub-category:</strong> {{ subcategory == null ? "" : subcategory.toUpperCase() }}</li>
-                    <li><strong>Available Quantity:</strong> {{ quantity }} UNITS</li>
                   </ul>
                 </div>
             

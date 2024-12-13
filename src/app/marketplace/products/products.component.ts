@@ -190,8 +190,9 @@ export class ProductsComponent implements OnInit,OnDestroy{
     viewProduct(product: any) {
       // Clear the existing product data (if any)
       localStorage.removeItem('product');
-      if (!product.sold) {
-        product.sold = 0;  // Set default value if 'sold' is undefined or null
+      if (!product.sold || !product.discount) {
+        product.sold = 0; 
+        product.discount = 0 // Set default value if 'sold' is undefined or null
       }
 
       // Add the incoming product data
