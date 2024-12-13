@@ -83,7 +83,9 @@ export class SharedDataService {
   
   
   
-  
+  removeProductData(key: string) {
+    localStorage.removeItem(key);
+  }
   
   
   

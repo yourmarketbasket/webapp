@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router} from '@angular/router';
 import { MasterServiceService } from 'src/app/services/master-service.service';
-import { Product } from 'src/app/Interfaces/interfaces-master-file';
 import { getKForPrice } from 'src/app/services/computations';
 import { CartService } from 'src/app/services/cart.service';
 import { AddToCartComponent } from '../add-to-cart/add-to-cart.component';
 import { MatDialog } from '@angular/material/dialog';
 import { SocketService } from 'src/app/services/socket.service';
 import { SharedDataService } from 'src/app/services/shared-data.service';
+import Swal from 'sweetalert2';
 
 @Component({
     selector: 'app-product',
@@ -41,6 +41,7 @@ export class ProductComponent implements OnInit{
   currency:any;
   location:any;
   views:any;
+  sold:any;
 
   // methods
   ngOnInit() { 
@@ -64,6 +65,8 @@ export class ProductComponent implements OnInit{
          this.location = this.product.storeLocation;
          this.currency = this.product.storeCurrency;
          this.views = this.product.views;
+         this.sold = this.product.sold;
+
 
       
       }
@@ -122,6 +125,31 @@ export class ProductComponent implements OnInit{
       return dp == null?"":dp
     }
   }
+  // calculate remaining percentage
+  calculateRemainingQuantityPercentage(sold: number = 0, quantity: any): { remainingQuantity: number, remainingPercentage: number } {
+    console.log(sold)
+    // Ensure quantity is a valid number and greater than 0
+    if (quantity <= 0) {
+      return { remainingQuantity: 0, remainingPercentage: 0 };  // If quantity is 0 or negative, return 0 for both
+    }
+    
+    // If sold is undefined or null, it defaults to 0
+    const soldValue = sold ?? 0;
+  
+    // Calculate the remaining quantity
+    const remainingQuantity = Math.abs(quantity - soldValue);
+  
+    // Calculate the percentage of remaining quantity
+    const remainingPercentage = Math.abs(remainingQuantity / (quantity+sold)) * 100;
+  
+    // Return the remaining quantity and percentage, ensuring percentage doesn't exceed 100% or go below 0%
+    return {
+      remainingQuantity: Math.max(0, remainingQuantity), // Ensure remainingQuantity is not negative
+      remainingPercentage: Math.max(0, Math.min(100, remainingPercentage)) // Ensure remainingPercentage is between 0 and 100
+    };
+  }
+  
+  
 
   // constructor
   constructor(private cartServive: CartService,private socketService:SocketService, private router: Router, private route: ActivatedRoute, private ms:MasterServiceService, private dialog: MatDialog, private sharedDataService:SharedDataService){}
@@ -133,54 +161,64 @@ export class ProductComponent implements OnInit{
   viewCart(){
     this.router.navigate(['/market_place/cart'])
   }
-  addToCart(id:any, storeid:any, quantity:any, model:any,name:any,price:any,avatar:any,discount:any){
-    const userid = localStorage.getItem('userId')
-    if(userid){
+  addToCart(id: any, storeid: any, quantity: any, model: any, name: any, price: any, avatar: any, discount: any) {
+    const userid = localStorage.getItem('userId');
+    if (userid) {
       const dialogRef = this.dialog.open(AddToCartComponent, {
         width: '400px',
         disableClose: true,
         data: {
-          id:id,
+          id: id,
           quantity: quantity
         }
       });
-      dialogRef.afterClosed().subscribe(result=>{
-        if(result){
+  
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) {
           const data = {
             userid: localStorage.getItem('userId'),
-            name:name,
+            name: name,
             productid: result.productid,
-            storeid:storeid,
+            storeid: storeid,
             quantity: result.qtty,
             available: quantity,
-            model:model,
-            totalcost: (price*result.qtty),
+            model: model,
+            totalcost: (price * result.qtty),
             price: this.price,
-            avatar:avatar,
-            discount:discount?discount: 0
-          }
-
-          // console.log(data)
-
-          this.ms.addToCart(data).subscribe((response:any)=>{
-            if(response.success){
-              this.addtocartfeedback = response.message
-              this.quantity = response.available;
-              
-              if(response.available===0){
+            avatar: avatar,
+            discount: discount ? discount : 0
+          };
+  
+          this.ms.addToCart(data).subscribe((response: any) => {
+            this.quantity = response.available;
+            this.addtocartfeedback = response.message;
+  
+            if (response.success) {
+              // Show SweetAlert success message with the response message
+              Swal.fire({
+                icon: 'success',
+                title: 'Success!',
+                text: response.message, // Use the message from response
+              });
+  
+              if (response.available === 0) {
                 this.disableAddToCartButton = true;
-              }              
-            }else{
-              this.quantity = response.available;
-              this.addtocartfeedback = "Product ran out, sorry for the inconviniences"
+              }
+            } else {
+              // Show SweetAlert error message with the response message
+              Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: response.message, // Use the message from response
+              });
+  
               this.disableAddToCartButton = true;
             }
-          })
-        }       
-      })
-    }else{
-      this.router.navigate(['/login'])
-    }     
-    
+          });
+        }
+      });
+    } else {
+      this.router.navigate(['/login']);
+    }
   }
 }

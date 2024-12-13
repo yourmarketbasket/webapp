@@ -81,7 +81,7 @@
                         <small class="fs-12 text-muted justify-content-between d-flex w-100">
                             <span class="time">
                               <i-feather name="clock" class="xs-icon"></i-feather>
-                              <small>{{ timeAgo(notification.createdAt) }}</small>
+                              <small>{{ notification.createdAt | fromnow }}</small>
                             </span>
                             
                             <span class="actions">

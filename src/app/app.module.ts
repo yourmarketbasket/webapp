@@ -132,6 +132,8 @@ import { ManageViewsComponent } from './quality-assurance/manage-views/manage-vi
 import { ManageUsersComponent } from './quality-assurance/manage-users/manage-users.component';
 import { AbbreviateNumberPipe } from './abbreviate-number.pipe';
 import { NipipePipe } from './nipipe.pipe';
+import { FromnowPipe } from './fromnow.pipe';
+import { AbsPipe } from './abs.pipe';
 
 
 const icons = {
@@ -212,6 +214,8 @@ const icons = {
         ManageUsersComponent,
         AbbreviateNumberPipe,
         NipipePipe,
+        FromnowPipe,
+        AbsPipe,
     ],
     bootstrap: [AppComponent], 
     imports: [

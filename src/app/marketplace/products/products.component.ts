@@ -186,12 +186,21 @@ export class ProductsComponent implements OnInit,OnDestroy{
     }
     
    
-    // view product
-    viewProduct(product:any){
+    // View product
+    viewProduct(product: any) {
+      // Clear the existing product data (if any)
+      localStorage.removeItem('product');
+      if (!product.sold) {
+        product.sold = 0;  // Set default value if 'sold' is undefined or null
+      }
+
+      // Add the incoming product data
       this.sharedData.setProductData(product, 'product');
-      // navigate tot he product view page
+      
+      // Navigate to the product view page
       this.router.navigate(['/market_place/product']);
     }
+
   
     // add product to cart    
     addToCart(id:any, quantity:any){
