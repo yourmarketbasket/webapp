@@ -1,11 +1,22 @@
-<mat-toolbar>
-    <button (click)="toggleThisSideBar()" mat-icon-button >
-        <mat-icon>menu</mat-icon>
-    </button>
-    <span class="pagetitle" color="primary">
-        Dashboard
-    </span>
-    <span class="spacer"></span>
-    <span class="welcome">Hi, {{fname}}</span>
-    <img class="logo" src="{{avatar? avatar : 'assets/profile.png'}}" >     
-</mat-toolbar>
+<nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm rounded-0">
+    <div class="container-fluid ">
+      <!-- Sidebar toggle button -->
+      <div class="d-flex align-items-center flex-row justify-content-center">
+        <button type="button" class="btn btn-outline-primary" (click)="toggleThisSideBar()" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fa fa-bars"></i>
+          </button>
+           <span class="text-primary">Profile</span>
+          
+      </div>
+  
+      <!-- Spacer (pushes content to the right) -->
+      <div class="ms-auto d-flex align-items-center">
+        <!-- Welcome message -->
+        <span class="text-muted me-3">Hi, {{fname}}</span>
+  
+        <!-- User avatar with fallback -->
+        <img class="rounded-circle" src="{{avatar ? avatar : 'assets/profile.png'}}" alt="User Avatar" width="40" height="40">
+      </div>
+    </div>
+  </nav>
+  
