@@ -69,7 +69,7 @@
           <div class="card mb-4 shadow-sm">
             <canvas #chartCanvas></canvas>
           </div>
-          <div class="card">
+          <div class="ordersmanagement">
             <span class="text-primary p-3">My Orders</span>
             <div class="table-responsive">
               <table class="table text-nowrap">
@@ -91,12 +91,12 @@
                           'btn-success-light': data.paymentStatus === 'Completed',
                           'btn-warning-light': data.paymentStatus === 'Pending'
                         }">
-                        {{data.paymentStatus.toUpperCase()}}
+                        {{data.paymentStatus}}
                       </button>
                     </td>
                     <td>
-                      <button class="btn btn-sm btn-info-light">
-                        {{data.overallStatus.toUpperCase()}}
+                      <button class="btn btn-sm" [ngClass]="getStatusClass(data.overallStatus)">
+                        {{data.overallStatus}}
                       </button>
                     </td>
                     <td>{{data.amount | currency: ' '}}</td>
@@ -134,7 +134,7 @@
           <div class="card mb-4 shadow-sm">
             <canvas #piechart></canvas>
           </div>
-          <div class="card">
+          <div class="storesmanagement">
             <span class="text-primary p-3">Stores</span>
           
             <!-- Table for stores inside a responsive div -->

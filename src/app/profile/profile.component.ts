@@ -221,4 +221,29 @@ export class ProfileComponent implements OnInit, AfterViewInit {
     this.currentPage = pageIndex;
     this.loadData(pageIndex); // Load the orders for the new page
   }
+
+  // status class styling
+  getStatusClass(status: string): string {
+    switch (status) {
+      case 'processing':
+        return 'btn-warning-light'; // Example class for 'processing'
+      case 'confirmed':
+        return 'btn-primary-light'; // Example class for 'confirmed'
+      case 'packed':
+        return 'btn-success-light'; // Example class for 'packed'
+      case 'dispatched':
+        return 'btn-info-light'; // Example class for 'dispatched'
+      case 'partialCompleted':
+        return 'btn-secondary-light'; // Example class for 'partialCompleted'
+      case 'delivered':
+        return 'btn-teal-light'; // Example class for 'delivered'
+      case 'completed':
+        return 'btn-success-light'; // Example class for 'completed'
+      case 'failed':
+        return 'btn-danger-light'; // Example class for 'failed'
+      default:
+        return 'btn-light'; // Default class if no status matches
+    }
+  }
+  
 }
