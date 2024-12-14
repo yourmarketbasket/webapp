@@ -71,8 +71,6 @@ export class ProfileComponent implements OnInit {
     private domSanitizer: DomSanitizer,
     private authService: AuthService,
     private dialog: MatDialog,
-    private cdr: ChangeDetectorRef,
-    private currency: CurrencyPipe
   ) {}
 
   ngOnInit() {
@@ -80,6 +78,14 @@ export class ProfileComponent implements OnInit {
     this.loadUserData();
     this.loadUserOrders();
     this.loadUserStores();
+    // socket listening
+    this.socketService.listen('new-notification').subscribe((data:any) => {
+      
+      if(data.userId===localStorage.getItem('userId')){
+        this.loadUserOrders()      
+
+      }
+    });
   }
 
   loadUserData() {
