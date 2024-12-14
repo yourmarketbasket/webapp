@@ -1,6 +1,6 @@
 <!-- Full-width Container for the Layout -->
 <div class="container-fluid my-4">
-  <div class="row">
+  <div class="row ">
     <!-- First Major Column (25% width) -->
     <div  class="col-md-3">
       <div *ngIf="!name" class="w-100 d-flex flex-row justify-content-center align-items-center h-100">
@@ -63,10 +63,10 @@
 
     <!-- Second Major Column (75% width) -->
     <div class="col-md-9">
-      <div class="row">
+      <div class="row g-0">
         <!-- First Sub-Column -->
         <div class="col-md-6 mb-4">
-          <div class="card mb-4 shadow-sm">
+          <div class="ordersmanagement">
             <canvas #chartCanvas></canvas>
           </div>
           <div class="ordersmanagement">
@@ -131,10 +131,15 @@
 
         <!-- Second Sub-Column -->
         <div class="col-md-6 mb-4">
-          <div class="card mb-4 shadow-sm">
+          <div class="storesmanagement">
             <canvas #piechart></canvas>
           </div>
-          <div class="storesmanagement">
+          <div class="storesmanagement p-5 d-flex flex-column justify-content-center align-items-center" *ngIf="stores.length===0">
+            <i-feather class="text-warning" name="alert-octagon"></i-feather>
+            <small>No Stores found </small>
+            <button routerLink="/dashboard/createstore" class="btn btn-outline-info">add store</button>
+          </div>
+          <div class="storesmanagement" *ngIf="stores.length>0">
             <span class="text-primary p-3">Stores</span>
           
             <!-- Table for stores inside a responsive div -->
@@ -151,7 +156,7 @@
                   <tr *ngFor="let store of pagedStores">
                     <th scope="row">{{ store.storeName }}</th>
                     <td>{{ store.numberOfProducts }}</td>
-                    <td>{{ store.totalValue}}</td>
+                    <td>{{ store.totalValue | abbreviateNumber}}</td>
                   </tr>
                 </tbody>
               </table>
