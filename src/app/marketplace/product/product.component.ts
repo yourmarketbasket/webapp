@@ -127,7 +127,7 @@ export class ProductComponent implements OnInit{
   }
   // calculate remaining percentage
   calculateRemainingQuantityPercentage(sold: number = 0, quantity: any): { remainingQuantity: number, remainingPercentage: number } {
-    console.log(sold)
+    
     // Ensure quantity is a valid number and greater than 0
     if (quantity <= 0) {
       return { remainingQuantity: 0, remainingPercentage: 0 };  // If quantity is 0 or negative, return 0 for both
