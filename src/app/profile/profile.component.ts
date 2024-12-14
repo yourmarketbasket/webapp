@@ -1,18 +1,14 @@
 import { Component, ViewChild, ElementRef, OnInit } from '@angular/core';
-import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatSidenav, } from '@angular/material/sidenav';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
-import { ChangeDetectorRef } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { MatPaginator } from '@angular/material/paginator';
-import { CurrencyPipe } from '@angular/common';
 import { CreatestoreComponent } from '../mystores/createstore/createstore.component';
 import { VerifyComponent } from '../verify/verify.component';
 import { SocketService } from '../services/socket.service';
 import { MasterServiceService } from '../services/master-service.service';
-import { Chart, Legend } from 'chart.js/auto';
+import ApexCharts from 'apexcharts'
 
 
 @Component({
@@ -28,6 +24,7 @@ export class ProfileComponent implements OnInit {
   @ViewChild('storeBarChart', { static: true }) storeBarChart!: ElementRef<HTMLCanvasElement>;
   @ViewChild('storePieChart', { static: true }) storePieChart!: ElementRef<HTMLCanvasElement>;
   @ViewChild('sidenav') sidenav!: MatSidenav;
+
 
   orders: any[] = [];
   stores: any[] = [];
@@ -62,7 +59,7 @@ export class ProfileComponent implements OnInit {
   pages: number[] = [];
   pagedOrders: any = [];
   pagedStores: any[] = []; 
-  chartInstances: Map<any, Chart> = new Map();
+  ordersChartData:any;
 
   constructor(
     private socketService: SocketService,
@@ -82,11 +79,12 @@ export class ProfileComponent implements OnInit {
     this.socketService.listen('new-notification').subscribe((data:any) => {
       
       if(data.userId===localStorage.getItem('userId')){
-        this.loadUserOrders()      
-
+        this.loadUserOrders()     
       }
     });
+
   }
+
 
   loadUserData() {
     this.authService.getUser(this.userId).subscribe((data: any) => {
@@ -121,6 +119,8 @@ export class ProfileComponent implements OnInit {
         this.orders = res.data;
         this.getTotalPages();  // Calculate total pages when orders are loaded
         this.loadData(this.currentPage); // Load the first page's data
+        this.countStatuses(this.orders);
+        this.showBarChart("bar",Object.keys(this.countStatuses(this.orders).overallStatus), Object.values(this.countStatuses(this.orders).overallStatus),"orderStatus" )
       }
     });
   }
@@ -212,6 +212,194 @@ export class ProfileComponent implements OnInit {
     this.currentPage = pageIndex;
     this.loadData(pageIndex); // Load the orders for the new page
   }
+
+  countStatuses(orders: { overallStatus: string; paymentStatus: string }[]) {
+    const overallStatusCounts: Record<string, number> = {};
+    const paymentStatusCounts: Record<string, number> = {};
+  
+    orders.forEach((order) => {
+      // Count overallStatus
+      if (order.overallStatus in overallStatusCounts) {
+        overallStatusCounts[order.overallStatus]++;
+      } else {
+        overallStatusCounts[order.overallStatus] = 1;
+      }
+  
+      // Count paymentStatus
+      if (order.paymentStatus in paymentStatusCounts) {
+        paymentStatusCounts[order.paymentStatus]++;
+      } else {
+        paymentStatusCounts[order.paymentStatus] = 1;
+      }
+    });
+  
+    return {
+      overallStatus: overallStatusCounts,
+      paymentStatus: paymentStatusCounts,
+    };
+  }
+
+  
+
+  showBarChart(type: string, keys: any[], values: any[], chartID: string, colors: string[] = []) {
+    // Default colors if not provided
+    const defaultColors = ['#FF5733', '#33FF57', '#3357FF', '#FF33A1', '#FFC300'];
+    const chartColors = colors.length ? colors : defaultColors;
+
+    // General Chart Options
+    var options = {
+        chart: {
+            type: type, // Type of chart (line, bar, area)
+            height: 350 // Chart height
+        },
+        colors: chartColors, // Custom colors for the chart
+        series: [{
+            name: 'data',
+            data: values // Data points for the chart
+        }],
+        xaxis: {
+            categories: keys // Categories for the x-axis
+        },
+        tooltip: {
+            y: {
+                formatter: function (val: number) {
+                    return val + ' items'; // Custom tooltip formatter
+                }
+            }
+        },
+        dataLabels: {
+            enabled: true,
+            formatter: function (val: number) {
+                return val.toFixed(0); // Display values without decimals
+            },
+            style: { // Color of data labels
+                fontSize: '14px',
+                fontWeight: 700
+            }
+        },
+        // Additional chart-specific configurations
+        plotOptions: {}
+    };
+
+    // Handle specific chart types
+    if (type === 'bar') {
+        options.plotOptions = {
+            bar: {
+                horizontal: false, // Vertical bars (set to true for horizontal bars)
+                distributed: true, // Apply colors to individual bars
+                borderRadius: 5, // Rounded corners for bars
+            }
+        };
+    }
+
+    // Destroy the existing chart if it exists
+    const existingChart = ApexCharts.getChartByID(chartID);
+    if (existingChart) {
+        existingChart.destroy();
+    }
+
+    // Create and render the new chart
+    var chart = new ApexCharts(document.querySelector("#" + chartID), options);
+    chart.render();
+  }
+
+  
+  
+  
+
+  showPieChart(type: string, keys: any[], values: any[], chartID: string, colors: string[] = []) {
+      // Default colors if not provided
+      const defaultColors = ['#FF5733', '#33FF57', '#3357FF', '#FF33A1', '#FFC300'];
+      const chartColors = colors.length ? colors : defaultColors;
+
+      // General Chart Options
+      const options: any = {
+          chart: {
+              type: type,
+              height: 350 // Ensure chart has height
+          },
+          colors: chartColors, // Set custom colors
+          series: Array.isArray(values) ? values : [values], // Ensure series is an array
+          labels: keys,  // Labels for pie/donut charts
+          tooltip: {
+              y: {
+                  formatter: function (val: number) {
+                      return val + ' items';
+                  }
+              }
+          },
+          legend: {
+              show: false, // Disable legend for all charts
+          },
+          dataLabels: {
+              enabled: true,
+              formatter: function (val: number) {
+                  return val.toFixed(0); // Display only the numeric value
+              },
+              style: {
+                  color: '#FFFFFF',
+                  colors: ['#FFFFFF'], // White color for labels
+                  fontSize: '14px',
+                  fontWeight: 700
+              }
+          }
+      };
+
+      // Pie/Donut chart specific configurations
+      if (type === 'pie' || type === 'donut') {
+          options.plotOptions = {
+              pie: {
+                  customScale: 0.8,  // Optional: Resize pie
+                  donut: {
+                      size: '60%', // Donut chart inner radius
+                      labels: {
+                          show: true, // Show donut labels on hover
+                          name: {
+                              color:'#FFFFFF',
+                              fontSize: '14px', // Font size for name
+                              fontWeight: 700,
+                          },
+                          value: {
+                              fontSize: '16px', // Font size for value
+                              fontWeight: 700,
+                              color:'#FFFFFF',
+                              style: {
+                                  color: '#FFFFFF',
+                                  foreColor:'#FFFFFF',
+                              }
+                          }
+                      }
+                  }
+              }
+          };
+      }
+
+      // Destroy the existing chart if it exists
+      const existingChart = ApexCharts.getChartByID(chartID);
+      if (existingChart) {
+          existingChart.destroy();
+      }
+
+      // Create and render the new chart
+      const chart = new ApexCharts(document.querySelector("#" + chartID), options);
+      chart.render();
+  }
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
 
   // status class styling
   getStatusClass(status: string): string {

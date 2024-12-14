@@ -67,7 +67,7 @@
         <!-- First Sub-Column -->
         <div class="col-md-6 mb-4">
           <div class="ordersmanagement">
-            <canvas #chartCanvas></canvas>
+            <div id="orderStatus"></div>
           </div>
           <div class="ordersmanagement">
             <span class="text-primary p-3">My Orders</span>
@@ -130,16 +130,16 @@
         </div>
 
         <!-- Second Sub-Column -->
-        <div class="col-md-6 mb-4">
+        <div class="col-md-6 mb-4" *ngIf="stores.length>0">
           <div class="storesmanagement">
-            <canvas #piechart></canvas>
+            charts go here
           </div>
           <div class="storesmanagement p-5 d-flex flex-column justify-content-center align-items-center" *ngIf="stores.length===0">
             <i-feather class="text-warning" name="alert-octagon"></i-feather>
             <small>No Stores found </small>
             <button routerLink="/dashboard/createstore" class="btn btn-outline-info">add store</button>
           </div>
-          <div class="storesmanagement" *ngIf="stores.length>0">
+          <div class="storesmanagement">
             <span class="text-primary p-3">Stores</span>
           
             <!-- Table for stores inside a responsive div -->
