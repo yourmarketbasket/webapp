@@ -2,45 +2,63 @@
 <div class="container-fluid my-4">
   <div class="row">
     <!-- First Major Column (25% width) -->
-    <div class="col-md-3">
-      <div class="card p-3 mb-4">
+    <div  class="col-md-3">
+      <div *ngIf="!name" class="w-100 d-flex flex-row justify-content-center align-items-center h-100">
+        <button class="btn btn-secondary-light" type="button" disabled>
+          <span class="spinner-grow spinner-grow-sm align-middle" role="status" aria-hidden="true"></span>
+          Loading...
+      </button>
+      </div>
+      <div *ngIf="name" class="p-3 mb-1">
         <div class="d-flex flex-column align-items-center">
-          <img [src]="avatar" alt="Avatar" class="rounded-circle img-fluid shadow" style="width: 150px; height: 150px;">
-          <div class="d-flex justify-content-center w-100">
-           <div class="col-xl-4">
+          <div class="position-relative d-inline-block">
+            <!-- Avatar Image -->
+            <img [src]="avatar" alt="Avatar" class="rounded-circle img-fluid shadow border border-primary dashed-border p-1" style="width: 150px; height: 150px;">
+            
+            <!-- Badge on top-right corner -->
+            <span class="position-absolute top-0 end-0 badge rounded-pill" [ngClass]="{'bg-success': active, 'bg-secondary': !active}" style="font-size: 0.75rem; z-index: 10;">
+              <i class="fas fa-circle"></i>{{active ? "Active" : "Dormant"}}
+            </span>
+          </div>
+          
+          
+          <div class="d-flex justify-content-center w-100 m-2">
             <!-- Approved Toggle (Primary, Success) -->
-            <div class="toggle toggle-success on mb-0" appToggleBtn>
-                <span></span>
+            <!-- Approved Toggle (Primary, Success) -->
+            <div [class.on]="approved" class="toggle toggle-success mb-0" appToggleBtn>
+              <span></span>
             </div>
+
+            <!-- Verified Toggle (Secondary, Warning) -->
+            <div [class.on]="verified" class="toggle toggle-primary mb-3" appToggleBtn>
+              <span></span>
             </div>
-            <div class="col-xl-4">
-                <!-- Verified Toggle (Secondary, Warning) -->
-                <div class="toggle toggle-primary on mb-3" appToggleBtn>
-                    <span></span>
-                </div>
-            </div>
+
 
           </div>
         </div>
-        <div class="mt-3">
-          <span class="text-center text-primary">{{name}}</span>
-          <div class="d-flex justify-content-center align-items-center">
-            <span [innerHTML]="rating | nipipe"></span>
+        <div class="mt-2 profileinfomanagement p-2">
+          <div class="d-flex flex-row w-100 justify-content-center">
+            <span class="fw-semibold  text-center text-primary">{{name}}</span>
+            <span [innerHTML]="rating | nipipe:5:false"></span>
           </div>
-          <div class="text-muted mt-2">
-            <p><mat-icon>phone</mat-icon> ({{zipcode}}) {{phone}}</p>
-            <p><mat-icon>location_city</mat-icon> {{address}}, {{city}}</p>
-            <p *ngIf="active"><mat-icon>card_membership</mat-icon> Member for {{calculateTimeDifference(registered)}}</p>
-            <p><mat-icon>brightness_1</mat-icon> <span class="badge rounded-pill" [ngClass]="{'bg-success': active, 'bg-secondary': !active}">{{active ? "Active" : "Dormant"}}</span></p>
-          </div>
-          <button class="btn btn-outline-primary w-100 mt-3"><mat-icon>edit</mat-icon> Edit Info</button>
+          <div class="d-flex flex-row justify-content-between">
+            <div class="d-flex flex-column justify-content-start muted-text">
+              <small class="text-info fw-semibold"><i class="fas fa-phone-alt"></i>  ({{zipcode}}) {{phone}}</small>
+              <small class="text-info fw-semibold"><i class="fa-solid fa-location-dot"></i> {{address}}, {{city}}</small>
+              <small class="text-info fw-semibold" *ngIf="active"><i class="fas fa-id-card"></i> Registered {{registered | fromnow}}</small>            
+            </div> 
+            <button class="btn btn-lg btn-icon btn-outline-success rounded-pill btn-wave">
+                <i class="fa-solid fa-user-pen"></i>
+            </button>
+          </div>         
         </div>
       </div>
 
       <!-- Map Section -->
-      <div class="card p-3">
-        <iframe *ngIf="mapurl && location" [src]="mapurl" class="w-100 shadow-sm" style="height: 300px; border: none;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-      </div>
+      <div class="userlocationmap p-1">
+          <iframe *ngIf="mapurl && location" [src]="mapurl" class="w-100 shadow-sm" style="height: 300px; border: none;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
     </div>
 
     <!-- Second Major Column (75% width) -->
@@ -52,50 +70,63 @@
             <canvas #chartCanvas></canvas>
           </div>
           <div class="card">
-            <h4 class="text-primary p-3">My Orders</h4>
-            <mat-table [dataSource]="dataSource" class="table">
-              <!-- Transaction ID Column -->
-              <ng-container matColumnDef="transactionId">
-                <mat-header-cell *matHeaderCellDef> TID </mat-header-cell>
-                <mat-cell *matCellDef="let data"> {{data.transactionID}} </mat-cell>
-              </ng-container>
-
-              <!-- Payment Column -->
-              <ng-container matColumnDef="payment">
-                <mat-header-cell *matHeaderCellDef> Payment </mat-header-cell>
-                <mat-cell *matCellDef="let data">
-                  <span class="badge rounded-pill" [ngClass]="{
-                    'bg-danger': data.paymentStatus === 'Failed',
-                    'bg-success': data.paymentStatus === 'Completed',
-                    'bg-warning': data.paymentStatus === 'Pending'
-                  }">
-                    {{data.paymentStatus.toUpperCase()}}
-                  </span>
-                </mat-cell>
-              </ng-container>
-
-              <!-- Order Status Column -->
-              <ng-container matColumnDef="orderStatus">
-                <mat-header-cell *matHeaderCellDef> Order Status </mat-header-cell>
-                <mat-cell *matCellDef="let data">
-                  <span class="badge rounded-pill bg-info">{{data.overallStatus.toUpperCase()}}</span>
-                </mat-cell>
-              </ng-container>
-
-              <!-- Total Column -->
-              <ng-container matColumnDef="total">
-                <mat-header-cell *matHeaderCellDef> Total </mat-header-cell>
-                <mat-cell *matCellDef="let data"> {{data.amount | currency: ' '}} </mat-cell>
-              </ng-container>
-
-              <!-- Header Row -->
-              <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-
-              <!-- Data Row -->
-              <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-            </mat-table>
-            <mat-paginator [pageSizeOptions]="[5, 10]" showFirstLastButtons></mat-paginator>
+            <span class="text-primary p-3">My Orders</span>
+            <div class="table-responsive">
+              <table class="table text-nowrap">
+                <thead class="table-secondary">
+                  <tr>
+                    <th scope="col">TID</th>
+                    <th scope="col">Payment</th>
+                    <th scope="col">Order Status</th>
+                    <th scope="col">Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let data of pagedOrders">
+                    <td>{{data.transactionID}}</td>
+                    <td>
+                      <button class="btn btn-sm" 
+                        [ngClass]="{
+                          'btn-danger-light': data.paymentStatus === 'Failed',
+                          'btn-success-light': data.paymentStatus === 'Completed',
+                          'btn-warning-light': data.paymentStatus === 'Pending'
+                        }">
+                        {{data.paymentStatus.toUpperCase()}}
+                      </button>
+                    </td>
+                    <td>
+                      <button class="btn btn-sm btn-info-light">
+                        {{data.overallStatus.toUpperCase()}}
+                      </button>
+                    </td>
+                    <td>{{data.amount | currency: ' '}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          
+            <!-- Pagination -->
+            <nav aria-label="Page navigation">
+              <ul class="pagination justify-content-center">
+                <li class="page-item" [class.disabled]="currentPage === 0">
+                  <a class="page-link" (click)="onPageChange(currentPage - 1)" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                  </a>
+                </li>
+          
+                <li class="page-item" *ngFor="let page of pages; let i = index" [class.active]="i === currentPage">
+                  <a class="page-link" (click)="onPageChange(i)">{{i + 1}}</a>
+                </li>
+          
+                <li class="page-item" [class.disabled]="currentPage === pages.length - 1">
+                  <a class="page-link" (click)="onPageChange(currentPage + 1)" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                  </a>
+                </li>
+              </ul>
+            </nav>
           </div>
+          
         </div>
 
         <!-- Second Sub-Column -->
@@ -104,32 +135,53 @@
             <canvas #piechart></canvas>
           </div>
           <div class="card">
-            <h4 class="text-primary p-3">Stores</h4>
-            <table class="table">
-              <thead>
-                <tr>
-                  <th>Store Name</th>
-                  <th>Location</th>
-                  <th>Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let store of stores">
-                  <td>{{store.name}}</td>
-                  <td>{{store.location}}</td>
-                  <td>
-                    <span class="badge rounded-pill" [ngClass]="{
-                      'bg-success': store.status === 'Open',
-                      'bg-secondary': store.status === 'Closed',
-                      'bg-warning': store.status === 'Pending'
-                    }">
-                      {{store.status}}
-                    </span>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+            <span class="text-primary p-3">Stores</span>
+          
+            <!-- Table for stores inside a responsive div -->
+            <div class="table-responsive">
+              <table class="table text-nowrap" *ngIf="stores">
+                <thead class="table-info">
+                  <tr>
+                    <th scope="col">Store Name</th>
+                    <th scope="col">Number of Products</th>
+                    <th scope="col">Total Value</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let store of pagedStores">
+                    <th scope="row">{{ store.storeName }}</th>
+                    <td>{{ store.numberOfProducts }}</td>
+                    <td>{{ store.totalValue}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          
+            <!-- Pagination for stores -->
+            <nav aria-label="Store pagination">
+              <ul class="pagination justify-content-center">
+                <li class="page-item" [class.disabled]="storesCurrentPage === 0">
+                  <a class="page-link" href="javascript:void(0);" (click)="onStorePageChange(storesCurrentPage - 1)" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                  </a>
+                </li>
+          
+                <li *ngFor="let page of storesPages" class="page-item" [class.active]="page === storesCurrentPage">
+                  <a class="page-link" href="javascript:void(0);" (click)="onStorePageChange(page)">
+                    {{ page + 1 }}
+                  </a>
+                </li>
+          
+                <li class="page-item" [class.disabled]="storesCurrentPage === storesPages.length - 1">
+                  <a class="page-link" href="javascript:void(0);" (click)="onStorePageChange(storesCurrentPage + 1)" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                  </a>
+                </li>
+              </ul>
+            </nav>
           </div>
+          
+          
         </div>
       </div>
     </div>

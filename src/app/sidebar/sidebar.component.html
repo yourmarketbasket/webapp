@@ -1,84 +1,78 @@
-<!-- the profile section with username and phone -->
-<div class="list-group prifilesection rounded-0">
-  <!-- image cropper -->
-  <div #cropperarea class="imagecropper">
-    <input type="file" #fileInput name="fileInput" hidden (change)="onFileSelected($event)">
-    <button class="btn btn-secondary" (click)="cropImage()">CROP</button>
-  </div> 
-  <div class="profilepic-wrapper position-relative">
-    <img class="profilepic" [src]="avatar ? avatar : '/src/assets/profile.png'" alt="Profile Image">
-    <div class="mask position-absolute top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center">
-      <button class="btn btn-light edit-button" (click)="selectFile()">
-        <i class="bi bi-pencil"></i> <!-- Bootstrap Icons for edit -->
-      </button>
-      <input type="file" accept="image/*" (change)="onFileSelected($event)" #fileInput style="display:none;">
-    </div>
-  </div>
-  
-  <small class="verified" *ngIf="verified">
-    <i class="bi bi-shield-check"></i> <!-- Bootstrap Icons for verified -->
-  </small>
-  <small>{{ userName }}</small>  
-  <small>{{ phone }}</small>
-  
-  <button class="btn btn-primary verifybtn" *ngIf="!verified">VERIFY</button>
-</div>
-
-<!-- Collapse section for My Store, My Account, My Clients, Income -->
-<div class="list-group rounded-0">
-  <!-- My Store Collapse -->
-  <div class="list-group-item">
-    <button class="btn btn-link w-100 text-left" type="button" data-bs-toggle="collapse" data-bs-target="#collapseStore" aria-expanded="false" aria-controls="collapseStore">
-      My Store
-    </button>
-    <div id="collapseStore" class="collapse">
-      <ul class="list-group mt-2">
-        <li class="list-group-item">
-          <a class="text-primary" routerLink="/dashboard/stores-dashboard" routerLinkActive="active">Store</a>
-        </li>
-        <li class="list-group-item">
-          <a class="text-primary" routerLink="/dashboard/view-orders" routerLinkActive="active">Orders</a>
-        </li>
-      </ul>
+<div class="sidebar bg-light d-flex flex-column align-items-center mt-5 pt-5">
+  <!-- Profile Section -->
+  <div class="profile-section text-start w-100 mb-4">
+    <div class="d-flex align-items-center mb-3">
+      <div class="d-flex flex-column justify-content-center align-items-center w-100">
+        <img 
+          class="rounded-circle border" 
+          [src]="avatar ? avatar : '/src/assets/profile.png'" 
+          alt="Profile Image" 
+          width="100" 
+          height="100"
+        />
+        <div class="text-center mt-2">
+          <small class="d-block fw-bold">{{ userName }}</small>
+          <small class="text-muted">{{ phone }}</small>
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- My Account Collapse -->
-  <div class="list-group-item">
-    <button class="btn btn-link w-100 text-left" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAccount" aria-expanded="false" aria-controls="collapseAccount">
-      My Account
-    </button>
-    <div id="collapseAccount" class="collapse">
-      <ul class="list-group mt-2">
-        <li class="list-group-item">
-          <a class="text-primary" routerLink="/dashboard/profile" routerLinkActive="active">Profile</a>
-        </li>
-        <li class="list-group-item">
-          <a class="text-primary" routerLink="/dashboard/settings" routerLinkActive="active">Settings</a>
-        </li>
-      </ul>
-    </div>
+  <!-- Menu Section -->
+  <div class="list-group w-100 border-0">
+    <!-- profile -->
+    <a 
+      class="list-group-item list-group-item-action w-100 text-start d-flex align-items-center gap-2" 
+      [class.active]="router.url === '/dashboard/profile'" 
+      routerLink="/dashboard/profile"
+    >
+      <i class="fa-regular fa-user"></i> Profile
+    </a>
+    <!-- My Store -->
+    <a 
+      class="list-group-item list-group-item-action w-100 text-start d-flex align-items-center gap-2" 
+      [class.active]="router.url === '/dashboard/stores-dashboard'" 
+      routerLink="/dashboard/stores-dashboard"
+    >
+      <i class="fa-solid fa-store"></i> My Store
+    </a>
+    <a 
+      class="list-group-item list-group-item-action w-100 text-start d-flex align-items-center gap-2" 
+      [class.active]="router.url === '/dashboard/view-orders'" 
+      routerLink="/dashboard/view-orders"
+    >
+      <i class="fa-solid fa-box"></i> Orders
+    </a>
+
+    <!-- My Account -->
+    <a 
+      class="list-group-item list-group-item-action w-100 text-start d-flex align-items-center gap-2" 
+      [class.active]="router.url === '/dashboard/settings'" 
+      routerLink="/dashboard/settings"
+    >
+      <i class="fa-solid fa-gear"></i> Settings
+    </a>
+
+    <!-- Income -->
+    <a 
+      class="list-group-item list-group-item-action w-100 text-start d-flex align-items-center gap-2" 
+      [class.active]="router.url === '/dashboard/income'" 
+      routerLink="/dashboard/income"
+    >
+      <i class="fa-solid fa-wallet"></i> Income
+    </a>
   </div>
 
-  <!-- Income Collapse -->
-  <div class="list-group-item">
-    <button class="btn btn-link w-100 text-left" type="button" data-bs-toggle="collapse" data-bs-target="#collapseIncome" aria-expanded="false" aria-controls="collapseIncome">
-      Income
-    </button>
-    <div id="collapseIncome" class="collapse">
-      <ul class="list-group mt-2">
-        <li class="list-group-item">
-          <a class="text-primary" routerLink="/" routerLinkActive="active">Income</a>
-        </li>
-      </ul>
-    </div>
-  </div>
-</div>
-
-<!-- Extras Section -->
-<div class="list-group extras">
-  <button class="btn btn-light" (click)="userLogout()" routerLinkActive="active">
-    <i class="bi bi-box-arrow-right"></i> Logout
+  <!-- Logout -->
+  <button 
+    class="btn btn-link border-0 w-100 text-start d-flex justify-content-center align-items-center mt-4"
+    (click)="userLogout()"
+  >
+    <i class="fa-solid fa-right-from-bracket"></i> <small>Logout</small>
   </button>
-  <small><app-footer></app-footer></small>
+
+  <!-- Footer -->
+  <div class="mt-auto pt-3 w-100 border-top text-center">
+    <small><app-footer></app-footer></small>
+  </div>
 </div>
