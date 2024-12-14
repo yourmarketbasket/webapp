@@ -75,6 +75,7 @@ export class StoresDashboardComponent implements OnInit, AfterViewInit{
   ngOnInit() {
     this.userId = localStorage.getItem('userId');  
     this.activeStore = localStorage.getItem('activeStorename');
+
     
     // Fetch stores associated with the user
     this.authService.getStores(this.userId).subscribe((response: any) => {
@@ -92,6 +93,9 @@ export class StoresDashboardComponent implements OnInit, AfterViewInit{
         this.dataSource.paginator = this.paginator;
       }
     });
+
+    this.setActiveStoreID(localStorage.getItem('storeId'), this.activeStore)
+
   }
 
   ngAfterViewInit(): void {
@@ -101,8 +105,7 @@ export class StoresDashboardComponent implements OnInit, AfterViewInit{
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
       }
-    });   
-        
+    });          
   }
   
  
@@ -253,38 +256,43 @@ export class StoresDashboardComponent implements OnInit, AfterViewInit{
   }
 
    // Load the map URL dynamically when a store is selected
-   private updateStoreMap(latitude: number, longitude: number): void {
-    const mapUrl = `https://www.google.com/maps/embed/v1/place?key=AIzaSyDdvqTHmz_HwPar6XeBj8AiMxwzmFdqC1w&q=(${latitude},${longitude})&center=${latitude},${longitude}&zoom=18&maptype=roadmap`;
-    this.mapurl = this.domSanitizer.bypassSecurityTrustResourceUrl(mapUrl);
+   private async updateStoreMap(storeid:any) {
+    // get the coordinates
+     let mapUrl="";
+      await this.ms.getStoreCoordinates(storeid).subscribe((res:any)=>{
+        if(res.success){
+          mapUrl = `https://www.google.com/maps/embed/v1/place?key=AIzaSyDdvqTHmz_HwPar6XeBj8AiMxwzmFdqC1w&q=(${res.location.latitude},${res.location.longitude})&center=${res.location.latitude},${res.location.longitude}&zoom=18&maptype=roadmap`;
+          this.mapurl = this.domSanitizer.bypassSecurityTrustResourceUrl(mapUrl);
+        }
+      })
+      // set the url
   }
 
   // Function to ensure the map is correctly set for the active store when the page reloads
-  private loadActiveStoreMap() {
+  private async loadActiveStoreMap() {
     const activeStoreId = localStorage.getItem('storeId');
     if (activeStoreId) {
       const activeStore:any = this.stores.find(store => store._id === activeStoreId);
       if (activeStore && activeStore.location) {
-        this.updateStoreMap(activeStore.location.latitude, activeStore.location.longitude);
+        await this.updateStoreMap(activeStoreId);
       }
     }
   }
+
+  
   
 
-  setActiveStoreID(event: any) {
-    if (event.value) {
-      // Set the active store in localStorage
-      localStorage.setItem("storeId", event.value._id);
-      localStorage.setItem("activeStorename", event.value.storename);
-
+  async setActiveStoreID(storeid:any, storename:any) {
+    if (storeid && storename) {
       // Update component variables
-      this.activeStore = event.value.storename;
-      this.storename = event.value.storename;
+      this.activeStore = storename;
+      this.storename = storename;
 
       // Clear current data to show empty state while loading new data
       this.dataSource.data = [];
 
       // Fetch new data for the selected store
-      this.ms.getPrdoucts(event.value._id).subscribe((response: any) => {
+      this.ms.getPrdoucts(storeid).subscribe((response: any) => {
         if (response.data) {
           // Populate dataSource with new data
           this.dataSource.data = response.data;
@@ -296,7 +304,7 @@ export class StoresDashboardComponent implements OnInit, AfterViewInit{
       });
 
       // Update map URL for the new store's location
-      this.updateStoreMap(event.value.location.latitude, event.value.location.longitude);
+      await this.updateStoreMap(storeid);
     }
   }
   

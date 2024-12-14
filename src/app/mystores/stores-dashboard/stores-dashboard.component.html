@@ -9,7 +9,7 @@
 <div class="selectiontab">
   <mat-form-field *ngIf="stores.length>0" appearance="outline" style="margin: 0px !important;">
     <mat-label>Choose store</mat-label>
-    <mat-select (selectionChange)="setActiveStoreID($event)">
+    <mat-select (selectionChange)="setActiveStoreID($event.value._id, $event.value.storename)">
       <mat-option *ngFor="let store of stores" [value]="store">{{store?.storename}}</mat-option>
     </mat-select>
   </mat-form-field>
@@ -69,7 +69,7 @@
           <mat-checkbox
             color="accent"
             (click)="$event.stopPropagation()"
-            (change)="$event ? selection.toggle(product) : null"
+            (change)="$event ? selection.toggle(product) : null" 
             [checked]="selection.isSelected(product)"
             [aria-label]="checkboxLabel(product)"
           >

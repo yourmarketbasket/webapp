@@ -114,7 +114,7 @@ import { en_US } from 'ng-zorro-antd/i18n';
 import en from '@angular/common/locales/en';
 import { NzCarouselModule } from 'ng-zorro-antd/carousel';
 import { FeatherModule } from 'angular-feather';
-import { Star, Camera, List, Heart, Github, Bell, Eye, ShoppingCart, User, LogOut, AlertCircle, Clock, CheckCircle, AlertOctagon} from 'angular-feather/icons';
+import { Star, Camera, ExternalLink, List, Heart, Github, Bell, Eye, ShoppingCart, User, LogOut, AlertCircle, Clock, CheckCircle, AlertOctagon} from 'angular-feather/icons';
 import { NgbOffcanvasModule } from '@ng-bootstrap/ng-bootstrap';
 import { MdbCarouselModule } from 'mdb-angular-ui-kit/carousel';
 import { MdbRatingModule } from 'mdb-angular-ui-kit/rating';
@@ -150,7 +150,8 @@ const icons = {
   Star,
   Eye,
   List,
-  User
+  User,
+  ExternalLink
 };
 
 

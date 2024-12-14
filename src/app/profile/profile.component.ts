@@ -1,4 +1,4 @@
-import { Component, ViewChild, AfterViewInit, ElementRef, OnInit } from '@angular/core';
+import { Component, ViewChild, ElementRef, OnInit } from '@angular/core';
 import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -14,20 +14,6 @@ import { SocketService } from '../services/socket.service';
 import { MasterServiceService } from '../services/master-service.service';
 import { Chart, Legend } from 'chart.js/auto';
 
-export interface OrdersData {
-  items: string;
-  total: number;
-  deliveryFee: number;
-  paymentStatus: string;
-}
-
-export interface StoresData {
-  name: string;
-  type: string;
-  currency: string;
-  items: number;
-  totalvalue: number;
-}
 
 @Component({
   selector: 'app-profile',
@@ -35,15 +21,13 @@ export interface StoresData {
   styleUrls: ['./profile.component.css'],
   standalone: false
 })
-export class ProfileComponent implements OnInit, AfterViewInit {
+export class ProfileComponent implements OnInit {
   @ViewChild('piechart', { static: true }) piechart!: ElementRef<HTMLCanvasElement>;
   @ViewChild('chartCanvas', { static: true }) chartCanvas!: ElementRef<HTMLCanvasElement>;
   @ViewChild('barChart', { static: true }) barChart!: ElementRef<HTMLCanvasElement>;
   @ViewChild('storeBarChart', { static: true }) storeBarChart!: ElementRef<HTMLCanvasElement>;
   @ViewChild('storePieChart', { static: true }) storePieChart!: ElementRef<HTMLCanvasElement>;
   @ViewChild('sidenav') sidenav!: MatSidenav;
-  @ViewChild('ordersPaginator') ordersPaginator!: MatPaginator;
-  @ViewChild('storesPaginator') storesPaginator!: MatPaginator;
 
   orders: any[] = [];
   stores: any[] = [];
@@ -70,8 +54,6 @@ export class ProfileComponent implements OnInit, AfterViewInit {
 
   rating = 3.2;
   isLoading = true;
-  displayedColumns: string[] = ['transactionId', 'payment', 'orderStatus', 'total'];
-  displayedStoresColumns: string[] = ['name', 'items', 'totalvalue'];
   pageSize: number = 5;
   storesPageSize: number = 5;
   currentPage: number = 0;
@@ -98,10 +80,6 @@ export class ProfileComponent implements OnInit, AfterViewInit {
     this.loadUserData();
     this.loadUserOrders();
     this.loadUserStores();
-  }
-
-  ngAfterViewInit() {
-    // Any necessary post-initialization logic
   }
 
   loadUserData() {
@@ -201,6 +179,13 @@ export class ProfileComponent implements OnInit, AfterViewInit {
         this.dialog.open(VerifyComponent, { data: data });
       }
     });
+  }
+
+  openStore(store:any){
+    localStorage.setItem('activeStorename',store.storeName);
+    localStorage.setItem('storeId',store.storeId);
+    this.router.navigate(['/dashboard/stores-dashboard'])
+
   }
 
   // Calculate the total number of pages

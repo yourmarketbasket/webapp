@@ -147,9 +147,11 @@
               <table class="table text-nowrap" *ngIf="stores">
                 <thead class="table-info">
                   <tr>
-                    <th scope="col">Store Name</th>
-                    <th scope="col">Number of Products</th>
+                    <th scope="col">Name</th>
+                    <th scope="col"># Products</th>
                     <th scope="col">Total Value</th>
+                    <th scope="col"></th>
+
                   </tr>
                 </thead>
                 <tbody>
@@ -157,6 +159,12 @@
                     <th scope="row">{{ store.storeName }}</th>
                     <td>{{ store.numberOfProducts }}</td>
                     <td>{{ store.totalValue | abbreviateNumber}}</td>
+                    <td>
+                      <button (click)="openStore(store)" class="btn btn-sm btn-icon btn-secondary-light rounded-pill btn-wave ">
+                        <i class="fa-solid fa-arrow-right"></i>
+                      </button>
+                    </td>
+
                   </tr>
                 </tbody>
               </table>

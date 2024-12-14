@@ -216,6 +216,9 @@ export class MasterServiceService {
   getStoreOrders(storeid:any){
     return this.http.get(`${this.baseurl}/api/products/getStoreOrders/${storeid}`, this.getAuthHeaders())
   }
+  getStoreCoordinates(id:any){
+    return this.http.get(`${this.baseurl}/api/products/getStoreCoordinates/${id}`, this.getAuthHeaders())
+  }
   logout() {
     localStorage.removeItem('token');
     this.router.navigate(['/login']);
