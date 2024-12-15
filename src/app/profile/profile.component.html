@@ -1,6 +1,6 @@
 <!-- Full-width Container for the Layout -->
 <div class="container-fluid my-4">
-  <div class="row ">
+  <div class="row d-flex justify-content-center align-items-center">
     <!-- First Major Column (25% width) -->
     <div  class="col-md-3">
       <div *ngIf="!name" class="w-100 d-flex flex-row justify-content-center align-items-center h-100">
@@ -62,14 +62,27 @@
     </div>
 
     <!-- Second Major Column (75% width) -->
-    <div class="col-md-9">
+    <div class="col-md-9 d-flex flex-column justify-content-center">
       <div class="row g-0">
         <!-- First Sub-Column -->
-        <div class="col-md-6 mb-4">
-          <div class="ordersmanagement">
-            <div id="orderStatus"></div>
+        
+         
+        <div class="col-md-6">
+           <!-- placeholder for  no orders-->
+          <div class="col-md-6 w-100" *ngIf="orders.length===0">
+            <div class="ordersmanagement p-5 d-flex flex-column justify-content-center align-items-center" >          
+                <i-feather name="alert-octagon" class="text-warning"></i-feather>       
+                <span class="muted-text">
+                  No Orders yet!
+                </span>       
+                <button routerLink="/" class="btn btn-lg btn-outline-success"><i class="bi bi-cart text-primary"></i>do some shopping</button>
+            </div>
+
           </div>
           <div class="ordersmanagement">
+            <div id="orderStatus"></div>
+          </div>          
+          <div class="ordersmanagement" *ngIf="orders.length>0">
             <span class="text-primary p-3">My Orders</span>
             <div class="table-responsive">
               <table class="table text-nowrap">
@@ -130,16 +143,21 @@
         </div>
 
         <!-- Second Sub-Column -->
-        <div class="col-md-6 mb-4" *ngIf="stores.length>0">
-          <div class="storesmanagement">
-            charts go here
+        <div class="col-md-6 d-flex flex-column justify-content-center" *ngIf="stores.length===0">
+          <div class="ordersmanagement p-5 d-flex flex-column justify-content-center align-items-center" >          
+              <i-feather name="alert-octagon" class="text-warning"></i-feather>       
+              <span class="muted-text">
+                No stores yet!
+              </span>       
+              <button routerLink="/dashboard/createstore" class="btn btn-lg btn-outline-success"><i class="bi bi-cart text-primary"></i>add a store</button>
           </div>
-          <div class="storesmanagement p-5 d-flex flex-column justify-content-center align-items-center" *ngIf="stores.length===0">
-            <i-feather class="text-warning" name="alert-octagon"></i-feather>
-            <small>No Stores found </small>
-            <button routerLink="/dashboard/createstore" class="btn btn-outline-info">add store</button>
-          </div>
+        </div>
+        
+        <div class="col-md-6 mb-4" >
           <div class="storesmanagement">
+            <div id="storesChart"></div>
+          </div>
+          <div class="storesmanagement" *ngIf="stores.length>0">
             <span class="text-primary p-3">Stores</span>
           
             <!-- Table for stores inside a responsive div -->

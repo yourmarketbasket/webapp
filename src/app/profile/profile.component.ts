@@ -120,7 +120,7 @@ export class ProfileComponent implements OnInit {
         this.getTotalPages();  // Calculate total pages when orders are loaded
         this.loadData(this.currentPage); // Load the first page's data
         this.countStatuses(this.orders);
-        this.showBarChart("bar",Object.keys(this.countStatuses(this.orders).overallStatus), Object.values(this.countStatuses(this.orders).overallStatus),"orderStatus" )
+        this.showBarChart("area",Object.keys(this.countStatuses(this.orders).overallStatus), Object.values(this.countStatuses(this.orders).overallStatus),"orderStatus")
       }
     });
   }
@@ -129,11 +129,27 @@ export class ProfileComponent implements OnInit {
     this.ms.getStoresAndProductsByOwnerId(this.userId).subscribe((res: any) => {
       if (res.success && res.data) {
         this.stores = res.data;
+  
+        // Create an array of store names and total values
+        const storeNames: string[] = [];
+        const totalValues: number[] = [];
+  
+        // Loop through stores and populate the arrays
+        this.stores.forEach((store: any) => {
+          storeNames.push(store.storeName);      // Add storeName to the storeNames array
+          totalValues.push(store.totalValue);   // Add totalValue to the totalValues array
+        });
+  
+        this.showPieChart("donut",storeNames, totalValues,"storesChart")
+  
         this.getTotalStorePages();  // Calculate total pages when stores are loaded
-        this.loadStoreData(this.storesCurrentPage); 
+        this.loadStoreData(this.storesCurrentPage);
       }
     });
   }
+  
+  
+  
 
   // Calculate the total number of store pages
   getTotalStorePages(): void {
@@ -254,7 +270,7 @@ export class ProfileComponent implements OnInit {
         },
         colors: chartColors, // Custom colors for the chart
         series: [{
-            name: 'data',
+            name: 'value',
             data: values // Data points for the chart
         }],
         xaxis: {
@@ -263,7 +279,7 @@ export class ProfileComponent implements OnInit {
         tooltip: {
             y: {
                 formatter: function (val: number) {
-                    return val + ' items'; // Custom tooltip formatter
+                    return val; // Custom tooltip formatter
                 }
             }
         },
@@ -307,10 +323,26 @@ export class ProfileComponent implements OnInit {
   
   
 
-  showPieChart(type: string, keys: any[], values: any[], chartID: string, colors: string[] = []) {
-      // Default colors if not provided
-      const defaultColors = ['#FF5733', '#33FF57', '#3357FF', '#FF33A1', '#FFC300'];
-      const chartColors = colors.length ? colors : defaultColors;
+  showPieChart(type: string, keys: any[], values: any[], chartID: string, colors: string[] = [], centerTitle?: string) {
+      // Bootstrap color palette
+      const bootstrapColors = [
+        '#80deea', // primary (light cyan)
+        '#f8bbd0', // secondary (light pink)
+        '#e1bee7', // success (light purple)
+        '#ff80ab', // danger (soft pink)
+        '#ffccbc', // warning (light coral)
+        '#b2ebf2', // info (pale cyan)
+        '#f3e5f5'  // light (soft lavender)
+      ];
+      
+      
+      
+
+      // Use provided colors or Bootstrap colors (cycled if necessary)
+      const chartColors = colors.length ? colors : bootstrapColors;
+
+      // Calculate the total of the values for percentage conversion
+      const totalValue = values.reduce((sum, value) => sum + value, 0);
 
       // General Chart Options
       const options: any = {
@@ -318,27 +350,26 @@ export class ProfileComponent implements OnInit {
               type: type,
               height: 350 // Ensure chart has height
           },
-          colors: chartColors, // Set custom colors
-          series: Array.isArray(values) ? values : [values], // Ensure series is an array
-          labels: keys,  // Labels for pie/donut charts
+          colors: chartColors, // Set colors
+          series: values.map(value => (value / totalValue) * 100), // Convert values to percentages
+          labels: keys, // Labels for pie/donut charts
           tooltip: {
               y: {
-                  formatter: function (val: number) {
-                      return val + ' items';
+                  formatter: function (val: number, opts: any) {
+                      const originalValue = values[opts.seriesIndex];
+                      return `${val.toFixed(1)}% (${originalValue})`;
                   }
               }
           },
           legend: {
-              show: false, // Disable legend for all charts
+              show: false // Disable legend for all charts
           },
           dataLabels: {
               enabled: true,
               formatter: function (val: number) {
-                  return val.toFixed(0); // Display only the numeric value
+                  return `${val.toFixed()}%`; // Show percentage with one decimal point
               },
-              style: {
-                  color: '#FFFFFF',
-                  colors: ['#FFFFFF'], // White color for labels
+              style: { // Color of data labels
                   fontSize: '14px',
                   fontWeight: 700
               }
@@ -349,26 +380,24 @@ export class ProfileComponent implements OnInit {
       if (type === 'pie' || type === 'donut') {
           options.plotOptions = {
               pie: {
-                  customScale: 0.8,  // Optional: Resize pie
+                  // customScale: 0.8, // Optional: Resize pie
                   donut: {
-                      size: '60%', // Donut chart inner radius
+                      size: '50%', // Donut chart inner radius
                       labels: {
-                          show: true, // Show donut labels on hover
-                          name: {
-                              color:'#FFFFFF',
-                              fontSize: '14px', // Font size for name
+                          show: !!centerTitle, // Show the center title only if provided
+                          total: {
+                              show: !!centerTitle, // Only show if centerTitle exists
+                              label: centerTitle || '', // Center title text
+                              fontSize: '18px', // Title font size
                               fontWeight: 700,
-                          },
-                          value: {
-                              fontSize: '16px', // Font size for value
-                              fontWeight: 700,
-                              color:'#FFFFFF',
-                              style: {
-                                  color: '#FFFFFF',
-                                  foreColor:'#FFFFFF',
+                              formatter: function () {
+                                  return ''; // No total value, only the title
                               }
                           }
-                      }
+                      },
+                      
+                      
+
                   }
               }
           };
@@ -384,6 +413,14 @@ export class ProfileComponent implements OnInit {
       const chart = new ApexCharts(document.querySelector("#" + chartID), options);
       chart.render();
   }
+
+
+
+
+
+
+
+
 
   
   
