@@ -61,7 +61,6 @@ export class CartComponent implements OnInit {
       if(response.success && response.items[0]){
         this.cartitems = response.items[0].products;
         this.grandtotal = response.items[0].amount;
-        console.log(this.cartitems)
       }else{
         this.cartitems = [];
         this.grandtotal = 0;
