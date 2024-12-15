@@ -201,3 +201,15 @@ body { margin: 0; font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', m
   a:active{
     color: rgb(7, 212, 113) !important;
   }
+
+  .nicard{
+    margin: 10px;
+    background-color: white;
+    /* background-color: white; */
+    /* width: 100%; */
+    /* flex: 100%; */
+    flex-wrap: wrap;
+    border-radius: 5px;
+    box-shadow: 0 3px 11px #e8eafc;
+    transition: box-shadow 280ms cubic-bezier(0.4,0,0.2,1);
+}

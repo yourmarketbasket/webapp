@@ -120,7 +120,7 @@ export class ProfileComponent implements OnInit {
         this.getTotalPages();  // Calculate total pages when orders are loaded
         this.loadData(this.currentPage); // Load the first page's data
         this.countStatuses(this.orders);
-        this.showBarChart("area",Object.keys(this.countStatuses(this.orders).overallStatus), Object.values(this.countStatuses(this.orders).overallStatus),"orderStatus")
+        this.showBarChart("bar",Object.keys(this.countStatuses(this.orders).overallStatus), Object.values(this.countStatuses(this.orders).overallStatus),"orderStatus")
       }
     });
   }

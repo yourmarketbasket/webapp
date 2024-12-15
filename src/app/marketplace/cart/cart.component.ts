@@ -58,10 +58,10 @@ export class CartComponent implements OnInit {
   getCartItems(userid:any){
     // get the cart items
     this.ms.getCartItems(userid).subscribe((response:any)=>{
-      // console.log()
       if(response.success && response.items[0]){
         this.cartitems = response.items[0].products;
         this.grandtotal = response.items[0].amount;
+        console.log(this.cartitems)
       }else{
         this.cartitems = [];
         this.grandtotal = 0;
