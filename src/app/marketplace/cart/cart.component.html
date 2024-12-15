@@ -45,7 +45,7 @@
                                                 <div class="d-flex flex-column justify-content-start">
                                                     <span>{{product.productname}}</span>
                                                     <span  class="badge rounded-pill bg-success-transparent m-1">Instock: {{product.available}}units</span>
-                                                    <span *ngIf="product.discount" class="badge rounded-pill bg-primary-transparent m-1">Discount: {{product.discount}}</span>
+                                                    <span *ngIf="product.discount" class="badge rounded-pill bg-primary-transparent m-1">Discount: {{product.discount}}%</span>
 
                                                     <span [innerHTML]="3.5 | nipipe"></span>
 
@@ -71,6 +71,7 @@
                                             <div class="fs-14 fw-medium">
                                                 {{product.totalCost | currency: 'Kes. '}}
                                             </div>
+                                            <p class="alert alert-success fs-10" *ngIf="product.discount"><i class="fa-solid fa-circle-check"></i> You save {{(((100*product.price)/(100-product.discount)*product.quantity)-product.totalCost) | currency: 'Kes. '}}</p>
                                         </td>
                                         <td>
                                             <button (click)="removeCartItem(product.productid, product.buyerid)" class="btn btn-icon btn-danger-ghost btn-delete" >
@@ -98,7 +99,7 @@
                 <div class="nicard" style="position: sticky; top: 70px;">
                     <div >
                         <div class="p-3 border-bottom border-block-end-dashed">
-                            <p class="mb-2 fw-medium">Delivery:</p>
+                            <p class="mb-2 fw-medium">Summary</p>
                             <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
                                 <input type="radio" class="btn-check" name="btnradio" id="btnradio1">
                                 <label class="btn btn-outline-teal text-default" for="btnradio1">Free Delivery</label>
