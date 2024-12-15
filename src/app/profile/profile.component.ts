@@ -266,7 +266,7 @@ export class ProfileComponent implements OnInit {
     var options = {
         chart: {
             type: type, // Type of chart (line, bar, area)
-            height: 350 // Chart height
+            // height: 350 // Chart height
         },
         colors: chartColors, // Custom colors for the chart
         series: [{
@@ -348,7 +348,7 @@ export class ProfileComponent implements OnInit {
       const options: any = {
           chart: {
               type: type,
-              height: 350 // Ensure chart has height
+              // height: 350 // Ensure chart has height
           },
           colors: chartColors, // Set colors
           series: values.map(value => (value / totalValue) * 100), // Convert values to percentages
@@ -362,7 +362,9 @@ export class ProfileComponent implements OnInit {
               }
           },
           legend: {
-              show: false // Disable legend for all charts
+              show: true,
+              position: 'bottom',  // Position the legend below the pie chart
+              horizontalAlign: 'center',
           },
           dataLabels: {
               enabled: true,
@@ -382,7 +384,7 @@ export class ProfileComponent implements OnInit {
               pie: {
                   // customScale: 0.8, // Optional: Resize pie
                   donut: {
-                      size: '50%', // Donut chart inner radius
+                      size: '60%', // Donut chart inner radius
                       labels: {
                           show: !!centerTitle, // Show the center title only if provided
                           total: {
