@@ -134,6 +134,7 @@ import { AbbreviateNumberPipe } from './abbreviate-number.pipe';
 import { NipipePipe } from './nipipe.pipe';
 import { FromnowPipe } from './fromnow.pipe';
 import { AbsPipe } from './abs.pipe';
+import { NireadabledatePipe } from './nireadabledate.pipe';
 
 
 const icons = {
@@ -218,6 +219,7 @@ const icons = {
         NipipePipe,
         FromnowPipe,
         AbsPipe,
+        NireadabledatePipe,
     ],
     bootstrap: [AppComponent], 
     imports: [

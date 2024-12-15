@@ -108,22 +108,7 @@ export class ReviewProductsComponent implements OnInit {
     this.loading = false;
   }
 
-  readableDate(date: any) {
-    const now = moment();
-    const inputDate = moment(date);
-
-    if (now.diff(inputDate, 'seconds') < 5) {
-      return 'a few seconds ago';
-    } else if (inputDate.isSame(now, 'day')) {
-      return inputDate.format('LT');
-    } else if (inputDate.isSame(now.clone().subtract(1, 'day'), 'day')) {
-      return 'Yesterday';
-    } else if (inputDate.isSame(now, 'month')) {
-      return inputDate.format('MMM D');
-    } else {
-      return inputDate.format('MMM D, YYYY');
-    }
-  }
+  
 
   viewProduct(pname: any, pverified: any, pdescription: any, pimage: any, id: any) {
     this.images = pimage;
