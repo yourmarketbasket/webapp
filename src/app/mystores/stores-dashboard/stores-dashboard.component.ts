@@ -9,6 +9,7 @@ import { MasterServiceService } from 'src/app/services/master-service.service';
 import { computePercentageOfExpectedGrossProfit } from 'src/app/services/computations';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatPaginator } from '@angular/material/paginator';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { AddProductsComponent } from '../add-products/add-products.component';
@@ -34,14 +35,22 @@ export class StoresDashboardComponent implements OnInit, AfterViewInit{
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  // refactored
-  dataSources: MatTableDataSource<Product>[] = [];
-  @ViewChildren(MatPaginator) paginators!: QueryList<MatPaginator>;
   
-  selection = new SelectionModel<Product>(true, []);
+  
+  selection = new SelectionModel<Product>(true, []); // Your orders data
+  filteredOrders: any[] = [];
+  paginatedOrders:any = [];  // Orders to display on the current page
+  currentPage = 1;
+  pageSize = 10;  // Number of orders per page
+  totalPages = 1;  // Total number of pages
+  pages:any = []; 
+  pageIndex = 0;
+  totalOrders = 0;
+  pageSizeOptions = [5, 10, 15];
   [key: string]: any;
   stores: Store[] = [];
   userId!: any;
+  mapUrl:any;
   reload = false;
   storeid!: any;
   cepgp!: any;
@@ -49,15 +58,22 @@ export class StoresDashboardComponent implements OnInit, AfterViewInit{
   activeStore:any;
   activeStoreID!: any;
   storename!: any;
+  orderToProcess:any;
   location!: any;
   mapurl!: any;
   length!: any;
   products: any;
+  orderAction:any;
+  selectedStore:any;
   showProductFeatures!: boolean;
   showEditProduct!: boolean;
   title = "Stores Dashboard";
   displayedStoreProductsColumns: string[] = ['select', 'name', 'brand', 'model', 'category', 'subcategory', 'bp', 'sp', 'quantity', 'approved', 'Actions'];
   selected = new FormControl(0);
+  storeStatistics: any;
+  orders: any[] = [];
+  OrdersDataSource = new MatTableDataSource<any>([]); 
+  displayedColumns: string[] = ['select','Client', 'Contact',  'Pay Status', 'OrderStatus','TransactionID', 'Actions'];
 
   constructor(
     private ms: MasterServiceService,
@@ -68,7 +84,8 @@ export class StoresDashboardComponent implements OnInit, AfterViewInit{
     private componentFactoryResolver: ComponentFactoryResolver,
     private domSanitizer: DomSanitizer,
     private dialog: MatDialog,
-    private skb: MatSnackBar
+    private skb: MatSnackBar,
+    private modalService: NgbModal
   ) {
   }
 
@@ -89,13 +106,43 @@ export class StoresDashboardComponent implements OnInit, AfterViewInit{
 
     this.ms.getPrdoucts(localStorage.getItem('storeId')).subscribe((response: any) => {
       if (response.success) {
-        this.dataSource = response.data;
-        this.dataSource.paginator = this.paginator;
+        this.products = response.data;
       }
     });
 
     this.setActiveStoreID(localStorage.getItem('storeId'), this.activeStore)
+    this.loadUserStoresStatics()
 
+    this.selectedStore = localStorage.getItem('storeId');
+    this.storename = localStorage.getItem('activeStorename');
+
+    
+
+      this.getStoreOrders(this.selectedStore);
+    
+
+  }
+
+  sendNotification(order:any){
+    const data = {userId: order.buyerid, message: `Transaction ID: [${order.transactionID}]. Could not process order due to a Failed Payment. `, type: "error"}
+    this.ms.sendCommonNotifications(data).subscribe((res:any)=>{
+      if(res.success){
+        this.skb.open(res.message, 'Close', {
+          duration: 2000, // Duration in milliseconds
+          horizontalPosition: 'right', // Positions the snackbar to the right
+          verticalPosition: 'top',
+          panelClass: ['snackbar-success'] // Positions the snackbar at the top
+        });
+      }else{
+        this.skb.open(res.message, 'Close', {
+          duration: 2000, // Duration in milliseconds
+          horizontalPosition: 'right', // Positions the snackbar to the right
+          verticalPosition: 'top',
+          panelClass: ['snackbar-error']  // Positions the snackbar at the top
+        });
+
+      }
+    })
   }
 
   ngAfterViewInit(): void {
@@ -105,20 +152,74 @@ export class StoresDashboardComponent implements OnInit, AfterViewInit{
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
       }
-    });          
+    });   
+    
+    this.ms.getStoreOrders(localStorage.getItem('storeId')).subscribe((response: any) => {
+      if (response.data) {
+        this.OrdersDataSource = new MatTableDataSource(response.data);
+        this.OrdersDataSource.paginator = this.paginator;
+        this.OrdersDataSource.sort = this.sort;
+      }
+    });  
   }
+
+  loadUserStoresStatics() {
+    this.ms.getStoresAndProductsByOwnerId(this.userId).subscribe((res: any) => {
+      if (res.success && res.data) {
+        this.storeStatistics = res.data;
+  
+        // Create an array of store names and total values
+        const storeNames: string[] = [];
+        const totalValues: number[] = [];
+  
+        // Loop through storeStatistics and populate the arrays
+        this.storeStatistics.forEach((store: any) => {
+          storeNames.push(store.storeName);      // Add storeName to the storeNames array
+          totalValues.push(store.totalValue);   // Add totalValue to the totalValues array
+        });
+
+        // console.log(this.storeStatistics)
+  
+      }
+    });
+  }
+
+  
   
  
 
-  async loadStoreProducts(stores:any){
-    stores.forEach((store:any) => {
-      this.ms.getPrdoucts(store._id).subscribe((response:any)=>{
-        this.dataSources.push(response.data)
-      })
-      
-    });
+
+  refreshOrderStatus(transactionId:any){
+    this.ms.refreshTransactionStatus(transactionId).subscribe((res:any)=>{
+      if(res.success){
+          this.getStoreOrders(localStorage.getItem('selectedStore'));
+      }
+    })
 
   }
+
+  getStoreOrders(storeid: any) {
+    this.orders = [];
+    this.ms.getStoreOrders(storeid).subscribe((res: any) => {
+      this.orders = res.orders;
+      this.filteredOrders = [...this.orders]; // Start with unfiltered list
+      this.totalOrders = this.filteredOrders.length;
+      this.totalPages = Math.ceil(this.totalOrders / this.pageSize);
+      this.updatePaginatedOrders();
+      this.generatePageNumbers();
+      
+    });
+  }
+
+  generatePageNumbers() {
+    this.pages = [];
+    for (let i = 1; i <= this.totalPages; i++) {
+      this.pages.push(i);
+    }
+  }
+
+  
+  
 
   exportToPDF(tableId: string | undefined, header?: string): void {
     if (!tableId) {
@@ -191,6 +292,34 @@ export class StoresDashboardComponent implements OnInit, AfterViewInit{
   
   
   
+  openModal(content: any) {
+    this.modalService.open(content, { size: 'lg' }); // Open the modal with the specified content
+  }
+
+  applyFiltertoOrders(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
+    this.filteredOrders = this.orders.filter(order => {
+      const buyerNameMatch = order.buyername.toLowerCase().includes(filterValue);
+      const transactionIDMatch = order.transactionID.toLowerCase().includes(filterValue);
+      const paymentStatusMatch = order.paymentStatus.toLowerCase().includes(filterValue);
+      return buyerNameMatch || transactionIDMatch || paymentStatusMatch;
+    });
+    this.totalOrders = this.filteredOrders.length;
+    this.totalPages = Math.ceil(this.totalOrders / this.pageSize);
+    this.updatePaginatedOrders();
+    this.generatePageNumbers();
+  }
+
+  
+  
+  
+  
+  paginate(data: any[]) {
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    return data.slice(startIndex, endIndex);
+  }
+  
   
   
   
@@ -255,6 +384,42 @@ export class StoresDashboardComponent implements OnInit, AfterViewInit{
     XLSX.writeFile(wb, `${tableId}.xlsx`);
   }
 
+  // ensure array
+  ensureArrays(obj: any, keysToConvert: string[]): any {
+    // Iterate over all keys in the object
+    for (let key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        // If the key is one of the properties that should be an array
+        if (keysToConvert.includes(key)) {
+          // Convert the value to an array if it's not already an array
+          if (!Array.isArray(obj[key])) {
+            obj[key] = obj[key] ? [obj[key]] : []; // Wrap in an array or set to an empty array if undefined/null
+          }
+        }
+  
+        // If the value is an object, recursively apply the function
+        if (typeof obj[key] === 'object' && obj[key] !== null) {
+          this.ensureArrays(obj[key], keysToConvert);
+        }
+      }
+    }
+    return obj;
+  }
+
+  // process order
+  processOrder(data: any) {
+  
+    this.orderToProcess = this.ensureArrays(data, ['products','payment']);
+
+    // this.openModal("orderProcessingModal");
+    // console.log(this.orderToProcess)
+    const origin = `${this.orderToProcess.origin.latitude},${this.orderToProcess.origin.longitude}`; // Replace with your origin coordinates
+    const destination = `${this.orderToProcess.destination.latitude},${this.orderToProcess.destination.longitude}`; 
+    const mapurl = `https://www.google.com/maps/embed/v1/directions?key=AIzaSyDdvqTHmz_HwPar6XeBj8AiMxwzmFdqC1w&origin=${origin}&destination=${destination}&mode=driving`;
+    this.mapUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(mapurl);
+    
+  }
+
    // Load the map URL dynamically when a store is selected
    private async updateStoreMap(storeid:any) {
     // get the coordinates
@@ -279,6 +444,7 @@ export class StoresDashboardComponent implements OnInit, AfterViewInit{
     }
   }
 
+
   
   
 
@@ -287,6 +453,9 @@ export class StoresDashboardComponent implements OnInit, AfterViewInit{
       // Update component variables
       this.activeStore = storename;
       this.storename = storename;
+
+      localStorage.setItem('activeStorename', storename);
+      localStorage.setItem('storeId', storeid);
 
       // Clear current data to show empty state while loading new data
       this.dataSource.data = [];
@@ -303,22 +472,60 @@ export class StoresDashboardComponent implements OnInit, AfterViewInit{
         }
       });
 
+      this.getStoreOrders(storeid);
+
       // Update map URL for the new store's location
       await this.updateStoreMap(storeid);
     }
   }
-  
-  
 
-  _setDataSource(indexNumber: any) {
-    const dataSource = this[`dataSource${indexNumber}`];
-    const paginator = this[`paginator${indexNumber}`];
-
-    if (dataSource && paginator) {
-      dataSource.paginator = paginator;
-      dataSource.sort = this.sort; // Setting the sort if required
+  confirmOrderAction(action:any, id:any){
+    if(this.orderAction){
+      this.ms.markOrderStatus({status:action, orderId:this.orderToProcess._id, productid:id}).subscribe((res:any)=>{
+        if(res.success){
+          this.orderToProcess = null;
+          this.getStoreOrders(localStorage.getItem('selectedStore'));
+        }
+      })
     }
+
   }
+
+  changePage(direction: string) {
+    if (direction === 'prev' && this.currentPage > 1) {
+      this.currentPage--;
+    } else if (direction === 'next' && this.currentPage < this.totalPages) {
+      this.currentPage++;
+    }
+    this.updatePaginatedOrders();
+  }
+  updatePaginatedOrders() {
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    this.paginatedOrders = this.filteredOrders.slice(startIndex, endIndex);
+  }
+
+  goToPage(page: number) {
+    this.currentPage = page;
+    this.updatePaginatedOrders();
+  }
+
+  onPageChange(page: number) {
+    this.currentPage = page;
+    this.updatePaginatedOrders();
+    this.generatePageNumbers();
+  }
+
+  onPageSizeChange(size: number) {
+    this.pageSize = size;
+    this.totalPages = Math.ceil(this.filteredOrders.length / this.pageSize);
+    this.updatePaginatedOrders();
+    this.generatePageNumbers();
+  }
+  
+  
+
+  
 
   // Manage store
   async manageStore(id: any) {

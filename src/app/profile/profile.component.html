@@ -96,7 +96,13 @@
                 </thead>
                 <tbody>
                   <tr *ngFor="let data of pagedOrders">
-                    <td>{{data.transactionID}}</td>
+                    <td>
+                      <div class="d-flex flex-column">
+                        {{data.transactionID}}
+                        <span class="badge bg-success-transparent rounded-pill">{{data.date | nireadabledate}}</span>
+                      </div>
+
+                    </td>
                     <td>
                       <button class="btn btn-sm" 
                         [ngClass]="{

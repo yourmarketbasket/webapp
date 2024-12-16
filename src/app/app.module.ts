@@ -135,6 +135,11 @@ import { NipipePipe } from './nipipe.pipe';
 import { FromnowPipe } from './fromnow.pipe';
 import { AbsPipe } from './abs.pipe';
 import { NireadabledatePipe } from './nireadabledate.pipe';
+import { BarChartPipe } from './bar-chart.pipe';
+import { PieChartPipe } from './pie-chart.pipe';
+import { BarChartDirective } from './bar-chart.directive';
+import { PieChartDirective } from './pie-chart.directive';
+import { LineChartDirective } from './line-chart.directive';
 
 
 const icons = {
@@ -220,6 +225,11 @@ const icons = {
         FromnowPipe,
         AbsPipe,
         NireadabledatePipe,
+        BarChartPipe,
+        PieChartPipe,
+        BarChartDirective,
+        PieChartDirective,
+        LineChartDirective,
     ],
     bootstrap: [AppComponent], 
     imports: [
