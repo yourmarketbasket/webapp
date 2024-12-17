@@ -233,6 +233,9 @@
                           </div>
                         </td> -->
                       </tr>
+                      <tr *ngIf="paginatedProducts.length===0">
+                        <td>No products found</td>
+                      </tr>
                     </tbody>
                   </table>
                   <!-- Pagination -->
@@ -352,6 +355,9 @@
                             <i class="fa fa-history"></i>
                           </button>
                         </td>
+                      </tr>
+                      <tr *ngIf="paginatedOrders.length===0">
+                        <td>No orders found</td>
                       </tr>
                     </tbody>
                   </table>
