@@ -1,10 +1,11 @@
+
 <div class="container-fluid">
   <!-- Main Column -->
   <div class="row">
     <div class="col-12">
       
       <!-- First Row -->
-      <div class="row mb-3 px-5">
+      <div class="row">
           <div class="col-md-6 col-lg-3 col-xl-3">
               <div class="card custom-card overflow-hidden">
                 <div class="card-body p-0">
@@ -122,103 +123,103 @@
               </div>
           </div>
       </div>
+
+      <!-- second row -->
+      <div class="row mb-1">
+        <!-- Card container -->
+        <div class="col-12">
+          <div class="nicard">
+            <div class="p-2 d-flex justify-content-between align-items-center">
+              <!-- Select store dropdown -->
+              <div class="col-md-3 col-xl-3">
+                <mdb-form-control class="w-100" *ngIf="stores.length > 0">
+                  <mdb-select
+                    label="'Choose store'"
+                    (valueChange)="setActiveStoreID($event._id, $event.storename)"
+                  >
+                    <mdb-option *ngFor="let store of stores" [value]="store">
+                      {{ store?.storename }}
+                    </mdb-option>
+                  </mdb-select>
+                  <label mdbLabel class="form-label">Choose store</label>
+                </mdb-form-control>
+              </div>
+              <!-- Store name display -->
+              <div class="col-md-auto col-xl-auto">
+                <span>
+                  <i class="ri-store-2-line"></i>
+                  {{ activeStore?.toUpperCase() ?? storename?.toUpperCase() }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      
       
       <!-- Second Row -->
-      <div class="row px-5">
-        <div class="col-12">
-          <div class="d-flex flex-row nicard justify-content-between p-2 mb-3">
-            <div class="col-md-2 col-xl-2">
-              <mdb-form-control class="w-100" *ngIf="stores.length > 0">
-                <mdb-select
-                  label="'Choose store'"            
-                  (valueChange)="setActiveStoreID($event._id, $event.storename)">
-                  <mdb-option *ngFor="let store of stores" [value]="store">
-                    {{ store?.storename }}
-                  </mdb-option>
-                </mdb-select>
-                <label mdbLabel class="form-label">Choose store</label>
-              </mdb-form-control>             
+      <div class="row">
+        <!-- Products Section -->
+        <div class="col-7">
+          <div class="row">
+            <!-- No Products Card -->
+            <div class="col-6 p-1" *ngIf="!products || products.length === 0">
+              <div class="card d-flex w-100 flex-column justify-content-center align-items-center" style="height: 100px;">
+                <div class="card-body text-center">
+                  No products found
+                </div>
+              </div>
             </div>
-  
-            <div class="col-md-auto col-xl-auto">
-              <span>
-                <i class="ri-store-2-line"></i> {{ activeStore?.toUpperCase() ?? storename?.toUpperCase() }}
-              </span>
-            </div>   
-          </div>
-          <div class="d-flex flex-row justify-content-evenly">
-            <div class="col-auto">
+
+            <!-- Products Available -->
+            <div *ngIf="products && products.length > 0" class="col-12">
               <div class="nicard p-1">
-                <div class="input-group w-100 mb-3">
-                  <input
-                    type="text"
-                    class="form-control rounded-1"
-                    placeholder="Type the name, brand, or any verifier"
-                    (keyup)="applyFilter($event)"
-                    #input
-                  />
-                  <button class="btn btn-outline-secondary" type="button" (click)="applyFilter($event)">
+                <!-- Filter Input -->
+                <div class="input-group mb-3">
+                  <input 
+                    type="text" 
+                    class="form-control rounded-1" 
+                    placeholder="Type the name, brand, or any verifier" 
+                    (keyup)="applyFilter($event)" 
+                    #input />
+                  <button class="btn btn-outline-primary" (click)="applyFilter($event)">
                     <i class="bi bi-search"></i>
                   </button>
                 </div>
-                
-                
-                <div style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-between; align-items: center;">
-                  <div class="d-flex justify-content-end mb-2">
-                    <small>
-                      A total of {{ products.length }} products found
-                    </small>
-                  </div>
-                  
-                  <!-- <button color="primary" (click)="exportToPDF('productsList', activeStore+' Products List' ?? storename +' Products List')" mat-stroked-button><span nz-icon nzType="file-pdf" nzTheme="outline" style="color: rgb(236, 71, 99);"></span> VIEW LIST</button> -->
+
+                <!-- Product Count -->
+                <div class="d-flex justify-content-end mb-2">
+                  <small>A total of {{ products.length }} products found</small>
                 </div>
-                <div class="table-responsive ">
+
+                <!-- Products Table -->
+                <div class="table-responsive">
                   <table class="table text-nowrap">
                     <thead class="table-success">
                       <tr>
-                        <th class="p-2" scope="col">
-                          <input type="checkbox"
-                            (change)="toggleAllRows()"
-                            [checked]="isAllSelected()"
-                            [indeterminate]="selection.hasValue() && !isAllSelected()">
-
-                        </th>
-                        <th class="p-2" scope="col">Name</th>
-                        <th class="p-2" scope="col">Brand</th>
-                        <th class="p-2" scope="col">CAT</th>
-                        <th class="p-2" scope="col">SUB</th>
-                        <th class="p-2" scope="col">Model</th>
-                        <th class="p-2" scope="col">BP</th>
-                        <th class="p-2" scope="col">SP</th>
-                        <th class="p-2" scope="col">QTTY</th>
-                        <th class="p-2" scope="col">Approved</th>
-                        <th class="p-2" scope="col"></th>
+                        <th>Name</th>
+                        <th>Brand</th>
+                        <th>CAT</th>
+                        <th>SUB</th>
+                        <th>Model</th>
+                        <th>BP</th>
+                        <th>SP</th>
+                        <!-- <th>QTTY</th> -->
                       </tr>
                     </thead>
                     <tbody>
                       <tr *ngFor="let product of products">
-                        <td class="p-2">
-                          <input type="checkbox"
-                            (click)="$event.stopPropagation()"
-                            (change)="$event ? selection.toggle(product) : null"
-                            [checked]="selection.isSelected(product)"
-                          >
-                        </td>
-                        <td class="p-2">{{ product.name }}</td>
-                        <td class="p-2">{{ product.brand }}</td>
-                        <td class="p-2">{{ product.category }}</td>
-                        <td class="p-2">{{ product.subcategory }}</td>
-                        <td class="p-2">{{ product.model }}</td>
-                        <td class="p-2">{{ product.bp | abbreviateNumber }}</td>
-                        <td class="p-2">{{ product.sp | abbreviateNumber }}</td>
-                        <td class="p-2">{{ product.quantity | abbreviateNumber }}</td>
-                        <td class="p-2">
-                          <i *ngIf="product.approved" class="bi bi-check-circle" style="color: rgb(6, 236, 140);"></i>
-                          <i *ngIf="!product.approved" class="bi bi-x-circle" style="color: rgb(255, 0, 0);"></i>
-
-                        </td>
-                        <td class="p-2">
-                          <div class="hstack gap-2 fs-15">
+                        <td>{{ product.name }}</td>
+                        <td>{{ product.brand }}</td>
+                        <td>{{ product.category }}</td>
+                        <td>{{ product.subcategory }}</td>
+                        <td>{{ product.model }}</td>
+                        <td>{{ product.bp | abbreviateNumber }}</td>
+                        <td>{{ product.sp | abbreviateNumber }}</td>
+                        <!-- <td>{{ product.quantity | abbreviateNumber }}</td> -->
+                        <!-- <td>
+                          <div class="d-flex gap-2">
                             <button (click)="editProduct(product._id)" class="btn btn-sm btn-outline-primary">
                               <i class="fa fa-pen"></i>
                             </button>
@@ -226,140 +227,132 @@
                               <i class="fa fa-trash"></i>
                             </button>
                           </div>
-                          
-                        </td>
+                        </td> -->
                       </tr>
-                      
                     </tbody>
                   </table>
                 </div>
-                
-            
               </div>
-              <!-- map -->
-              <div class="nicard mt-1">
-                <iframe
-                  class="mat-elevation-z8"
-                  style="border: 0px; border-radius: 5px"
-                  height="300px"
-                  width="100%"
-                  *ngIf="mapurl"
-                  [src]="mapurl"
-                  allowfullscreen=""
-                  loading="lazy"
-                  referrerpolicy="no-referrer-when-downgrade"
-                >
-                </iframe>
 
-              </div>
-            </div>
-            <div class="col-4">
-              <div class="nicard p-1 d-flex flex-column justify-content-center align-items-center"> 
-                <div *ngIf="orders && orders.length == 0">
-                  <button class="btn btn-primary-light" type="button" disabled>
-                      <span class="spinner-border spinner-border-sm align-middle" role="status" aria-hidden="true"></span>
-                      Loading...
-                  </button>
+              <!-- Map Card -->
+              <div class="card mt-3">
+                <div class="card-body p-0">
+                  <iframe 
+                    *ngIf="mapurl" 
+                    [src]="mapurl" 
+                    class="w-100" 
+                    style="border: 0; height: 300px;" 
+                    allowfullscreen 
+                    loading="lazy" 
+                    referrerpolicy="no-referrer-when-downgrade">
+                  </iframe>
                 </div>
-                <div *ngIf="orders.length > 0">
-                  <div class="mb-3">
-                    <div class="input-group">
-                      <input
-                        class="form-control rounded-1"
-                        type="text"
-                        placeholder="Search {{storename}} Orders(s)"
-                        (keyup)="applyFiltertoOrders($event)"
-                        #input
-                      />
-                      <button class="btn btn-outline-secondary" type="button" (click)="applyFiltertoOrders($event)">
-                        <i class="bi bi-search"></i>
-                      </button>
-                    </div>
-                  </div>
-      
-                  <div class="d-flex justify-content-end mb-2">
-                    <small *ngIf="orders && orders.length > 0">{{orders.length}} Store order(s) found</small>
-                  </div>
-      
-                  <!-- Make the table take full width -->
-                  <div class=" table-responsive w-100">
-                    <table class=" table">
-                      <thead class="table-primary">
-                        <tr>
-                          <th scope="col" class="p-2"> 
-                            <input type="checkbox" (change)="$event ? toggleAllRows() : null" [checked]="selection.hasValue() && isAllSelected()" [indeterminate]="selection.hasValue() && !isAllSelected()" aria-label="Select all orders">
-                          </th>
-                          <th scope="col" class="p-2">Client</th>
-                          <th scope="col" class="p-2">TID</th>
-                          <th scope="col" class="p-2">Payment</th>
-                          <th scope="col" class="p-2">Status</th>
-                          <th scope="col" class="p-2"></th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr *ngFor="let order of paginatedOrders; let i = index">
-                          <td class="p-2">
-                            <input type="checkbox" (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(order) : null" [checked]="selection.isSelected(order)" aria-label="Select order">
-                          </td>
-                          <td class="p-2">{{order.buyername | capitalize}}</td>
-                          <td class="p-2">{{order.transactionID}}</td>
-                          <td class="p-2">
-                            <span *ngIf="order.paymentStatus === 'Completed'" class="badge rounded-pill bg-success text-light">{{order.paymentStatus}}</span>
-                            <button (click)="refreshOrderStatus(order.transactionID)" class="btn btn-outline-primary" *ngIf="order.paymentStatus === 'Pending'">
-                              <small>{{order.paymentStatus}} <i class="bi bi-arrow-repeat"></i></small>
-                            </button>
-                            <span *ngIf="order.paymentStatus === 'Failed'" class="badge rounded-pill bg-danger text-light">{{order.paymentStatus}}</span>
-                          </td>
-                          <td class="p-2">
-                            <span *ngIf="order.overallStatus === 'processing'" class="badge rounded-pill bg-warning text-dark">{{order.overallStatus.toUpperCase()}}</span>
-                            <span *ngIf="order.overallStatus === 'confirmed'" class="badge rounded-pill bg-info text-light">{{order.overallStatus.toUpperCase()}}</span>
-                            <span *ngIf="order.overallStatus === 'packed'" class="badge rounded-pill bg-primary text-light">{{order.overallStatus.toUpperCase()}}</span>
-                            <span *ngIf="order.overallStatus === 'dispatched'" class="badge rounded-pill bg-secondary text-light">{{order.overallStatus.toUpperCase()}}</span>
-                            <span *ngIf="order.overallStatus === 'partialCompleted'" class="badge rounded-pill bg-warning text-dark">ONGOING</span>
-                            <span *ngIf="order.overallStatus === 'delivered'" class="badge rounded-pill bg-success text-light">{{order.overallStatus.toUpperCase()}}</span>
-                            <span *ngIf="order.overallStatus === 'completed'" class="badge rounded-pill bg-success text-light">{{order.overallStatus.toUpperCase()}}</span>
-                            <span *ngIf="order.overallStatus === 'failed'" class="badge rounded-pill bg-danger text-light">{{order.overallStatus.toUpperCase()}}</span>
-                          </td>
-                          <td class="p-2">
-                            <button class="btn btn-outline-danger btn-sm" *ngIf="order.paymentStatus === 'Failed'" (click)="sendNotification(order)">
-                              <i class="fa fa-paper-plane"></i>
-                            </button>
-                            <button class="btn btn-outline-success btn-sm" *ngIf="order.paymentStatus === 'Completed'" (click)="processOrder(order)">
-                              <i class="fa fa-pen"></i>
-                            </button>
-                            <span *ngIf="order.paymentStatus === 'Pending'" class="bi bi-exclamation-circle"></span>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                    <nav aria-label="Page navigation" class="pagination-style-1">
-                      <ul class="pagination mb-0 flex-wrap">
-                        <li class="page-item" [class.disabled]="currentPage === 1">
-                          <a class="page-link" href="javascript:void(0);" (click)="changePage('prev')">
-                            <i class="ri-arrow-left-s-line align-middle"></i>
-                          </a>
-                        </li>
-                        <li class="page-item" *ngFor="let page of pages" [class.active]="page === currentPage">
-                          <a class="page-link" href="javascript:void(0);" (click)="goToPage(page)">{{page}}</a>
-                        </li>
-                        <li class="page-item" [class.disabled]="currentPage === totalPages">
-                          <a class="page-link" href="javascript:void(0);" (click)="changePage('next')">
-                            <i class="ri-arrow-right-s-line align-middle"></i>
-                          </a>
-                        </li>
-                      </ul>
-                    </nav>
-                  </div>
-                </div>     
               </div>
             </div>
           </div>
-        
+        </div>
+
+        <!-- Orders Section -->
+        <div class="col-5">
+          <div class="row">
+            <!-- No Orders Card -->
+            <div class="col-6 p-1" *ngIf="!orders || orders.length === 0">
+              <div class="card d-flex flex-column justify-content-center align-items-center" style="height: 100px;">
+                <div class="card-body text-center">
+                  No orders found
+                </div>
+              </div>
+            </div>
+
+            <!-- Orders Available -->
+            <div class="col-12 ps-2" *ngIf="orders && orders.length > 0">
+              <div class="nicard p-1">
+                <!-- Filter Input -->
+                <div class="input-group mb-3">
+                  <input 
+                    type="text" 
+                    class="form-control rounded-1" 
+                    placeholder="Search {{ storename }} Order(s)" 
+                    (keyup)="applyFiltertoOrders($event)" 
+                    #input />
+                  <button class="btn btn-outline-primary" (click)="applyFiltertoOrders($event)">
+                    <i class="bi bi-search"></i>
+                  </button>
+                </div>
+
+                <!-- Orders Count -->
+                <div class="d-flex justify-content-end mb-2">
+                  <small>{{ orders.length }} Store order(s) found</small>
+                </div>
+
+                <!-- Orders Table -->
+                <div class="table-responsive">
+                  <table class="table">
+                    <thead class="table-primary">
+                      <tr>
+                        <th>Client</th>
+                        <th>TID</th>
+                        <th>Payment</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let order of paginatedOrders">
+                        <td>{{ order.buyername | capitalize }}</td>
+                        <td>{{ order.transactionID }}</td>
+                        <td>
+                          <span *ngIf="order.paymentStatus === 'Completed'" class="badge bg-success">{{ order.paymentStatus }}</span>
+                          <button *ngIf="order.paymentStatus === 'Pending'" class="btn btn-sm btn-outline-primary" (click)="refreshOrderStatus(order.transactionID)">
+                            {{ order.paymentStatus }} <i class="bi bi-arrow-repeat"></i>
+                          </button>
+                          <span *ngIf="order.paymentStatus === 'Failed'" class="badge bg-danger">{{ order.paymentStatus }}</span>
+                        </td>
+                        <td>
+                          <span [ngClass]="'badge bg-' + getStatusClass(order.overallStatus)">
+                            {{ order.overallStatus.toUpperCase() }}
+                          </span>
+                        </td>
+                        <td>
+                          <button *ngIf="order.paymentStatus === 'Failed'" class="btn btn-sm btn-outline-danger" (click)="sendNotification(order)">
+                            <i class="fa fa-paper-plane"></i>
+                          </button>
+                          <button *ngIf="order.paymentStatus === 'Completed'" class="btn btn-sm btn-outline-success" (click)="processOrder(order)">
+                            <i class="fa fa-pen"></i>
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <!-- Pagination -->
+                <nav aria-label="Page navigation mt-1">
+                  <ul class="pagination">
+                    <li class="page-item" [class.disabled]="currentPage === 1">
+                      <a class="page-link" (click)="changePage('prev')">
+                        <i class="bi bi-arrow-left"></i>
+                      </a>
+                    </li>
+                    <li class="page-item" *ngFor="let page of pages" [class.active]="page === currentPage">
+                      <a class="page-link" (click)="goToPage(page)">{{ page }}</a>
+                    </li>
+                    <li class="page-item" [class.disabled]="currentPage === totalPages">
+                      <a class="page-link" (click)="changePage('next')">
+                        <i class="bi bi-arrow-right"></i>
+                      </a>
+                    </li>
+                  </ul>
+                </nav>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
-    </div>
   </div>
 </div>
+
 
 
 

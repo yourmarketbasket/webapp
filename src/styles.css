@@ -22,7 +22,14 @@
     width: 10px !important;
 }
 
-
+tr:nth-child(even),mat-row:nth-child(even)  {
+    color: rgb(241, 56, 149);
+    font-size: small;
+}
+ tr:nth-child(odd), mat-row:nth-child(odd){
+    color: rgb(111, 56, 241);
+    font-size: small;
+}
 i {
     position: relative;
     display: inline-block;
@@ -37,8 +44,9 @@ i {
     top: 0;
     left: 0;
 }
-table td, table th{
-  padding:0px !important;
+mat-header-cell{
+    color: rgb(111, 56, 241);
+    font-size: small;
 }
 mat-table{
     width: max-content;

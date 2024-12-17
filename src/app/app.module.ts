@@ -229,7 +229,7 @@ const icons = {
         PieChartPipe,
         BarChartDirective,
         PieChartDirective,
-        LineChartDirective,
+        LineChartDirective
     ],
     bootstrap: [AppComponent], 
     imports: [

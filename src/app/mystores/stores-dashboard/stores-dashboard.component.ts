@@ -41,7 +41,7 @@ export class StoresDashboardComponent implements OnInit, AfterViewInit{
   filteredOrders: any[] = [];
   paginatedOrders:any = [];  // Orders to display on the current page
   currentPage = 1;
-  pageSize = 10;  // Number of orders per page
+  pageSize = 5;  // Number of orders per page
   totalPages = 1;  // Total number of pages
   pages:any = []; 
   pageIndex = 0;
@@ -201,12 +201,15 @@ export class StoresDashboardComponent implements OnInit, AfterViewInit{
   getStoreOrders(storeid: any) {
     this.orders = [];
     this.ms.getStoreOrders(storeid).subscribe((res: any) => {
-      this.orders = res.orders;
-      this.filteredOrders = [...this.orders]; // Start with unfiltered list
-      this.totalOrders = this.filteredOrders.length;
-      this.totalPages = Math.ceil(this.totalOrders / this.pageSize);
-      this.updatePaginatedOrders();
-      this.generatePageNumbers();
+      // console.log(res)
+      if(res.success){
+        this.orders = res.orders;
+        this.filteredOrders = [...this.orders]; // Start with unfiltered list
+        this.totalOrders = this.filteredOrders.length;
+        this.totalPages = Math.ceil(this.totalOrders / this.pageSize);
+        this.updatePaginatedOrders();
+        this.generatePageNumbers();
+      }
       
     });
   }
@@ -464,11 +467,9 @@ export class StoresDashboardComponent implements OnInit, AfterViewInit{
       this.ms.getPrdoucts(storeid).subscribe((response: any) => {
         if (response.data) {
           // Populate dataSource with new data
-          this.dataSource.data = response.data;
-
-          // Update paginator and sorter
-          this.dataSource.paginator = this.paginator;
-          this.dataSource.sort = this.sort;
+          this.products = response.data;
+        }else{
+          this.products = [];
         }
       });
 
@@ -478,6 +479,32 @@ export class StoresDashboardComponent implements OnInit, AfterViewInit{
       await this.updateStoreMap(storeid);
     }
   }
+
+  getStatusClass(status: string): string {
+    switch (status.toLowerCase()) {
+      case 'processing':
+        return 'badge rounded-pill bg-warning text-dark';
+      case 'confirmed':
+        return 'badge rounded-pill bg-info text-light';
+      case 'packed':
+        return 'badge rounded-pill bg-primary text-light';
+      case 'dispatched':
+        return 'badge rounded-pill bg-secondary text-light';
+      case 'partialcompleted':
+      case 'partial_completed':
+        return 'badge rounded-pill bg-warning text-dark';
+      case 'delivered':
+      case 'completed':
+        return 'badge rounded-pill bg-success text-light';
+      case 'failed':
+        return 'badge rounded-pill bg-danger text-light';
+      case 'pending':
+        return 'badge rounded-pill bg-warning text-dark';
+      default:
+        return 'badge rounded-pill bg-light text-dark';
+    }
+  }
+  
 
   confirmOrderAction(action:any, id:any){
     if(this.orderAction){
