@@ -356,10 +356,10 @@
                         </td>
                         <td>
                           <button *ngIf="order.paymentStatus === 'Failed'" class="btn btn-sm btn-outline-danger" (click)="sendNotification(order)">
-                            <i class="fa fa-paper-plane"></i>
+                            <i class="fa-regular fa-bell"></i>
                           </button>
-                          <button *ngIf="order.paymentStatus === 'Completed'" class="btn btn-sm btn-outline-success" (click)="processOrder(order)">
-                            <i class="fa fa-pen"></i>
+                          <button *ngIf="order.paymentStatus === 'Completed'" class="btn btn-sm btn-outline-success" (click)="viewOrder(order)">
+                            <i class="fa-solid fa-up-right-from-square"></i>
                           </button>
                           <button *ngIf="order.paymentStatus === 'Pending'" class="btn btn-sm btn-outline-primary" (click)="processOrder(order)">
                             <i class="fa fa-history"></i>

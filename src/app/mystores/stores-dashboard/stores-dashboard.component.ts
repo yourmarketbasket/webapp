@@ -22,6 +22,8 @@ import moment from 'moment';
 import { FormControl } from '@angular/forms';
 import * as XLSX from 'xlsx';
 import { jsPDF } from 'jspdf';
+import { ViewOrderComponent } from 'src/app/view-order/view-order.component';
+import { MdbModalRef, MdbModalService} from 'mdb-angular-ui-kit/modal';
 
 @Component({
     selector: 'app-stores-dashboard',
@@ -79,6 +81,7 @@ export class StoresDashboardComponent implements OnInit{
   selected = new FormControl(0);
   storeStatistics: any;
   orders: any[] = [];
+  modalRef: MdbModalRef<ViewOrderComponent> | null = null;
   OrdersDataSource = new MatTableDataSource<any>([]); 
   displayedColumns: string[] = ['select','Client', 'Contact',  'Pay Status', 'OrderStatus','TransactionID', 'Actions'];
 
@@ -92,7 +95,7 @@ export class StoresDashboardComponent implements OnInit{
     private domSanitizer: DomSanitizer,
     private dialog: MatDialog,
     private skb: MatSnackBar,
-    private modalService: NgbModal
+    private modalService: MdbModalService
   ) {
   }
 
@@ -306,9 +309,7 @@ export class StoresDashboardComponent implements OnInit{
   
   
   
-  openModal(content: any) {
-    this.modalService.open(content, { size: 'lg' }); // Open the modal with the specified content
-  }
+  
 
   applyFiltertoOrders(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
@@ -655,6 +656,17 @@ export class StoresDashboardComponent implements OnInit{
       }
     });
   }
+  // view orders
+viewOrder(orderData: any) {
+  this.modalRef = this.modalService.open(ViewOrderComponent, {
+    modalClass: 'modal-dialog-centered modal-xl rounded-1',
+    animation: false,
+    data: orderData
+  });
+
+}
+
+
 
   deleteProduct(id: any, name: any, model: any) {
     if (confirm(`Do you want to delete Product: ${name} Model: ${model}? Click OK to Proceed or CANCEL to Exit.`)) {

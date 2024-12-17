@@ -14,6 +14,7 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { NgbRatingModule } from '@ng-bootstrap/ng-bootstrap';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MdbModalModule } from 'mdb-angular-ui-kit/modal';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MdbSelectModule } from 'mdb-angular-ui-kit/select';
@@ -140,6 +141,7 @@ import { PieChartPipe } from './pie-chart.pipe';
 import { BarChartDirective } from './bar-chart.directive';
 import { PieChartDirective } from './pie-chart.directive';
 import { LineChartDirective } from './line-chart.directive';
+import { ViewOrderComponent } from './view-order/view-order.component';
 
 
 const icons = {
@@ -229,7 +231,8 @@ const icons = {
         PieChartPipe,
         BarChartDirective,
         PieChartDirective,
-        LineChartDirective
+        LineChartDirective,
+        ViewOrderComponent
     ],
     bootstrap: [AppComponent], 
     imports: [
@@ -259,6 +262,7 @@ const icons = {
         FormsModule,
         ReactiveFormsModule,
         MatDialogModule,
+        MdbModalModule,
         MdbRatingModule,
         MatFormFieldModule,
         MatInputModule,
