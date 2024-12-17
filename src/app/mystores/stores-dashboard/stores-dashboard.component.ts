@@ -517,11 +517,12 @@ export class StoresDashboardComponent implements OnInit{
       case 'packed':
         return 'badge rounded-pill bg-primary-transparent';
       case 'dispatched':
-        return 'badge rounded-pill bg-secondary-transparent';
+        return 'badge rounded-pill bg-blue-transparent';
       case 'partialcompleted':
       case 'partial_completed':
         return 'badge rounded-pill bg-warning-transparent';
       case 'delivered':
+        return 'badge rounded-pill bg-purple-transparent';
       case 'completed':
         return 'badge rounded-pill bg-success-transparent';
       case 'failed':
