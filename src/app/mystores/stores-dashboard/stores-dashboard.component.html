@@ -181,9 +181,9 @@
                     type="text" 
                     class="form-control rounded-1" 
                     placeholder="Type the name, brand, or any verifier" 
-                    (keyup)="applyFilter($event)" 
+                    (keyup)="applyFiltertoProducts($event)" 
                     #input />
-                  <button class="btn btn-outline-primary" (click)="applyFilter($event)">
+                  <button class="btn btn-outline-primary" (click)="applyFiltertoProducts($event)">
                     <i class="bi bi-search"></i>
                   </button>
                 </div>
@@ -200,16 +200,20 @@
                       <tr>
                         <th>Name</th>
                         <th>Brand</th>
-                        <th>CAT</th>
-                        <th>SUB</th>
+                        <th>Category</th>
+                        <th>Sub-category</th>
                         <th>Model</th>
                         <th>BP</th>
                         <th>SP</th>
+                        <!-- <th>Qtty</th>
+                        <th></th> -->
+
+
                         <!-- <th>QTTY</th> -->
                       </tr>
                     </thead>
                     <tbody>
-                      <tr *ngFor="let product of products">
+                      <tr *ngFor="let product of paginatedProducts">
                         <td>{{ product.name }}</td>
                         <td>{{ product.brand }}</td>
                         <td>{{ product.category }}</td>
@@ -231,6 +235,24 @@
                       </tr>
                     </tbody>
                   </table>
+                  <!-- Pagination -->
+                  <nav aria-label="Page navigation mt-1">
+                    <ul class="pagination">
+                      <li class="page-item" [class.disabled]="currentProductsPage === 1">
+                        <a class="page-link" (click)="changeProductsPage('prev')">
+                          <i class="bi bi-arrow-left"></i>
+                        </a>
+                      </li>
+                      <li class="page-item" *ngFor="let page of productPages" [class.active]="page === currentProductsPage">
+                        <a class="page-link" (click)="goToProductsPage(page)">{{ page }}</a>
+                      </li>
+                      <li class="page-item" [class.disabled]="currentProductsPage === productsTotalPages">
+                        <a class="page-link" (click)="changeProductsPage('next')">
+                          <i class="bi bi-arrow-right"></i>
+                        </a>
+                      </li>
+                    </ul>
+                  </nav>
                 </div>
               </div>
 
@@ -256,10 +278,16 @@
         <div class="col-5">
           <div class="row">
             <!-- No Orders Card -->
-            <div class="col-6 p-1" *ngIf="!orders || orders.length === 0">
-              <div class="card d-flex flex-column justify-content-center align-items-center" style="height: 100px;">
-                <div class="card-body text-center">
-                  No orders found
+            <div class="col-12 p-1" *ngIf="!orders || orders.length === 0">
+              <div class="card " style="height: 100px;">
+                <div class="card-body text-center d-flex flex-column justify-content-center align-items-center">
+                  <button *ngIf="!orders || orders.length!==0" class="btn btn-primary-light" type="button" disabled>
+                      <span class="spinner-border spinner-border-sm align-middle" role="status" aria-hidden="true"></span>
+                      Loading...
+                  </button>
+                  <span *ngIf="orders.length===0" >
+                    No Orders Found!
+                  </span>
                 </div>
               </div>
             </div>
@@ -294,7 +322,7 @@
                         <th>TID</th>
                         <th>Payment</th>
                         <th>Status</th>
-                        <th>Actions</th>
+                        <th></th>
                       </tr>
                     </thead>
                     <tbody>
@@ -302,11 +330,11 @@
                         <td>{{ order.buyername | capitalize }}</td>
                         <td>{{ order.transactionID }}</td>
                         <td>
-                          <span *ngIf="order.paymentStatus === 'Completed'" class="badge bg-success">{{ order.paymentStatus }}</span>
+                          <span *ngIf="order.paymentStatus === 'Completed'" class="badge bg-success-transparent">{{ order.paymentStatus }}</span>
                           <button *ngIf="order.paymentStatus === 'Pending'" class="btn btn-sm btn-outline-primary" (click)="refreshOrderStatus(order.transactionID)">
                             {{ order.paymentStatus }} <i class="bi bi-arrow-repeat"></i>
                           </button>
-                          <span *ngIf="order.paymentStatus === 'Failed'" class="badge bg-danger">{{ order.paymentStatus }}</span>
+                          <span *ngIf="order.paymentStatus === 'Failed'" class="badge bg-danger-transparent">{{ order.paymentStatus }}</span>
                         </td>
                         <td>
                           <span [ngClass]="'badge bg-' + getStatusClass(order.overallStatus)">
@@ -319,6 +347,9 @@
                           </button>
                           <button *ngIf="order.paymentStatus === 'Completed'" class="btn btn-sm btn-outline-success" (click)="processOrder(order)">
                             <i class="fa fa-pen"></i>
+                          </button>
+                          <button *ngIf="order.paymentStatus === 'Pending'" class="btn btn-sm btn-outline-primary" (click)="processOrder(order)">
+                            <i class="fa fa-history"></i>
                           </button>
                         </td>
                       </tr>

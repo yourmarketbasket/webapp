@@ -29,7 +29,7 @@ import { jsPDF } from 'jspdf';
     styleUrls: ['./stores-dashboard.component.css'],
     standalone: false
 })
-export class StoresDashboardComponent implements OnInit, AfterViewInit{
+export class StoresDashboardComponent implements OnInit{
   @ViewChild('componentoutlet', { read: ViewContainerRef }) componentOutlet!: ViewContainerRef;
   dataSource = new MatTableDataSource<any>([]);
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -39,13 +39,20 @@ export class StoresDashboardComponent implements OnInit, AfterViewInit{
   
   selection = new SelectionModel<Product>(true, []); // Your orders data
   filteredOrders: any[] = [];
-  paginatedOrders:any = [];  // Orders to display on the current page
+  filteredproducts:any[] = [];
+  paginatedOrders:any = [];
+  paginatedProducts:any = [];  // Orders to display on the current page
   currentPage = 1;
-  pageSize = 5;  // Number of orders per page
+  currentProductsPage = 1;
+  productsPageSize = 10;
+  productsTotalPages = 1;
+  pageSize = 10;  // Number of orders per page
   totalPages = 1;  // Total number of pages
   pages:any = []; 
+  productPages:any = []; 
   pageIndex = 0;
   totalOrders = 0;
+  totalProducts = 0;
   pageSizeOptions = [5, 10, 15];
   [key: string]: any;
   stores: Store[] = [];
@@ -104,11 +111,9 @@ export class StoresDashboardComponent implements OnInit, AfterViewInit{
       }
     });
 
-    this.ms.getPrdoucts(localStorage.getItem('storeId')).subscribe((response: any) => {
-      if (response.success) {
-        this.products = response.data;
-      }
-    });
+    this.getStoreProducts(localStorage.getItem('storeId'));
+
+    
 
     this.setActiveStoreID(localStorage.getItem('storeId'), this.activeStore)
     this.loadUserStoresStatics()
@@ -122,6 +127,8 @@ export class StoresDashboardComponent implements OnInit, AfterViewInit{
     
 
   }
+
+  
 
   sendNotification(order:any){
     const data = {userId: order.buyerid, message: `Transaction ID: [${order.transactionID}]. Could not process order due to a Failed Payment. `, type: "error"}
@@ -145,23 +152,7 @@ export class StoresDashboardComponent implements OnInit, AfterViewInit{
     })
   }
 
-  ngAfterViewInit(): void {
-    this.ms.getPrdoucts(localStorage.getItem('storeId')).subscribe((response: any) => {
-      if (response.data) {
-        this.dataSource = new MatTableDataSource(response.data);
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
-      }
-    });   
-    
-    this.ms.getStoreOrders(localStorage.getItem('storeId')).subscribe((response: any) => {
-      if (response.data) {
-        this.OrdersDataSource = new MatTableDataSource(response.data);
-        this.OrdersDataSource.paginator = this.paginator;
-        this.OrdersDataSource.sort = this.sort;
-      }
-    });  
-  }
+  
 
   loadUserStoresStatics() {
     this.ms.getStoresAndProductsByOwnerId(this.userId).subscribe((res: any) => {
@@ -198,6 +189,19 @@ export class StoresDashboardComponent implements OnInit, AfterViewInit{
 
   }
 
+  getStoreProducts(storeid:any){
+    this.ms.getPrdoucts(storeid).subscribe((response: any) => {
+      if (response.success) {
+        this.products = response.data;
+        this.filteredproducts = [...this.products]; // Start with unfiltered list
+        this.totalProducts = this.filteredproducts.length;
+        this.productsTotalPages = Math.ceil(this.totalProducts / this.productsPageSize);
+        this.updatePaginatedProducts();
+        this.generateProductsPageNumbers();
+      }
+    });
+  }
+
   getStoreOrders(storeid: any) {
     this.orders = [];
     this.ms.getStoreOrders(storeid).subscribe((res: any) => {
@@ -218,6 +222,13 @@ export class StoresDashboardComponent implements OnInit, AfterViewInit{
     this.pages = [];
     for (let i = 1; i <= this.totalPages; i++) {
       this.pages.push(i);
+    }
+  }
+
+  generateProductsPageNumbers() {
+    this.productPages = [];
+    for (let i = 1; i <= this.productsTotalPages; i++) {
+      this.productPages.push(i);
     }
   }
 
@@ -311,6 +322,26 @@ export class StoresDashboardComponent implements OnInit, AfterViewInit{
     this.totalPages = Math.ceil(this.totalOrders / this.pageSize);
     this.updatePaginatedOrders();
     this.generatePageNumbers();
+  }
+
+  applyFiltertoProducts(event:Event){
+    const filterValue = (event.target as HTMLInputElement).value.trim();
+    this.filteredproducts = this.products.filter((product:any) => {
+      const brand = product.brand.toLowerCase().includes(filterValue);
+      const category = product.category.toLowerCase().includes(filterValue);
+      const subcategory = product.subcategory.toLowerCase().includes(filterValue);
+      const model = product.model.toLowerCase().includes(filterValue);
+      const description = product.description.toLowerCase().includes(filterValue);
+      const name = product.name.toLowerCase().includes(filterValue);
+
+
+      return brand || category || subcategory || model|| description||name;
+    });
+    this.totalProducts = this.filteredproducts.length;
+    this.productsTotalPages = Math.ceil(this.totalProducts / this.productsPageSize);
+    this.updatePaginatedProducts();
+    this.generateProductsPageNumbers();
+
   }
 
   
@@ -460,9 +491,6 @@ export class StoresDashboardComponent implements OnInit, AfterViewInit{
       localStorage.setItem('activeStorename', storename);
       localStorage.setItem('storeId', storeid);
 
-      // Clear current data to show empty state while loading new data
-      this.dataSource.data = [];
-
       // Fetch new data for the selected store
       this.ms.getPrdoucts(storeid).subscribe((response: any) => {
         if (response.data) {
@@ -472,7 +500,7 @@ export class StoresDashboardComponent implements OnInit, AfterViewInit{
           this.products = [];
         }
       });
-
+      this.getStoreProducts(storeid)
       this.getStoreOrders(storeid);
 
       // Update map URL for the new store's location
@@ -483,25 +511,25 @@ export class StoresDashboardComponent implements OnInit, AfterViewInit{
   getStatusClass(status: string): string {
     switch (status.toLowerCase()) {
       case 'processing':
-        return 'badge rounded-pill bg-warning text-dark';
+        return 'badge rounded-pill bg-warning-transparent';
       case 'confirmed':
-        return 'badge rounded-pill bg-info text-light';
+        return 'badge rounded-pill bg-info-transparent';
       case 'packed':
-        return 'badge rounded-pill bg-primary text-light';
+        return 'badge rounded-pill bg-primary-transparent';
       case 'dispatched':
-        return 'badge rounded-pill bg-secondary text-light';
+        return 'badge rounded-pill bg-secondary-transparent';
       case 'partialcompleted':
       case 'partial_completed':
-        return 'badge rounded-pill bg-warning text-dark';
+        return 'badge rounded-pill bg-warning-transparent';
       case 'delivered':
       case 'completed':
-        return 'badge rounded-pill bg-success text-light';
+        return 'badge rounded-pill bg-success-transparent';
       case 'failed':
-        return 'badge rounded-pill bg-danger text-light';
+        return 'badge rounded-pill bg-danger-transparent';
       case 'pending':
-        return 'badge rounded-pill bg-warning text-dark';
+        return 'badge rounded-pill bg-warning-transparent';
       default:
-        return 'badge rounded-pill bg-light text-dark';
+        return 'badge rounded-pill bg-light-transparent';
     }
   }
   
@@ -526,15 +554,38 @@ export class StoresDashboardComponent implements OnInit, AfterViewInit{
     }
     this.updatePaginatedOrders();
   }
+
+  
+  changeProductsPage(direction:string){
+    if (direction === 'prev' && this.currentProductsPage > 1) {
+      this.currentProductsPage--;
+    } else if (direction === 'next' && this.currentProductsPage < this.productsTotalPages) {
+      this.currentProductsPage++;
+    }
+    this.updatePaginatedProducts();
+
+  }
   updatePaginatedOrders() {
     const startIndex = (this.currentPage - 1) * this.pageSize;
     const endIndex = startIndex + this.pageSize;
     this.paginatedOrders = this.filteredOrders.slice(startIndex, endIndex);
   }
 
+  updatePaginatedProducts(){
+    const startIndex = (this.currentProductsPage - 1) * this.productsPageSize;
+    const endIndex = startIndex + this.productsPageSize;
+    this.paginatedProducts = this.filteredproducts.slice(startIndex, endIndex);
+    
+  }
+
   goToPage(page: number) {
     this.currentPage = page;
     this.updatePaginatedOrders();
+  }
+
+  goToProductsPage(page: number) {
+    this.currentProductsPage = page;
+    this.updatePaginatedProducts();
   }
 
   onPageChange(page: number) {
