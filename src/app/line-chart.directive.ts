@@ -15,6 +15,8 @@ export class LineChartDirective implements OnChanges {
   @Input() hideAxisLabels: boolean = false; // Control axis labels visibility
   @Input() showLabels: boolean = true; // New input to control all labels visibility (data & axis labels)
 
+  private chartInstance: ApexCharts | null = null; // Variable to store the chart instance
+
   constructor(private el: ElementRef) {}
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -24,9 +26,16 @@ export class LineChartDirective implements OnChanges {
   }
 
   generateRandomColor(): string {
-    const randomColor = '#' + Math.floor(Math.random()*16777215).toString(16); // Generates a random hex color
+    let randomColor: string;
+  
+    // Keep generating a random color until it is not white or black
+    do {
+      randomColor = '#' + Math.floor(Math.random() * 16777215).toString(16); // Generates a random hex color
+    } while (randomColor === '#ffffff' || randomColor === '#000000'); // Check for white or black
+  
     return randomColor;
   }
+  
 
   renderChart(): void {
     // If no colors are provided, generate random colors for each series
@@ -107,14 +116,13 @@ export class LineChartDirective implements OnChanges {
       }
     };
 
-    // Destroy existing chart (if any) before rendering a new one
-    const existingChart = ApexCharts.getChartByID(this.chartID);
-    if (existingChart) {
-      existingChart.destroy();
+    // If an existing chart instance exists, destroy it
+    if (this.chartInstance) {
+      this.chartInstance.destroy();
     }
 
-    // Render the chart
-    const chart = new ApexCharts(this.el.nativeElement, options);
-    chart.render();
+    // Create a new chart instance and store it
+    this.chartInstance = new ApexCharts(this.el.nativeElement, options);
+    this.chartInstance.render();
   }
 }
