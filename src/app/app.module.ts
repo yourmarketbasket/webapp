@@ -120,6 +120,7 @@ import { NgbOffcanvasModule } from '@ng-bootstrap/ng-bootstrap';
 import { MdbCarouselModule } from 'mdb-angular-ui-kit/carousel';
 import { MdbRatingModule } from 'mdb-angular-ui-kit/rating';
 import { NouisliderModule } from 'ng2-nouislider';
+import { MdbDatepickerModule } from 'mdb-angular-ui-kit/datepicker';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 
  
@@ -142,6 +143,20 @@ import { BarChartDirective } from './bar-chart.directive';
 import { PieChartDirective } from './pie-chart.directive';
 import { LineChartDirective } from './line-chart.directive';
 import { ViewOrderComponent } from './view-order/view-order.component';
+import { AddProviderComponent } from './delivery/add-provider/add-provider.component';
+import { ProvidersComponent } from './delivery/providers/providers.component';
+import { FilePondModule, registerPlugin } from 'ngx-filepond';
+import { MdbValidationModule } from 'mdb-angular-ui-kit/validation';
+// import * as FilePond from 'ngx-filepond';
+// import 'filepond-plugin-image-preview';
+// import and register filepond file type validation plugin
+import * as FilePond from 'filepond';
+import FilePondPluginFileEncode from 'filepond-plugin-file-encode';
+import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
+import FilePondPluginImageTransform from 'filepond-plugin-image-transform';
+import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
+import FilePondPluginImageCrop from 'filepond-plugin-image-crop';
+FilePond.registerPlugin(FilePondPluginFileValidateType, FilePondPluginImageTransform, FilePondPluginImagePreview, FilePondPluginImageCrop, FilePondPluginFileEncode);
 
 
 const icons = {
@@ -232,7 +247,9 @@ const icons = {
         BarChartDirective,
         PieChartDirective,
         LineChartDirective,
-        ViewOrderComponent
+        ViewOrderComponent,
+        AddProviderComponent,
+        ProvidersComponent
     ],
     bootstrap: [AppComponent], 
     imports: [
@@ -255,8 +272,10 @@ const icons = {
         MatListModule,
         BrowserModule,
         MdbDropdownModule, 
+        MdbDatepickerModule,
         MdbRippleModule,
         MatExpansionModule,
+        MdbValidationModule,
         AppRoutingModule,
         BrowserAnimationsModule,
         FormsModule,
@@ -288,7 +307,8 @@ const icons = {
         NgbOffcanvasModule,
         NgbRatingModule,
         NouisliderModule,
-        MdbSelectModule
+        MdbSelectModule,
+        FilePondModule
       ], 
         providers: [
         {

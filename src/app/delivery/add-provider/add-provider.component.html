@@ -1,0 +1,516 @@
+<div class="container">
+    <div class="p-5">
+      <div class="">
+        <ul ngbNav #nav13="ngbNav" [activeId]="1" class="nav nav-tabs justify-content-center mb-5 tab-style-3" id="myTab2" role="tablist">
+          <li [ngbNavItem]="1" [disabled]="!isTabAccessible(1)" class="nav-item me-0" role="presentation">
+            <button ngbNavLink class="nav-link home py-1" id="personalDetails-tab" type="button" role="tab">Personal Details</button>
+          </li>
+          <li [ngbNavItem]="2" [disabled]="!isTabAccessible(2)" class="nav-item me-0" role="presentation">
+            <button ngbNavLink class="nav-link py-1" id="vehicleDetails-tab" type="button" role="tab">Vehicle Details</button>
+          </li>
+          <li [ngbNavItem]="3" [disabled]="!isTabAccessible(3)" class="nav-item me-0" role="presentation">
+            <button ngbNavLink class="nav-link py-1" id="licenseDetails-tab" type="button" role="tab">License Details</button>
+          </li>
+          <li [ngbNavItem]="4" [disabled]="!isTabAccessible(4)" class="nav-item me-0" role="presentation">
+            <button ngbNavLink class="nav-link py-1" id="emergencyContact-tab" type="button" role="tab">Emergency Contact</button>
+          </li>
+          <li [ngbNavItem]="5" [disabled]="!isTabAccessible(5)" class="nav-item me-0" role="presentation">
+            <button  ngbNavLink class="nav-link py-1" id="employmentDetails-tab" type="button" role="tab">Confirm & Submit</button>
+          </li>
+        </ul>
+  
+        <div ngbNavContent class="h-100">
+          <!-- Personal Details Tab -->
+          <div *ngIf="nav13.activeId === 1">
+            <form [formGroup]="forms[1]">
+              <!-- Driver ID -->
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <mdb-form-control>
+                    <input
+                      mdbInput
+                      type="text"
+                      id="driverID"
+                      formControlName="driverID"
+                      class="form-control"
+                      [class.is-invalid]="forms[1].get('driverID')?.touched && forms[1].get('driverID')?.invalid"
+                      [class.is-valid]="forms[1].get('driverID')?.touched && forms[1].get('driverID')?.valid"
+                    />
+                    <label mdbLabel for="driverID" class="form-label">Driver ID</label>
+                  </mdb-form-control>
+                  <!-- Error message below the field -->
+                  <div *ngIf="forms[1].get('driverID')?.touched && forms[1].get('driverID')?.invalid">
+                    <small class="text-danger">Driver ID is required.</small>
+                  </div>
+                </div>
+          
+                <!-- Name -->
+                <div class="col-md-6">
+                  <mdb-form-control>
+                    <input
+                      mdbInput
+                      type="text"
+                      id="name"
+                      formControlName="name"
+                      class="form-control"
+                      [class.is-invalid]="forms[1].get('name')?.touched && forms[1].get('name')?.invalid"
+                      [class.is-valid]="forms[1].get('name')?.touched && forms[1].get('name')?.valid"
+                    />
+                    <label mdbLabel for="name" class="form-label">Name</label>
+                  </mdb-form-control>
+                  <!-- Error message below the field -->
+                  <div *ngIf="forms[1].get('name')?.touched && forms[1].get('name')?.invalid">
+                    <small class="text-danger">Name is required.</small>
+                  </div>
+                </div>
+              </div>
+          
+              <!-- Date of Birth -->
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <mdb-form-control>
+                    <input
+                      mdbInput
+                      [mdbDatepicker]="datepicker"
+                      type="text"
+                      class="form-control"
+                      id="dateOfBirth"
+                      formControlName="dateOfBirth"
+                      (click)="datepicker.open()"
+                      [class.is-invalid]="forms[1].get('dateOfBirth')?.touched && forms[1].get('dateOfBirth')?.invalid"
+                      [class.is-valid]="forms[1].get('dateOfBirth')?.touched && forms[1].get('dateOfBirth')?.valid"
+                    />
+                    <label mdbLabel for="dateOfBirth" class="form-label">Date of Birth</label>
+                    <mdb-datepicker-toggle [mdbDatepicker]="datepicker"></mdb-datepicker-toggle>
+                    <mdb-datepicker [filter]="filterFunction" #datepicker></mdb-datepicker>
+                  </mdb-form-control>
+                  <!-- Error message below the field -->
+                  <div *ngIf="forms[1].get('dateOfBirth')?.touched && forms[1].get('dateOfBirth')?.invalid">
+                    <small class="text-danger">Date of Birth is required.</small>
+                  </div>
+                </div>
+          
+                <!-- Gender -->
+                <div class="col-md-6">
+                  <mdb-form-control>
+                    <mdb-select
+                      id="gender"
+                      formControlName="gender"
+                      [class.is-invalid]="forms[1].get('gender')?.touched && forms[1].get('gender')?.invalid"
+                      [class.is-valid]="forms[1].get('gender')?.touched && forms[1].get('gender')?.valid"
+                    >
+                      <mdb-option value="male">Male</mdb-option>
+                      <mdb-option value="female">Female</mdb-option>
+                      <mdb-option value="other">Other</mdb-option>
+                    </mdb-select>
+                    <label mdbLabel for="gender" class="form-label">Gender</label>
+                  </mdb-form-control>
+                  <!-- Error message below the field -->
+                  <div *ngIf="forms[1].get('gender')?.touched && forms[1].get('gender')?.invalid">
+                    <small class="text-danger">Gender is required.</small>
+                  </div>
+                </div>
+              </div>
+          
+              <!-- Contact Number -->
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <mdb-form-control>
+                    <input
+                      mdbInput
+                      type="text"
+                      id="contactNumber"
+                      formControlName="contactNumber"
+                      class="form-control"
+                      [class.is-invalid]="forms[1].get('contactNumber')?.touched && forms[1].get('contactNumber')?.invalid"
+                      [class.is-valid]="forms[1].get('contactNumber')?.touched && forms[1].get('contactNumber')?.valid"
+                    />
+                    <label mdbLabel for="contactNumber" class="form-label">Contact Number</label>
+                  </mdb-form-control>
+                  <!-- Error message below the field -->
+                  <div *ngIf="forms[1].get('contactNumber')?.touched && forms[1].get('contactNumber')?.invalid">
+                    <small class="text-danger">Valid Contact Number is required.</small>
+                  </div>
+                </div>
+          
+                <!-- Email -->
+                <div class="col-md-6">
+                  <mdb-form-control>
+                    <input
+                      mdbInput
+                      type="email"
+                      id="email"
+                      formControlName="email"
+                      class="form-control"
+                      [class.is-invalid]="forms[1].get('email')?.touched && forms[1].get('email')?.invalid"
+                      [class.is-valid]="forms[1].get('email')?.touched && forms[1].get('email')?.valid"
+                    />
+                    <label mdbLabel for="email" class="form-label">Email</label>
+                  </mdb-form-control>
+                  <!-- Error message below the field -->
+                  <div *ngIf="forms[1].get('email')?.touched && forms[1].get('email')?.invalid">
+                    <small class="text-danger">Valid Email is required.</small>
+                  </div>
+                </div>
+              </div>
+          
+              <!-- Driver Mugshot -->
+              <div class="row">
+                <div class="card custom-card">
+                  <div class="card-header">
+                    Driver Mugshot
+                  </div>
+                  <div class="card-body">
+                    <file-pond
+                      #myPond
+                      [options]="pondOptions"
+                      [files]="pondFiles"
+                      (oninit)="pondHandleInit()"
+                      (onaddfile)="pondHandleAddFile($event, 'Mugshot')"
+                      (onactivatefile)="pondHandleActivateFile($event)"
+                    >
+                    </file-pond>
+                  </div>
+                </div>
+              </div>
+          
+              <button (click)="goToNextTab()" class="btn btn-outline-success"><i class="fa fa-save"></i> Save</button>
+            </form>
+          </div>
+          
+          
+          <!-- Vehicle Details Tab -->
+          <div *ngIf="nav13.activeId === 2">
+            <form [formGroup]="forms[2]">
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <mdb-form-control>
+                    <input
+                      mdbInput
+                      type="text"
+                      id="registrationNumber"
+                      formControlName="registrationNumber"
+                      class="form-control"
+                      [class.is-invalid]="forms[2].get('registrationNumber')?.touched && forms[2].get('registrationNumber')?.invalid"
+                      [class.is-valid]="forms[2].get('registrationNumber')?.touched && forms[2].get('registrationNumber')?.valid"
+                    />
+                    <label mdbLabel for="registrationNumber" class="form-label">Registration Number</label>
+                  </mdb-form-control>
+                  <!-- Error message below the field -->
+                  <div *ngIf="forms[2].get('registrationNumber')?.touched && forms[2].get('registrationNumber')?.invalid">
+                    <small class="text-danger">Registration Number is required.</small>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <mdb-form-control>
+                    <input
+                      mdbInput
+                      type="text"
+                      id="model"
+                      formControlName="model"
+                      class="form-control"
+                      [class.is-invalid]="forms[2].get('model')?.touched && forms[2].get('model')?.invalid"
+                      [class.is-valid]="forms[2].get('model')?.touched && forms[2].get('model')?.valid"
+                    />
+                    <label mdbLabel for="model" class="form-label">Model</label>
+                  </mdb-form-control>
+                  <!-- Error message below the field -->
+                  <div *ngIf="forms[2].get('model')?.touched && forms[2].get('model')?.invalid">
+                    <small class="text-danger">Model is required.</small>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <mdb-form-control>
+                    <mdb-select
+                      id="type"
+                      formControlName="type"
+                      [class.is-invalid]="forms[2].get('type')?.touched && forms[2].get('type')?.invalid"
+                      [class.is-valid]="forms[2].get('type')?.touched && forms[2].get('type')?.valid"
+                    >
+                      <mdb-option value="bike">Bike</mdb-option>
+                      <mdb-option value="car">Car</mdb-option>
+                      <mdb-option value="van">Van</mdb-option>
+                      <mdb-option value="truck">Truck</mdb-option>
+                    </mdb-select>
+                    <label mdbLabel for="type" class="form-label">Vehicle Type</label>
+                  </mdb-form-control>
+                  <!-- Error message below the field -->
+                  <div *ngIf="forms[2].get('type')?.touched && forms[2].get('type')?.invalid">
+                    <small class="text-danger">Vehicle Type is required.</small>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <mdb-form-control>
+                    <input
+                      mdbInput
+                      type="text"
+                      id="color"
+                      formControlName="color"
+                      class="form-control"
+                      [class.is-invalid]="forms[2].get('color')?.touched && forms[2].get('color')?.invalid"
+                      [class.is-valid]="forms[2].get('color')?.touched && forms[2].get('color')?.valid"
+                    />
+                    <label mdbLabel for="color" class="form-label">Color</label>
+                  </mdb-form-control>
+                  <!-- Error message below the field -->
+                  <div *ngIf="forms[2].get('color')?.touched && forms[2].get('color')?.invalid">
+                    <small class="text-danger">Color is required.</small>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <mdb-form-control>
+                    <input
+                      mdbInput
+                      type="text"
+                      id="insuranceNumber"
+                      formControlName="insuranceNumber"
+                      class="form-control"
+                      [class.is-invalid]="forms[2].get('insuranceNumber')?.touched && forms[2].get('insuranceNumber')?.invalid"
+                      [class.is-valid]="forms[2].get('insuranceNumber')?.touched && forms[2].get('insuranceNumber')?.valid"
+                    />
+                    <label mdbLabel for="insuranceNumber" class="form-label">Insurance Number</label>
+                  </mdb-form-control>
+                  <!-- Error message below the field -->
+                  <div *ngIf="forms[2].get('insuranceNumber')?.touched && forms[2].get('insuranceNumber')?.invalid">
+                    <small class="text-danger">Insurance Number is required.</small>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <mdb-form-control>
+                    <input
+                      mdbInput
+                      [mdbDatepicker]="insuranceExpiryDateDatePicker"
+                      type="text"
+                      formControlName="insuranceExpiryDate"
+                      class="form-control"
+                      [class.is-invalid]="forms[3].get('insuranceExpiryDate')?.touched && forms[3].get('insuranceExpiryDate')?.invalid"
+                      [class.is-valid]="forms[3].get('insuranceExpiryDate')?.touched && forms[3].get('insuranceExpiryDate')?.valid"
+                    />
+                    <label mdbLabel for="insuranceExpiryDate" class="form-label">Issue Date</label>
+                    <mdb-datepicker-toggle [mdbDatepicker]="insuranceExpiryDateDatePicker"></mdb-datepicker-toggle>
+                    <mdb-datepicker #insuranceExpiryDateDatePicker></mdb-datepicker>
+                  </mdb-form-control>
+                  <!-- Error message below the field -->
+                  <div *ngIf="forms[2].get('insuranceExpiryDate')?.touched && forms[2].get('insuranceExpiryDate')?.invalid">
+                    <small class="text-danger">Insurance Expiry Date is required.</small>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Insurance Documents -->
+              <div class="row mb-3">
+                <div class="card custom-card">
+                  <div class="card-header">
+                    Insurance Documents
+                  </div>
+                  <div class="card-body">
+                    <file-pond
+                      #myPond
+                      [options]="pondOptions"
+                      [files]="pondFiles"
+                      (oninit)="pondHandleInit()"
+                      (onaddfile)="pondHandleAddFile($event, 'Insurance')"
+                      (onactivatefile)="pondHandleActivateFile($event)"
+                    >
+                    </file-pond>
+                  </div>
+                </div>
+              </div>
+
+              <div class="d-flex flex-row justify-content-between">
+                <button (click)="goToNextTab()" class="btn btn-outline-success"><i class="fa fa-save"></i> Save</button>
+                <button (click)="goToPreviousTab()" class="btn btn-outline-success"><i class="fa fa-arrow-left"></i>  Back to Personal details</button>
+              </div>
+
+
+            </form>
+          </div>
+
+  
+          <!-- License Details Tab -->
+          <div *ngIf="nav13.activeId === 3">
+            <form [formGroup]="forms[3]">
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <mdb-form-control>
+                    <input
+                      mdbInput
+                      type="text"
+                      id="licenseNumber"
+                      formControlName="licenseNumber"
+                      class="form-control"
+                      [class.is-invalid]="forms[3].get('licenseNumber')?.touched && forms[3].get('licenseNumber')?.invalid"
+                      [class.is-valid]="forms[3].get('licenseNumber')?.touched && forms[3].get('licenseNumber')?.valid"
+                    />
+                    <label mdbLabel class="form-label" for="licenseNumber">License Number</label>
+                  </mdb-form-control>
+                  <!-- Error message below the field -->
+                  <div *ngIf="forms[3].get('licenseNumber')?.touched && forms[3].get('licenseNumber')?.invalid">
+                    <small class="text-danger">License Number is required.</small>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <mdb-form-control>
+                    <input
+                      mdbInput
+                      [mdbDatepicker]="licenseDatepicker"
+                      type="text"
+                      formControlName="licenseExpiry"
+                      class="form-control"
+                      [class.is-invalid]="forms[3].get('licenseExpiry')?.touched && forms[3].get('licenseExpiry')?.invalid"
+                      [class.is-valid]="forms[3].get('licenseExpiry')?.touched && forms[3].get('licenseExpiry')?.valid"
+                    />
+                    <label mdbLabel for="licenseExpiry" class="form-label">License Expiry Date</label>
+                    <mdb-datepicker-toggle [mdbDatepicker]="licenseDatepicker"></mdb-datepicker-toggle>
+                    <mdb-datepicker #licenseDatepicker></mdb-datepicker>
+                  </mdb-form-control>
+                  <!-- Error message below the field -->
+                  <div *ngIf="forms[3].get('licenseExpiry')?.touched && forms[3].get('licenseExpiry')?.invalid">
+                    <small class="text-danger">License Expiry Date is required.</small>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <mdb-form-control>
+                    <input
+                      mdbInput
+                      type="text"
+                      id="issuingCountry"
+                      formControlName="issuingCountry"
+                      class="form-control"
+                      [class.is-invalid]="forms[3].get('issuingCountry')?.touched && forms[3].get('issuingCountry')?.invalid"
+                      [class.is-valid]="forms[3].get('issuingCountry')?.touched && forms[3].get('issuingCountry')?.valid"
+                    />
+                    <label mdbLabel class="form-label" for="issuingCountry">Issuing Country</label>
+                  </mdb-form-control>
+                  <!-- Error message below the field -->
+                  <div *ngIf="forms[3].get('issuingCountry')?.touched && forms[3].get('issuingCountry')?.invalid">
+                    <small class="text-danger">Issuing Country is required.</small>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <mdb-form-control>
+                    <input
+                      mdbInput
+                      [mdbDatepicker]="issueDateDatePicker"
+                      type="text"
+                      formControlName="issueDate"
+                      class="form-control"
+                      [class.is-invalid]="forms[3].get('issueDate')?.touched && forms[3].get('issueDate')?.invalid"
+                      [class.is-valid]="forms[3].get('issueDate')?.touched && forms[3].get('issueDate')?.valid"
+                    />
+                    <label mdbLabel for="issueDate" class="form-label">Issue Date</label>
+                    <mdb-datepicker-toggle [mdbDatepicker]="issueDateDatePicker"></mdb-datepicker-toggle>
+                    <mdb-datepicker #issueDateDatePicker></mdb-datepicker>
+                  </mdb-form-control>
+                  <!-- Error message below the field -->
+                  <div *ngIf="forms[3].get('issueDate')?.touched && forms[3].get('issueDate')?.invalid">
+                    <small class="text-danger">Issue Date is required.</small>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <div class="card custom-card">
+                  <div class="card-header">
+                    Upload License
+                  </div>
+                  <div class="card-body">
+                    <file-pond
+                      #myPond
+                      [options]="pondOptions"
+                      [files]="pondFiles"
+                      (oninit)="pondHandleInit()"
+                      (onaddfile)="pondHandleAddFile($event, 'License')"
+                      (onactivatefile)="pondHandleActivateFile($event)"
+                      (onprocessfile)="pondProcessFile($event)"
+                      
+                    >
+                    </file-pond> 
+                  </div>
+                </div>
+              </div>
+              <div class="d-flex flex-row justify-content-between">
+                <button (click)="goToNextTab()" class="btn btn-outline-success"><i class="fa fa-save"></i> Save</button>
+                <button (click)="goToPreviousTab()" class="btn btn-outline-success"><i class="fa fa-arrow-left"></i>  Back to Vehicle details</button>
+              </div>
+            </form>
+          </div>
+
+  
+          <!-- Emergency Contact Tab -->
+          <div *ngIf="nav13.activeId === 4">
+            <form [formGroup]="forms[4]">
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <mdb-form-control>
+                    <input
+                      mdbInput
+                      type="text"
+                      id="emergencyName"
+                      formControlName="emergencyName"
+                      class="form-control"
+                      [class.is-invalid]="forms[4].get('emergencyName')?.touched && forms[4].get('emergencyName')?.invalid"
+                      [class.is-valid]="forms[4].get('emergencyName')?.touched && forms[4].get('emergencyName')?.valid"
+                    />
+                    <label mdbLabel class="form-label" for="emergencyName">Emergency Contact Name</label>
+                  </mdb-form-control>
+                  <!-- Error message below the field -->
+                  <div *ngIf="forms[4].get('emergencyName')?.touched && forms[4].get('emergencyName')?.invalid">
+                    <small class="text-danger">Emergency Contact Name is required.</small>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <mdb-form-control>
+                    <input
+                      mdbInput
+                      type="text"
+                      id="emergencyContactNumber"
+                      formControlName="emergencyContactNumber"
+                      class="form-control"
+                      [class.is-invalid]="forms[4].get('emergencyContactNumber')?.touched && forms[4].get('emergencyContactNumber')?.invalid"
+                      [class.is-valid]="forms[4].get('emergencyContactNumber')?.touched && forms[4].get('emergencyContactNumber')?.valid"
+                    />
+                    <label mdbLabel class="form-label" for="emergencyContactNumber">Emergency Contact Number</label>
+                  </mdb-form-control>
+                  <!-- Error message below the field -->
+                  <div *ngIf="forms[4].get('emergencyContactNumber')?.touched && forms[4].get('emergencyContactNumber')?.invalid">
+                    <small class="text-danger">Emergency Contact Number is required.</small>
+                  </div>
+                </div>
+              </div>
+              <div class="d-flex flex-row justify-content-between">
+                <button (click)="goToNextTab()" class="btn btn-outline-success"><i class="fa fa-save"></i> Save</button>
+                <button (click)="goToPreviousTab()" class="btn btn-outline-success"><i class="fa fa-arrow-left"></i> Back to License details</button>
+              </div>
+            </form>
+          </div>
+
+  
+          <!-- confirm Details Tab -->
+          <div *ngIf="nav13.activeId === 5">
+            <div class="col-md-12 col-xl-12 col-sm-12 d-flex flex-column justify-content-center align-items-center" style="height:20vh;">
+              <span class="text-danger">Please go through all the details and confirm that everything is okay.</span>
+              <div class="d-flex flex-column justify-content-start">
+                <mat-checkbox [(ngModel)]="confirm" [required]="true">Confirm All Details are Accurate</mat-checkbox>
+                <mat-checkbox [(ngModel)]="tnc" [required]="true">Accept Terms and Conditions</mat-checkbox>
+              </div>
+ 
+              
+
+              <button (click)="uploadAllFiles()" class="btn btn-outline-primary">submit</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

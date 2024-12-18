@@ -1,12 +1,3 @@
-<div class="modal-header">
-    <span class="fw-semibold" id="exampleModalLabel">{{ title }}</span>
-    <button
-      type="button"
-      class="btn-close"
-      aria-label="Close"
-      (click)="modalRef.close()"
-    ></button>
-  </div>
   <div class="modal-body">
     <div class="container-fluid">
         <div class="col-md-12 col-xl-12">
@@ -14,11 +5,12 @@
              <div class="row">
                 <div class="col-12">
                     <div class="card-body d-flex flex-column align-items-start">
-                        <span class="fw-semibold">Order Details</span>
-                        <div class="d-flex w-100 justify-content-between border rounded-1 p-3 nicard">
+                        <span class="fw-semibold">Order Details - [{{order.transactionID}}]</span>
+                        <div class="d-flex w-100 justify-content-between border rounded-1 p-3 m-3 nicard">
                             <div class="d-flex flex-column">
                                 <small class="muted-text">Buyer: {{order.buyername}}</small>
                                 <small class="muted-text">Contact: {{order.buyer[0].phone}}</small>
+                                <small class="muted-text">Current Status: <span class="bg-success-transparent fs-10 p-1 rounded-pill">{{order.overallStatus}}</span></small>
                                 <small class="muted-text">Placed: {{order.date | nireadabledate}} <small class="bg-success-transparent fs-10 p-1 rounded-pill">({{order.date|fromnow}})</small> </small>
                             </div>
                             <div class="table-responsive">
@@ -57,134 +49,112 @@
                             </div>
                         </div>
                         <span class="fw-semibold">Process Order</span>
-                        <div class="row">
-                            <div class="col-md-2">
-                                <div ngbNav #nav17="ngbNav" [activeId]="1" class="nav nav-pills flex-row tab-style-7 w-100" id="v-pills-tab" role="tablist">
-                                                           
-                                    <ng-container [ngbNavItem]="1">
-                                        <button ngbNavLink class="nav-link text-start p-2 border w-100" id="packing-tab" type="button" role="tab" aria-controls="packing" [attr.aria-selected]="nav17.activeId === 1 ? 'true' : 'false'">
-                                            <small><i class="ri-shopping-bag-line me-1 align-middle"></i>Step: Pack</small>
+                        <div class="card custom-card">
+                            <div class="card-header">
+                                <div class="card-title">
+                                    Order Processing Steps
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <ul ngbNav #navSteps="ngbNav" [activeId]="1" class="nav nav-tabs justify-content-center mb-5 tab-style-3" id="orderStepsTabs" role="tablist">
+                                    <!-- Step 1: Pack -->
+                                    <li [ngbNavItem]="1" class="nav-item me-0" role="presentation">
+                                        <button ngbNavLink class="nav-link py-1" id="pack-tab" type="button" role="tab" aria-controls="pack-pane" aria-selected="true">
+                                            Pack
                                         </button>
                                         <ng-template ngbNavContent>
-                                            <div id="packing" role="tabpanel" tabindex="0" class="w-100">
-                                                <div class="container-fluid vh-80">
-                                                    <span class="fw-semibold">Comprehensive Packing Checklist</span>
-                                                    <form>
-                                                        <mat-checkbox color="primary">Check the quantity of items matches the order.</mat-checkbox>
-                                                        <br />
-                                                        <mat-checkbox color="primary">Verify the model of the items.</mat-checkbox>
-                                                        <br />
-                                                        <mat-checkbox color="primary">Inspect items for any visible damage or defects.</mat-checkbox>
-                                                        <br />
-                                                        <mat-checkbox color="primary">Check the specific order specifications (e.g., size, color, features).</mat-checkbox>
-                                                        <br />
-                                                        <mat-checkbox color="primary">Ensure the correct packaging materials are used (e.g., bubble wrap, foam, cardboard).</mat-checkbox>
-                                                        <br />
-                                                        <mat-checkbox color="primary">Ensure fragile items are packed securely with adequate cushioning.</mat-checkbox>
-                                                        <br />
-                                                        <mat-checkbox color="primary">Confirm that all items in the order are included.</mat-checkbox>
-                                                        <br />
-                                                        <mat-checkbox color="primary">Seal the package securely with durable tape.</mat-checkbox>
-                                                        <br />
-                                                        <mat-checkbox color="primary">Check that the package dimensions comply with courier requirements.</mat-checkbox>
-                                                        <br />
-                                                        <mat-checkbox color="primary">Verify the weight of the package matches the order details.</mat-checkbox>
-                                                        <br />
-                                                        <mat-checkbox color="primary">Ensure hazardous or restricted items comply with shipping regulations.</mat-checkbox>
-                                                        <br />
-                                                        <mat-checkbox color="primary">Take photographs of the packed items for record-keeping.</mat-checkbox>
-                                                        <br />
-                                                        <mat-checkbox color="primary">Cross-check the tracking number and confirm it matches the order.</mat-checkbox>
-                                                        <mat-checkbox color="primary">Entire checklist covered</mat-checkbox>
-                                                    </form>
-                                                    <button class="btn btn-outline-success btn-sm">Mark as Packed</button>
-                                                </div>
+                                            <div class="p-3 border br-7 text-muted" id="pack-pane" role="tabpanel" aria-labelledby="pack-tab" tabindex="0">
+                                                <h6>Comprehensive Packing Checklist</h6>
+                                                <form>
+                                                    <mat-checkbox color="primary">Check the quantity of items matches the order.</mat-checkbox><br />
+                                                    <mat-checkbox color="primary">Verify the model of the items.</mat-checkbox><br />
+                                                    <mat-checkbox color="primary">Inspect items for any visible damage or defects.</mat-checkbox><br />
+                                                    <mat-checkbox color="primary">Check the specific order specifications (e.g., size, color, features).</mat-checkbox><br />
+                                                    <mat-checkbox color="primary">Ensure the correct packaging materials are used (e.g., bubble wrap, foam, cardboard).</mat-checkbox><br />
+                                                    <mat-checkbox color="primary">Ensure fragile items are packed securely with adequate cushioning.</mat-checkbox><br />
+                                                    <mat-checkbox color="primary">Confirm that all items in the order are included.</mat-checkbox><br />
+                                                    <mat-checkbox color="primary">Seal the package securely with durable tape.</mat-checkbox><br />
+                                                    <mat-checkbox color="primary">Check that the package dimensions comply with courier requirements.</mat-checkbox><br />
+                                                    <mat-checkbox color="primary">Verify the weight of the package matches the order details.</mat-checkbox><br />
+                                                    <mat-checkbox color="primary">Ensure hazardous or restricted items comply with shipping regulations.</mat-checkbox><br />
+                                                    <mat-checkbox color="primary">Take photographs of the packed items for record-keeping.</mat-checkbox><br />
+                                                    <mat-checkbox color="primary">Cross-check the tracking number and confirm it matches the order.</mat-checkbox><br />
+                                                    <mat-checkbox color="primary">Entire checklist covered</mat-checkbox>
+                                                </form>
+                                                <button class="btn btn-outline-success btn-sm">Mark as Packed</button>
                                             </div>
                                         </ng-template>
-                                    </ng-container>
-                        
-                                    <ng-container [ngbNavItem]="2">
-                                        <button ngbNavLink class="nav-link text-start p-2 border w-100" id="confirm-tab" type="button" role="tab" aria-controls="confirm" [attr.aria-selected]="nav17.activeId === 2 ? 'true' : 'false'">
-                                            <small><i class="ri-checkbox-circle-line me-1 align-middle"></i>Step: Confirm</small>
+                                    </li>
+                                    <!-- Step 2: Confirm -->
+                                    <li [ngbNavItem]="2" class="nav-item me-0" role="presentation">
+                                        <button ngbNavLink class="nav-link py-1" id="confirm-tab" type="button" role="tab" aria-controls="confirm-pane" aria-selected="false">
+                                            Confirm
                                         </button>
                                         <ng-template ngbNavContent>
-                                            <div id="confirm" role="tabpanel" tabindex="0">
-                                                <div class="container">
-                                                    <span class="fw-semibold">Order Confirmation Checklist</span>
-                                                    <form>
-                                                        <mat-checkbox color="primary">Verify the customer’s name and contact details are correct.</mat-checkbox>
-                                                        <br />
-                                                        <mat-checkbox color="primary">Confirm the order items match the customer’s request.</mat-checkbox>
-                                                        <br />
-                                                        <mat-checkbox color="primary">Double-check the quantity of each item.</mat-checkbox>
-                                                        <br />
-                                                        <mat-checkbox color="primary">Verify the model matches the order.</mat-checkbox>
-                                                        <br />
-                                                        <mat-checkbox color="primary">Review the pricing to ensure accuracy (e.g., discounts, taxes).</mat-checkbox>
-                                                        <br />
-                                                        <mat-checkbox color="primary">Ensure the payment method has been successfully processed.</mat-checkbox>
-                                                        <br />
-                                                        <mat-checkbox color="primary">Review the order confirmation details for errors before finalizing.</mat-checkbox>
-                                                        <br />
-                                                        <mat-checkbox color="primary">Update the order status in the system to "Confirmed."</mat-checkbox>
-                                                    </form>
-                                                </div>
+                                            <div class="p-3 border br-7 text-muted" id="confirm-pane" role="tabpanel" aria-labelledby="confirm-tab" tabindex="0">
+                                                <h6>Order Confirmation Checklist</h6>
+                                                <form>
+                                                    <mat-checkbox color="primary">Verify the customer’s name and contact details are correct.</mat-checkbox><br />
+                                                    <mat-checkbox color="primary">Confirm the order items match the customer’s request.</mat-checkbox><br />
+                                                    <mat-checkbox color="primary">Double-check the quantity of each item.</mat-checkbox><br />
+                                                    <mat-checkbox color="primary">Verify the model matches the order.</mat-checkbox><br />
+                                                    <mat-checkbox color="primary">Review the pricing to ensure accuracy (e.g., discounts, taxes).</mat-checkbox><br />
+                                                    <mat-checkbox color="primary">Ensure the payment method has been successfully processed.</mat-checkbox><br />
+                                                    <mat-checkbox color="primary">Review the order confirmation details for errors before finalizing.</mat-checkbox><br />
+                                                    <mat-checkbox color="primary">Update the order status in the system to "Confirmed."</mat-checkbox>
+                                                </form>
                                                 <button class="btn btn-outline-primary">Mark as Confirmed</button>
                                             </div>
                                         </ng-template>
-                                    </ng-container>
-                        
-                                    <ng-container [ngbNavItem]="3">
-                                        <button ngbNavLink class="nav-link text-start p-2 border w-100" id="dispatch-tab" type="button" role="tab" aria-controls="dispatch" [attr.aria-selected]="nav17.activeId === 3 ? 'true' : 'false'">
-                                            <small><i class="ri-truck-line me-1 align-middle"></i>Step: Dispatch</small>
+                                    </li>
+                                    <!-- Step 3: Dispatch -->
+                                    <li [ngbNavItem]="3" class="nav-item me-0" role="presentation">
+                                        <button ngbNavLink class="nav-link py-1" id="dispatch-tab" type="button" role="tab" aria-controls="dispatch-pane" aria-selected="false">
+                                            Dispatch
                                         </button>
                                         <ng-template ngbNavContent>
-                                            <div class="w-100 d-flex flex-column justify-content-center align-items-center" id="dispatch" role="tabpanel" tabindex="0">
-                                                <div class="d-flex flex-column">
-                                                    <span class="fw-semibold">Instructions</span>
+                                            <div class="p-3 border br-7 text-muted" id="dispatch-pane" role="tabpanel" aria-labelledby="dispatch-tab" tabindex="0">
+                                                <h6>Dispatch Instructions</h6>
+                                                <ul>
                                                     <li>Hand over the package to the designated shipping service provider.</li>
                                                     <li>Ensure tracking information is updated in the system and shared with the customer.</li>
-                                                    <span class="fw-semibold">Route</span>
-                                                </div>
-                                                <div class="w-100">
-                                                    <iframe class="mat-elevation-z8 w-100" style="border-radius: 5px; padding: 5px; width: 600px" [src]="mapUrl" width="150%" height="400px" frameborder="0"></iframe>
-                                                </div>
+                                                </ul>
+                                                <h6>Route</h6>
+                                                <iframe class="mat-elevation-z8 w-100" style="border-radius: 5px; padding: 5px; width: 600px" [src]="mapUrl" width="150%" height="400px" frameborder="0"></iframe>
                                             </div>
                                         </ng-template>
-                                    </ng-container>
-                        
-                                    <ng-container [ngbNavItem]="4">
-                                        <button ngbNavLink class="nav-link text-start p-2 border w-100" id="deliver-tab" type="button" role="tab" aria-controls="deliver" [attr.aria-selected]="nav17.activeId === 4 ? 'true' : 'false'">
-                                            <small><i class="ri-home-line me-1 align-middle"></i>Step: Deliver</small>
+                                    </li>
+                                    <!-- Step 4: Deliver -->
+                                    <li [ngbNavItem]="4" class="nav-item me-0" role="presentation">
+                                        <button ngbNavLink class="nav-link py-1" id="deliver-tab" type="button" role="tab" aria-controls="deliver-pane" aria-selected="false">
+                                            Deliver
                                         </button>
                                         <ng-template ngbNavContent>
-                                            <div id="deliver" role="tabpanel" tabindex="0" class="w-100">
+                                            <div class="p-3 border br-7 text-muted" id="deliver-pane" role="tabpanel" aria-labelledby="deliver-tab" tabindex="0">
                                                 <p>Monitor the shipping progress and ensure the package reaches the customer on time.</p>
                                                 <p>Record proof of delivery, such as signatures or photos, if required.</p>
                                             </div>
                                         </ng-template>
-                                    </ng-container>
-                        
-                                    <ng-container [ngbNavItem]="5">
-                                        <button ngbNavLink class="nav-link text-start p-2 border w-100" id="complete-tab" type="button" role="tab" aria-controls="complete" [attr.aria-selected]="nav17.activeId === 5 ? 'true' : 'false'">
-                                            <small><i class="ri-check-double-line align-middle"></i>Step: Complete</small>
+                                    </li>
+                                    <!-- Step 5: Complete -->
+                                    <li [ngbNavItem]="5" class="nav-item me-0" role="presentation">
+                                        <button ngbNavLink class="nav-link py-1" id="complete-tab" type="button" role="tab" aria-controls="complete-pane" aria-selected="false">
+                                            Complete
                                         </button>
                                         <ng-template ngbNavContent>
-                                            <div class="w-100 d-flex flex-column align-items-center" id="complete" role="tabpanel" tabindex="0">
+                                            <div class="p-3 border br-7 text-muted" id="complete-pane" role="tabpanel" aria-labelledby="complete-tab" tabindex="0">
                                                 <p>Mark the order as completed in the system.</p>
                                                 <p>Send a completion notification and request feedback from the customer.</p>
                                             </div>
                                         </ng-template>
-                                    </ng-container>
-                                </div>
-                            </div>
-                        
-                            <div class="col-md-7">
-                                <div class="tab-content justify-content-start w-100 align-items-center" id="v-pills-tabContent">
-                                    <div [ngbNavOutlet]="nav17" class="mt-2"></div>
+                                    </li>
+                                </ul>
+                                <div class="tab-content" id="orderStepsTabContent">
+                                    <div [ngbNavOutlet]="navSteps" class="mt-2"></div>
                                 </div>
                             </div>
                         </div>
+                        
                         
                     </div>
                     

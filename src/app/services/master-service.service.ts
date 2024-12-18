@@ -107,6 +107,9 @@ export class MasterServiceService {
   addStaticImages(data: any) {
     return this.http.post(`${this.baseurl}/api/admin/addStaticImagesRoute`, data);
   }
+  registerDriver(data: any) {
+    return this.http.post(`${this.baseurl}/api/admin/registerDriverRoute`, data);
+  }
   getCarouselStaticImages(){
     return this.http.get(`${this.baseurl}/api/admin/getCarouselStaticImagesRoute`, this.getAuthHeaders());
   }

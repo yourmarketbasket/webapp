@@ -34,6 +34,8 @@ import { OrdersComponent } from './marketplace/orders/orders.component';
 import { ProcessOrderComponent } from './mystores/process-order/process-order.component';
 import { ManageViewsComponent } from './quality-assurance/manage-views/manage-views.component';
 import { ManageUsersComponent } from './quality-assurance/manage-users/manage-users.component';
+import { ProvidersComponent } from './delivery/providers/providers.component';
+import { AddProviderComponent } from './delivery/add-provider/add-provider.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/market_place', pathMatch: 'full' },
@@ -89,6 +91,8 @@ const routes: Routes = [
       {path:  'header', component: HeaderComponent, canActivate: [AuthGuard]},
       {path: 'createstore', component: CreatestoreComponent, canActivate: [AuthGuard]},
       {path: 'settings', component: SettingsComponent, canActivate: [AuthGuard]},
+      {path: 'delivery', component: ProvidersComponent, canActivate: [AuthGuard]},
+      {path: 'add-delivery-provider', component: AddProviderComponent, canActivate: [AuthGuard]},
       {path: 'stores-dashboard', component: StoresDashboardComponent, canActivate: [AuthGuard],
         children: [
           {path: 'manage-store', component: ManageStoresComponent, canActivate: [AuthGuard],

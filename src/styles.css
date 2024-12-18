@@ -3,6 +3,7 @@
 @import "master.css";
 @import 'bootstrap-icons/font/bootstrap-icons.css';
 @import "nouislider/dist/nouislider.css";
+@import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
 /* style the scrollbar */
 ::-webkit-scrollbar-track{
     background: #fdfdfd !important;
@@ -22,14 +23,15 @@
     width: 10px !important;
 }
 
-tr:nth-child(even),mat-row:nth-child(even)  {
-    color: rgb(241, 56, 149);
-    font-size: small;
+.filepond--root {
+  background-color: transparent !important; /* Ensures transparent background */
 }
- tr:nth-child(odd), mat-row:nth-child(odd){
-    color: rgb(111, 56, 241);
-    font-size: small;
+
+.filepond--image-preview {
+  background-color: transparent !important; /* Removes any background from the preview */
 }
+
+
 i {
     position: relative;
     display: inline-block;
@@ -44,13 +46,7 @@ i {
     top: 0;
     left: 0;
 }
-mat-header-cell{
-    color: rgb(111, 56, 241);
-    font-size: small;
-}
-mat-table{
-    width: max-content;
-}
+
 
 .small-icon{
     transform: scale(0.7);
@@ -69,7 +65,16 @@ mat-table{
         background-color: #ffebee ;
     }    
   }  
+
+  :root{
+    .datepicker-header{
+      padding-bottom: 20px;
+    }
+  }
   
+  mdb-error{
+    margin: 0 !important;
+  }
 
   :root{
     .snackbar-success {
