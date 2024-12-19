@@ -462,7 +462,16 @@
 
 
 
-              <span class="text-danger">Please go through all the details and confirm that everything is okay.</span>
+              <small class="text-muted">Please go through all the details and confirm that everything is okay.</small>
+              <small class="text-danger">Upload the images in the following order: 
+                <ul>
+                  <li>Profile Image(Mugshot)</li>
+                  <li>Insurance Document(a clean image)</li>
+                  <li>License Document(a clean image)</li>
+
+                </ul>
+              </small>
+
               <div class="d-flex flex-column justify-content-start">
                 <mat-checkbox [(ngModel)]="confirm" [required]="true">Confirm All Details are Accurate</mat-checkbox>
                 <mat-checkbox [(ngModel)]="tnc" [required]="true">Accept Terms and Conditions</mat-checkbox>
