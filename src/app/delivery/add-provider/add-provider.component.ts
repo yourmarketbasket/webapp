@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MasterServiceService } from 'src/app/services/master-service.service';
 import { UploadService } from 'src/app/services/upload.service';
 import { FilePond } from 'filepond';
+import { NiFilePondDirective } from 'src/app/ni-file-pond.directive';
 
 @Component({
   selector: 'app-add-provider',
@@ -12,7 +13,12 @@ import { FilePond } from 'filepond';
   styleUrl: './add-provider.component.css'
 })
 export class AddProviderComponent {
-  @ViewChild('myPond') myPond!: FilePondComponent;
+  @ViewChild('avataPond') avataPond!: FilePondComponent;
+  @ViewChild('licensePond') licensePond!: FilePondComponent;
+  @ViewChild('insurancePond') insurancePond!: FilePondComponent;
+  @ViewChild(NiFilePondDirective) filePondDirective!: NiFilePondDirective;
+
+
   @ViewChild('nav13') nav13: any; 
   activeTabId: number = 1;
   forms: { [key: number]: FormGroup } = {}; 
@@ -21,6 +27,10 @@ export class AddProviderComponent {
   tnc: boolean = false;
   filesWithMetadata: any[]= [];
   uploadedFilesArray:any[]=[];
+  mugshot:any = '';
+  license:any =  '';
+  insurance:any =  '';
+  files: File[] = [];
 
 
   constructor(private fb: FormBuilder, private ms: MasterServiceService, private uploadService: UploadService) {
@@ -103,29 +113,32 @@ export class AddProviderComponent {
   
   tabValidity:any = {
     1: true,  // First tab is always accessible
-    2: false,
-    3: false,
-    4: false,
-    5: false
+    2: true,
+    3: true,
+    4: true,
+    5: true
   };
 
   // file pond methods
   pondOptions: FilePondOptions = {
+    storeAsFile: true,
     allowMultiple: false, 
     allowImageCrop: true,
     imagePreviewMarkupShow: false,
     allowFileEncode: true,
-    // allowImagePreview: true,
+    // allowDirectoriesOnly: true,
+    allowImagePreview: true,
     // imageCropAspectRatio: '1:1',
     labelIdle: 'Drop files here...'   
   }
-  pondFiles: FilePondOptions["files"] = []
+  licensePondFiles: FilePondOptions["files"] = [ ]
+  insurancePondFiles: FilePondOptions["files"] = []
+  avatarPondFiles: FilePondOptions["files"] = []
   pondHandleInit() {
     // console.log('FilePond has initialised', this.myPond);
   }
   // Move to the next tab, unlock it, and set it as active
   goToNextTab(): void {
-    console.log(this.pondFiles)
     if (this.validateCurrentTab()) {
       const nextTabId = this.activeTabId + 1;
   
@@ -204,7 +217,10 @@ export class AddProviderComponent {
     return this.tabValidity[tabId];
   }
 
+  
+
   pondHandleAddFile(event: any, description: any) {
+    console.log(event.file.serverId)
     // Get the base64-encoded file string
     const base64File = event.file.getFileEncodeBase64String();
     
@@ -283,53 +299,60 @@ export class AddProviderComponent {
   }
 
   uploadAllFiles() {
-    // Define allowed types and max size (example values)
-    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];  // Allowed file types
-    const maxSizeInMB = 10;  // Maximum file size in MB
-  
-    // Iterate over each file in the filesWithMetadata array
-    for (let i = 0; i < this.filesWithMetadata.length; i++) {
-      const file = this.filesWithMetadata[i].file;
-      const description = this.filesWithMetadata[i].description;
-  
-      // Validate file before uploading
-      if (!this.isValidFile(file, allowedTypes, maxSizeInMB)) {
-        console.error(`File with description "${description}" is invalid. Skipping upload.`);
-        continue;  // Skip the upload if the file is invalid
-      }
+    // check if tncs and confirmation is checked
+    if(this.confirm && this.tnc){
+      // Define allowed types and max size (example values)
+        const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];  // Allowed file types
+        const maxSizeInMB = 10;  // Maximum file size in MB
       
-      // check if the array already contains the data
-      if(this.uploadedFilesArray.length===0){
-        // Call uploadService for each valid file
-          this.uploadService.uploadFiles([file]).subscribe(response => {
-            if (response.status === 'complete') {
-              const result = response.results[0];  // Only one result per file because we're uploading one at a time
-              const uploadedUrl = result.transformedUrl;  // URL of the uploaded image
-              this.uploadedFilesArray.push({
-                file: uploadedUrl,
-                description: description,
-              })
-              if(this.uploadedFilesArray.length===3){
-                this.submitAllForms();
-              }else{
-                console.log("not equal")
-              }
+        // Iterate over each file in the filesWithMetadata array
+        for (let i = 0; i < this.filesWithMetadata.length; i++) {
+          const file = this.filesWithMetadata[i].file;
+          const description = this.filesWithMetadata[i].description;
       
+          // Validate file before uploading
+          if (!this.isValidFile(file, allowedTypes, maxSizeInMB)) {
+            console.error(`File with description "${description}" is invalid. Skipping upload.`);
+            continue;  // Skip the upload if the file is invalid
+          }
+          
+          // check if the array already contains the data
+          if(this.uploadedFilesArray.length===0){
+            // Call uploadService for each valid file
+              this.uploadService.uploadFiles([file]).subscribe(response => {
+                if (response.status === 'complete') {
+                  const result = response.results[0];  // Only one result per file because we're uploading one at a time
+                  const uploadedUrl = result.transformedUrl;  // URL of the uploaded image
+                  this.uploadedFilesArray.push({
+                    file: uploadedUrl,
+                    description: description,
+                  })
+                  if(this.uploadedFilesArray.length===3){
+                    this.submitAllForms();
+                  }else{
+                    console.log("not equal")
+                  }
+          
 
-              
-              // Optionally, you can store the URL in the metadata array
-            } else {
-              console.error(`Error during upload of file with description "${description}":`, response.message);
-            }
-          });
+                  
+                  // Optionally, you can store the URL in the metadata array
+                } else {
+                  console.error(`Error during upload of file with description "${description}":`, response.message);
+                }
+              });
 
 
-      }else{
-        this.submitAllForms();
+          }else{
+            this.submitAllForms();
 
-      }
-      
+          }
+          
+        }
+
+    }else{
+      this.validationError = "Check the confirmation button and accept terms and conditions."
     }
+    
   }
 
  
@@ -383,6 +406,27 @@ export class AddProviderComponent {
     } else {
       this.validationError = 'Please fill out the required fields in all the tabs.';
     }
+  }
+
+  // for nifilepond
+  selectedFiles: File[] = [];
+
+
+  processFiles() {
+    // Use the selected files array for further processing (e.g., upload to server)
+    console.log('Processing files:', this.selectedFiles);
+  }
+
+  getFinalFiles(): void {
+    this.files = this.filePondDirective.getFiles(); // Calling the getFiles() method on the directive
+    console.log(this.files); // Process or display the files as needed
+  }
+
+  // Method that will be triggered when files are changed
+  onFilesChanged(files: File[]): void {
+    this.files = files;
+    console.log(this.files);
+    this.getFinalFiles() // Log or process files here
   }
 
 }

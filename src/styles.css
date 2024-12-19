@@ -222,3 +222,29 @@ body { margin: 0; font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', m
     box-shadow: 0 3px 11px #e8eafc;
     transition: box-shadow 280ms cubic-bezier(0.4,0,0.2,1);
 }
+
+div[appNiFilePond] {
+  position: relative;
+  display: inline-block;
+  border-radius: 10px;
+  width: 100%;
+  /* max-width: 300px; */
+}
+
+img {
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+
+button {
+  background-color: red;
+  color: white;
+  border: none;
+  cursor: pointer;
+  padding: 5px 10px;
+}
+
+div[appNiFilePond] p {
+  text-align: center;
+  color: #555;
+}

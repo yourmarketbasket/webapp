@@ -156,6 +156,8 @@ import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
 import FilePondPluginImageTransform from 'filepond-plugin-image-transform';
 import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
 import FilePondPluginImageCrop from 'filepond-plugin-image-crop';
+import { FileUploadDirective } from './file-upload.directive';
+import { NiFilePondDirective } from './ni-file-pond.directive';
 FilePond.registerPlugin(FilePondPluginFileValidateType, FilePondPluginImageTransform, FilePondPluginImagePreview, FilePondPluginImageCrop, FilePondPluginFileEncode);
 
 
@@ -249,7 +251,9 @@ const icons = {
         LineChartDirective,
         ViewOrderComponent,
         AddProviderComponent,
-        ProvidersComponent
+        ProvidersComponent,
+        FileUploadDirective,
+        NiFilePondDirective
     ],
     bootstrap: [AppComponent], 
     imports: [
